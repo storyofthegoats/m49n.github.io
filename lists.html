@@ -36,4 +36,304 @@
         font-size: 0.8rem;
         color: #777;
         margin-bottom: 12px;
-        dis
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 8px;
+      }
+
+      /* scratch list widget */
+
+      .scratch-wrapper {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #141414 0, #050505 60%);
+        border-radius: 10px;
+        padding: 16px 14px;
+      }
+
+      .scratch-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+      }
+
+      .scratch-title {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #aaa;
+      }
+
+      .scratch-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        color: #4af626;
+      }
+
+      .scratch-input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .scratch-input {
+        flex: 1;
+        padding: 6px 8px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      .scratch-input:focus {
+        outline: none;
+        border-color: #4af626;
+      }
+
+      .scratch-add {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #111;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .scratch-add:hover {
+        border-color: #4af626;
+      }
+
+      .scratch-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 8px 0;
+        font-size: 0.85rem;
+      }
+
+      .scratch-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid #111;
+      }
+
+      .scratch-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .scratch-checkbox {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+      }
+
+      .scratch-text {
+        word-break: break-word;
+      }
+
+      .scratch-text--done {
+        text-decoration: line-through;
+        color: #777;
+      }
+
+      .scratch-clear-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .scratch-clear {
+        font-size: 0.75rem;
+        color: #777;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+
+      .scratch-clear:hover {
+        text-decoration: underline;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+
+        .scratch-input-row {
+          flex-direction: column;
+        }
+
+        .scratch-add {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="index.html">← m49n</a>
+
+      <header>
+        <div class="title">lists</div>
+        <div class="subtitle">
+          a quiet place for lists that matter — nothing filled in yet.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <!-- scratch list widget -->
+      <section>
+        <div class="section-label">today / scratch</div>
+        <div class="scratch-wrapper">
+          <div class="scratch-header">
+            <div class="scratch-title">local scratch list</div>
+            <div class="scratch-badge">saved locally</div>
+          </div>
+
+          <div class="scratch-input-row">
+            <input
+              id="scratch-input"
+              class="scratch-input"
+              type="text"
+              placeholder="add an item..."
+            />
+            <button id="scratch-add" class="scratch-add">add</button>
+          </div>
+
+          <ul id="scratch-list" class="scratch-list"></ul>
+
+          <div class="scratch-clear-row">
+            <button id="scratch-clear" class="scratch-clear">
+              clear all
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">m49n · lists</div>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "m49n_scratch_list_v1";
+
+      const inputEl = document.getElementById("scratch-input");
+      const addBtn = document.getElementById("scratch-add");
+      const listEl = document.getElementById("scratch-list");
+      const clearBtn = document.getElementById("scratch-clear");
+
+      let items = [];
+
+      function loadItems() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) items = parsed;
+        } catch (e) {}
+      }
+
+      function saveItems() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
+
+      function renderItems() {
+        listEl.innerHTML = "";
+        items.forEach((item, idx) => {
+          const li = document.createElement("li");
+          li.className = "scratch-item";
+
+          const label = document.createElement("div");
+          label.className = "scratch-label";
+
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.className = "scratch-checkbox";
+          cb.checked = !!item.done;
+
+          cb.addEventListener("change", () => {
+            items[idx].done = cb.checked;
+            saveItems();
+            renderItems();
+          });
+
+          const text = document.createElement("div");
+          text.className =
+            "scratch-text" + (item.done ? " scratch-text--done" : "");
+          text.textContent = item.text;
+
+          label.appendChild(cb);
+          label.appendChild(text);
+
+          li.appendChild(label);
+          listEl.appendChild(li);
+        });
+      }
+
+      function addItem() {
+        const value = inputEl.value.trim();
+        if (!value) return;
+        items.push({ text: value, done: false });
+        inputEl.value = "";
+        saveItems();
+        renderItems();
+        inputEl.focus();
+      }
+
+      addBtn.addEventListener("click", addItem);
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addItem();
+      });
+
+      clearBtn.addEventListener("click", () => {
+        if (items.length && confirm("clear all items?")) {
+          items = [];
+          saveItems();
+          renderItems();
+        }
+      });
+
+      loadItems();
+      renderItems();
+    </script>
+  </body>
+</html>
