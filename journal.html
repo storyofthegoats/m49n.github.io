@@ -71,7 +71,13 @@
         display: flex;
         gap: 12px;
         align-items: baseline;
-        margin-bottom: 4px;
+        justify-content: space-between;
+      }
+
+      .entry-left {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
       }
 
       .entry-date {
@@ -84,22 +90,11 @@
         font-size: 0.95rem;
       }
 
-      .entry-links {
-        font-size: 0.8rem;
-        color: #777;
-      }
-
-      .entry-links a {
-        text-decoration: none;
-      }
-
-      .entry-links a:hover {
-        text-decoration: underline;
-      }
-
-      .dot {
-        margin: 0 4px;
-        color: #555;
+      .entry-meta {
+        font-size: 0.75rem;
+        color: #666;
+        text-align: right;
+        white-space: nowrap;
       }
 
       .footer {
@@ -116,6 +111,10 @@
         .entry-main {
           flex-direction: column;
           align-items: flex-start;
+        }
+
+        .entry-meta {
+          text-align: left;
         }
 
         .entry-date {
@@ -140,38 +139,28 @@
         <!-- First sample entry about building m49n -->
         <article class="entry-row">
           <div class="entry-main">
-            <div class="entry-date">2025-11-28</div>
-            <div class="entry-title">
-              <a href="entries/2025-11-28-m49n-bootstrap.html">
-                bringing m49n online
-              </a>
+            <div class="entry-left">
+              <div class="entry-date">2025-11-28</div>
+              <div class="entry-title">
+                <a href="entries/2025-11-28-m49n-bootstrap.html">
+                  bringing m49n online
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="entry-links">
-            <a href="entries/2025-11-28-m49n-bootstrap.html#raw">raw</a>
-            <span class="dot">·</span>
-            <a href="entries/2025-11-28-m49n-bootstrap.html#interpreted">
-              interpreted
-            </a>
-            <span class="dot">·</span>
-            <a href="entries/2025-11-28-m49n-bootstrap.html">both</a>
+            <div class="entry-meta">dual view</div>
           </div>
         </article>
 
         <!-- Future entries:
         <article class="entry-row">
           <div class="entry-main">
-            <div class="entry-date">YYYY-MM-DD</div>
-            <div class="entry-title">
-              <a href="entries/slug-here.html">entry title here</a>
+            <div class="entry-left">
+              <div class="entry-date">YYYY-MM-DD</div>
+              <div class="entry-title">
+                <a href="entries/slug-here.html">entry title here</a>
+              </div>
             </div>
-          </div>
-          <div class="entry-links">
-            <a href="entries/slug-here.html#raw">raw</a>
-            <span class="dot">·</span>
-            <a href="entries/slug-here.html#interpreted">interpreted</a>
-            <span class="dot">·</span>
-            <a href="entries/slug-here.html">both</a>
+            <div class="entry-meta">dual view</div>
           </div>
         </article>
         -->
@@ -181,4 +170,3 @@
     </main>
   </body>
 </html>
-
