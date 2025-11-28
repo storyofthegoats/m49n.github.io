@@ -93,8 +93,10 @@
       .entry-meta {
         font-size: 0.75rem;
         color: #666;
-        text-align: right;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
         white-space: nowrap;
+        align-self: center;
       }
 
       .footer {
@@ -115,6 +117,7 @@
 
         .entry-meta {
           text-align: left;
+          align-self: flex-start;
         }
 
         .entry-date {
@@ -123,6 +126,7 @@
       }
     </style>
   </head>
+
   <body>
     <main>
       <a class="top-link" href="index.html">← m49n</a>
@@ -136,14 +140,15 @@
       </header>
 
       <section class="entry-list">
-        <!-- First sample entry about building m49n -->
+
+        <!-- First real entry -->
         <article class="entry-row">
           <div class="entry-main">
             <div class="entry-left">
               <div class="entry-date">2025-11-28</div>
               <div class="entry-title">
-                <a href="entries/2025-11-28-m49n-bootstrap.html">
-                  bringing m49n online
+                <a href="entries/2025-11-28-first-entry.html">
+                  first real entry
                 </a>
               </div>
             </div>
@@ -151,23 +156,24 @@
           </div>
         </article>
 
-        <!-- Future entries:
+        <!-- Future entries go here -->
+        <!--
         <article class="entry-row">
           <div class="entry-main">
             <div class="entry-left">
               <div class="entry-date">YYYY-MM-DD</div>
               <div class="entry-title">
-                <a href="entries/slug-here.html">entry title here</a>
+                <a href="entries/slug.html">entry title</a>
               </div>
             </div>
             <div class="entry-meta">dual view</div>
           </div>
         </article>
         -->
+
       </section>
 
       <div class="footer">m49n · journal index</div>
     </main>
   </body>
 </html>
-
