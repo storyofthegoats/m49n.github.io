@@ -1,1 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>1959 topps checklist · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 18px 0;
+      }
+
+      .summary {
+        font-size: 0.8rem;
+        color: #aaa;
+        margin-bottom: 14px;
+      }
+
+      .badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        margin-right: 6px;
+      }
+
+      .badge--good {
+        color: #4af626;
+      }
+
+      .badge--warn {
+        color: #ff6b6b;
+      }
+
+      .table-wrapper {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: radial-gradient(circle at top left, #141414 0, #050505 60%);
+        padding: 10px;
+        max-height: 70vh;
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
+      }
+
+      thead {
+        position: sticky;
+        top: 0;
+        background: #101010;
+        z-index: 1;
+      }
+
+      th,
+      td {
+        padding: 4px 6px;
+        border-bottom: 1px solid #111;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      th {
+        font-weight: 500;
+        color: #bbb;
+        border-bottom: 1px solid #222;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.01);
+      }
+
+      .row-owned {
+        opacity: 0.5;
+      }
+
+      .row-needed {
+        border-left: 2px solid #ff6b6b;
+      }
+
+      .owned-pill {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .owned-pill--yes {
+        color: #4af626;
+      }
+
+      .owned-pill--no {
+        color: #ff6b6b;
+      }
+
+      .status-line {
+        font-size: 0.78rem;
+        color: #888;
+        margin-top: 8px;
+      }
+
+      .status-line span {
+        margin-right: 10px;
+      }
+
+      .status-label {
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.72rem;
+      }
+
+      .error {
+        font-size: 0.8rem;
+        color: #ff6b6b;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 800px) {
+        body {
+          padding: 28px 12px;
+        }
+
+        table {
+          font-size: 0.75rem;
+        }
+
+        th,
+        td {
+          padding: 4px 4px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="lists.html">← lists</a>
+
+      <header>
+        <div class="title">1959 topps checklist</div>
+        <div class="subtitle">
+          set build overview pulled from the csv file in
+          <span style="color:#aaa">data/1959-topps.csv</span>.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <section class="summary">
+        <span class="badge">set: 1959 topps</span>
+        <span class="badge badge--good" id="owned-badge">owned: 0</span>
+        <span class="badge badge--warn" id="needed-badge">needed: 0</span>
+        <div class="status-line">
+          <span class="status-label">status</span>
+          <span id="status-text">loading checklist…</span>
+        </div>
+      </section>
+
+      <section>
+        <div class="table-wrapper">
+          <table id="cards-table">
+            <thead id="cards-thead"></thead>
+            <tbody id="cards-tbody"></tbody>
+          </table>
+        </div>
+        <div class="error" id="error-msg" style="display:none;"></div>
+      </section>
+
+      <div class="footer" style="font-size:0.75rem;color:#666;margin-top:18px;">
+        m49n · 1959 topps
+      </div>
+    </main>
+
+    <script>
+      // very small CSV parser that handles quoted fields
+      function parseCSV(text) {
+        const rows = [];
+        let current = "";
+        let row = [];
+        let insideQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"' && insideQuotes && next === '"') {
+            // escaped quote
+            current += '"';
+            i++;
+          } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+          } else if (char === "," && !insideQuotes) {
+            row.push(current);
+            current = "";
+          } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+            if (current !== "" || row.length > 0) {
+              row.push(current);
+              rows.push(row);
+              row = [];
+              current = "";
+            }
+          } else {
+            current += char;
+          }
+        }
+        if (current !== "" || row.length > 0) {
+          row.push(current);
+          rows.push(row);
+        }
+        return rows.filter((r) => r.some((c) => c.trim() !== ""));
+      }
+
+      function normalizeHeader(name) {
+        return name.trim().toLowerCase();
+      }
+
+      // interpret purchased/owned logic from the cell value
+      function interpretOwned(value) {
+        if (!value) return null;
+        const v = value.trim().toLowerCase();
+
+        // treat these as "yes / purchased"
+        if (
+          ["y", "yes", "x", "owned", "have", "1", "purchased"].includes(v)
+        ) {
+          return true;
+        }
+
+        // treat these as "no / need"
+        if (
+          ["n", "no", "need", "want", "0", "not purchased"].includes(v)
+        ) {
+          return false;
+        }
+
+        return null;
+      }
+
+      async function loadChecklist() {
+        const thead = document.getElementById("cards-thead");
+        const tbody = document.getElementById("cards-tbody");
+        const errorEl = document.getElementById("error-msg");
+        const ownedBadge = document.getElementById("owned-badge");
+        const neededBadge = document.getElementById("needed-badge");
+        const statusText = document.getElementById("status-text");
+
+        try {
+          const res = await fetch("data/1959-topps.csv?" + Date.now());
+          if (!res.ok) {
+            throw new Error("http " + res.status);
+          }
+          const text = await res.text();
+          const rows = parseCSV(text);
+          if (!rows.length) {
+            throw new Error("no rows found in csv");
+          }
+
+          const header = rows[0];
+          const dataRows = rows.slice(1);
+
+          // build header
+          const headerTr = document.createElement("tr");
+          header.forEach((col) => {
+            const th = document.createElement("th");
+            th.textContent = col;
+            headerTr.appendChild(th);
+          });
+          thead.appendChild(headerTr);
+
+          // find "owned" / "purchased" column if present
+          let ownedIndex = -1;
+          header.forEach((h, idx) => {
+            const n = normalizeHeader(h);
+            if (
+              ownedIndex === -1 &&
+              ["owned", "have", "status", "purchased"].includes(n)
+            ) {
+              ownedIndex = idx;
+            }
+          });
+
+          let ownedCount = 0;
+          let neededCount = 0;
+
+          dataRows.forEach((row) => {
+            const tr = document.createElement("tr");
+
+            let ownedFlag = null;
+            if (ownedIndex !== -1 && row.length > ownedIndex) {
+              ownedFlag = interpretOwned(row[ownedIndex]);
+            }
+
+            if (ownedFlag === true) {
+              tr.classList.add("row-owned");
+              ownedCount++;
+            } else if (ownedFlag === false) {
+              tr.classList.add("row-needed");
+              neededCount++;
+            }
+
+            row.forEach((cell, idx) => {
+              const td = document.createElement("td");
+
+              if (idx === ownedIndex) {
+                const flag = interpretOwned(cell);
+                if (flag === true) {
+                  td.innerHTML =
+                    '<span class="owned-pill owned-pill--yes">purchased</span>';
+                } else if (flag === false) {
+                  td.innerHTML =
+                    '<span class="owned-pill owned-pill--no">need</span>';
+                } else {
+                  td.textContent = cell;
+                }
+              } else {
+                td.textContent = cell;
+              }
+
+              tr.appendChild(td);
+            });
+
+            tbody.appendChild(tr);
+          });
+
+          const total = dataRows.length;
+          ownedBadge.textContent = "purchased: " + ownedCount;
+          neededBadge.textContent =
+            "needed: " + (neededCount || total - ownedCount);
+          statusText.textContent =
+            "total cards: " +
+            total +
+            " · purchased: " +
+            ownedCount +
+            " · remaining: " +
+            (total - ownedCount);
+        } catch (err) {
+          console.error(err);
+          errorEl.style.display = "block";
+          errorEl.textContent =
+            "error loading csv from data/1959-topps.csv — check the filename, path, and formatting.";
+          statusText.textContent = "could not load checklist.";
+        }
+      }
+
+      loadChecklist();
+    </script>
+  </body>
+</html>
 
