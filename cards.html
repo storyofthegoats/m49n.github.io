@@ -1,1 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>lists · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 8px;
+      }
+
+      /* card lists section */
+
+      .cards-wrapper {
+        border-top: 1px solid #222;
+        margin-bottom: 28px;
+      }
+
+      .cards-row {
+        border-bottom: 1px solid #111;
+        padding: 10px 0;
+      }
+
+      .cards-name {
+        font-size: 0.95rem;
+      }
+
+      .cards-note {
+        font-size: 0.8rem;
+        color: #777;
+        margin-top: 2px;
+      }
+
+      /* scratch list widget */
+
+      .scratch-wrapper {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #141414 0, #050505 60%);
+        border-radius: 10px;
+        padding: 16px 14px;
+      }
+
+      .scratch-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+      }
+
+      .scratch-title {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #aaa;
+      }
+
+      .scratch-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        color: #4af626;
+      }
+
+      .scratch-input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .scratch-input {
+        flex: 1;
+        padding: 6px 8px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      .scratch-input:focus {
+        outline: none;
+        border-color: #4af626;
+      }
+
+      .scratch-add {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #111;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .scratch-add:hover {
+        border-color: #4af626;
+      }
+
+      .scratch-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 8px 0;
+        font-size: 0.85rem;
+      }
+
+      .scratch-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid #111;
+      }
+
+      .scratch-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .scratch-checkbox {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+      }
+
+      .scratch-text {
+        word-break: break-word;
+      }
+
+      .scratch-text--done {
+        text-decoration: line-through;
+        color: #777;
+      }
+
+      .scratch-clear-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .scratch-clear {
+        font-size: 0.75rem;
+        color: #777;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+
+      .scratch-clear:hover {
+        text-decoration: underline;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+
+        .scratch-input-row {
+          flex-direction: column;
+        }
+
+        .scratch-add {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="index.html">← m49n</a>
+
+      <header>
+        <div class="title">lists</div>
+        <div class="subtitle">
+          a quiet place for lists that matter. cards first, everything else can
+          follow.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <!-- cards section -->
+      <section>
+        <div class="section-label">cards</div>
+        <div class="cards-wrapper">
+          <div class="cards-row">
+            <div class="cards-name">1959 topps set build</div>
+            <div class="cards-note">
+  full set chase; key needs include Mantle, Gibson, Berra, Musial,
+  and the high-number all-stars.
+  <br />
+  <a href="1959.html" style="color:#4af626;">→ view checklist</a>
+</div>
+
+          </div>
+          <div class="cards-row">
+            <div class="cards-name">cubs</div>
+            <div class="cards-note">
+              general Cubs players, Cubs team cards, and Cubs autographs that
+              actually feel special.
+            </div>
+          </div>
+          <div class="cards-row">
+            <div class="cards-name">player pcs</div>
+            <div class="cards-note">
+              Kyle Schwarber and Vladimir Guerrero Jr., with extra focus on 2024
+              Stadium Club Vlad and 2024 Topps Chrome Schwarber.
+            </div>
+          </div>
+          <div class="cards-row">
+            <div class="cards-name">special hunts</div>
+            <div class="cards-note">
+              any card serial-numbered 1612, plus rainbows worth building out.
+            </div>
+          </div>
+        </div>
+      </section>
+
+  
+    </script>
+  </body>
+</html>
