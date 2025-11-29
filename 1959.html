@@ -122,7 +122,7 @@
       }
 
       .row-owned {
-        opacity: 0.5;
+        opacity: 0.55;
       }
 
       .row-needed {
@@ -201,7 +201,7 @@
 
       <section class="summary">
         <span class="badge">set: 1959 topps</span>
-        <span class="badge badge--good" id="owned-badge">owned: 0</span>
+        <span class="badge badge--good" id="owned-badge">purchased: 0</span>
         <span class="badge badge--warn" id="needed-badge">needed: 0</span>
         <div class="status-line">
           <span class="status-label">status</span>
@@ -225,8 +225,8 @@
     </main>
 
     <script>
-      // very small CSV parser that handles quoted fields
-      function parseCSV(text) {
+      // CSV/TSV parser: supports comma OR tab as delimiter, with optional quotes.
+      function parseSeparated(text) {
         const rows = [];
         let current = "";
         let row = [];
@@ -237,12 +237,12 @@
           const next = text[i + 1];
 
           if (char === '"' && insideQuotes && next === '"') {
-            // escaped quote
+            // escaped quote: ""
             current += '"';
             i++;
           } else if (char === '"') {
             insideQuotes = !insideQuotes;
-          } else if (char === "," && !insideQuotes) {
+          } else if ((char === "," || char === "\t") && !insideQuotes) {
             row.push(current);
             current = "";
           } else if ((char === "\n" || char === "\r") && !insideQuotes) {
@@ -256,10 +256,13 @@
             current += char;
           }
         }
+
         if (current !== "" || row.length > 0) {
           row.push(current);
           rows.push(row);
         }
+
+        // drop rows that are completely empty
         return rows.filter((r) => r.some((c) => c.trim() !== ""));
       }
 
@@ -268,25 +271,49 @@
       }
 
       // interpret purchased/owned logic from the cell value
+      // In your data: TRUE = purchased, FALSE or blank = need.
       function interpretOwned(value) {
-        if (!value) return null;
-        const v = value.trim().toLowerCase();
+        if (value === undefined || value === null) return false;
+        const trimmed = value.trim();
+        if (trimmed === "") return false;
+
+        const v = trimmed.toLowerCase();
 
         // treat these as "yes / purchased"
         if (
-          ["y", "yes", "x", "owned", "have", "1", "purchased"].includes(v)
+          [
+            "y",
+            "yes",
+            "x",
+            "owned",
+            "have",
+            "1",
+            "purchased",
+            "true",
+            "t"
+          ].includes(v)
         ) {
           return true;
         }
 
         // treat these as "no / need"
         if (
-          ["n", "no", "need", "want", "0", "not purchased"].includes(v)
+          [
+            "n",
+            "no",
+            "need",
+            "want",
+            "0",
+            "not purchased",
+            "false",
+            "f"
+          ].includes(v)
         ) {
           return false;
         }
 
-        return null;
+        // fallback: unknown treated as "not purchased" for your use case
+        return false;
       }
 
       async function loadChecklist() {
@@ -303,24 +330,24 @@
             throw new Error("http " + res.status);
           }
           const text = await res.text();
-          const rows = parseCSV(text);
+          const rows = parseSeparated(text);
           if (!rows.length) {
-            throw new Error("no rows found in csv");
+            throw new Error("no rows found in csv/tsv");
           }
 
           const header = rows[0];
           const dataRows = rows.slice(1);
 
-          // build header
+          // build header row exactly as in file
           const headerTr = document.createElement("tr");
           header.forEach((col) => {
             const th = document.createElement("th");
-            th.textContent = col;
+            th.textContent = col.trim();
             headerTr.appendChild(th);
           });
           thead.appendChild(headerTr);
 
-          // find "owned" / "purchased" column if present
+          // find Purchased/Owned column
           let ownedIndex = -1;
           header.forEach((h, idx) => {
             const n = normalizeHeader(h);
@@ -332,41 +359,46 @@
             }
           });
 
-          let ownedCount = 0;
-          let neededCount = 0;
+          // if we somehow don't find it but we know your file is:
+          // Number, Player, Team, Purchased, Paid
+          // then the 4th column (index 3) is Purchased
+          if (ownedIndex === -1 && header.length >= 4) {
+            ownedIndex = 3;
+          }
+
+          let purchasedCount = 0;
+          const total = dataRows.length;
 
           dataRows.forEach((row) => {
             const tr = document.createElement("tr");
 
-            let ownedFlag = null;
+            let purchasedFlag = false;
             if (ownedIndex !== -1 && row.length > ownedIndex) {
-              ownedFlag = interpretOwned(row[ownedIndex]);
+              purchasedFlag = interpretOwned(row[ownedIndex]);
             }
 
-            if (ownedFlag === true) {
+            if (purchasedFlag) {
               tr.classList.add("row-owned");
-              ownedCount++;
-            } else if (ownedFlag === false) {
+              purchasedCount++;
+            } else {
               tr.classList.add("row-needed");
-              neededCount++;
             }
 
             row.forEach((cell, idx) => {
               const td = document.createElement("td");
+              const text = (cell || "").trim();
 
               if (idx === ownedIndex) {
                 const flag = interpretOwned(cell);
-                if (flag === true) {
+                if (flag) {
                   td.innerHTML =
                     '<span class="owned-pill owned-pill--yes">purchased</span>';
-                } else if (flag === false) {
+                } else {
                   td.innerHTML =
                     '<span class="owned-pill owned-pill--no">need</span>';
-                } else {
-                  td.textContent = cell;
                 }
               } else {
-                td.textContent = cell;
+                td.textContent = text;
               }
 
               tr.appendChild(td);
@@ -375,22 +407,22 @@
             tbody.appendChild(tr);
           });
 
-          const total = dataRows.length;
-          ownedBadge.textContent = "purchased: " + ownedCount;
-          neededBadge.textContent =
-            "needed: " + (neededCount || total - ownedCount);
+          const remaining = total - purchasedCount;
+
+          ownedBadge.textContent = "purchased: " + purchasedCount;
+          neededBadge.textContent = "needed: " + remaining;
           statusText.textContent =
             "total cards: " +
             total +
             " · purchased: " +
-            ownedCount +
+            purchasedCount +
             " · remaining: " +
-            (total - ownedCount);
+            remaining;
         } catch (err) {
           console.error(err);
           errorEl.style.display = "block";
           errorEl.textContent =
-            "error loading csv from data/1959-topps.csv — check the filename, path, and formatting.";
+            "error loading data/1959-topps.csv — check the filename, path, and delimiter (comma or tab).";
           statusText.textContent = "could not load checklist.";
         }
       }
