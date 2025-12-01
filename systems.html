@@ -1,93 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>systems · m49n</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- keep or remove this if you’re not using a shared stylesheet -->
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <a href="index.html">← m49n</a>
+  <head>
+    <meta charset="UTF-8" />
+    <title>archive · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-  <h1>systems</h1>
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
 
-  <p>internal frameworks, loops, and constraints that shape how things get done.</p>
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-  <hr />
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-  <h2>operator file: matthew maupin</h2>
-  <p><em>bio recovered from the wreckage of a louisville motel notepad</em></p>
+      a:hover {
+        text-decoration: underline;
+      }
 
-  <p>
-    Matthew Maupin is a long-distance auditor in the grand American tradition — a man who
-    runs until the demons get winded, then walks back inside to file a SOX deficiency memo
-    with greater accuracy than most people can manage a grocery list. Born with the quiet
-    disposition of a man who owns too many spreadsheets and just enough guitars, he took a
-    strange and fateful turn somewhere in the Midwest and wound up in Louisville, Kentucky:
-    bourbon country, horse country, and a fine place to contemplate internal controls.
-  </p>
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
 
-  <p>
-    He collects baseball cards the way a deranged anthropologist collects skulls:
-    meticulously, feverishly, and with the cold, steady eye of a man who has seen Mickey
-    Mantle prices fluctuate like a bad trip. At any given moment he is hunting down a 1959
-    Topps high-number card, muttering about centering percentages like a mystic muttering
-    about omens. The CardGoat, they call him. A title earned, not bestowed. A title forged
-    in the sulfur glow of late-night auctions and the kind of purchases only understood at
-    3:12 AM.
-  </p>
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
 
-  <p>
-    Maupin is a runner by habit and compulsion, pounding out miles not because it’s
-    healthy but because the alternative is to sit still — a concept he has rejected since
-    1997. His logs read like dispatches from an ongoing war between man and pavement. There
-    are whispers — unconfirmed, but persistent — that he once went for a “light jog” and
-    ended up crossing a state line by accident. When he isn’t running, he’s planning to
-    run. When he isn’t planning, he’s probably icing something.
-  </p>
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
 
-  <p>
-    Professionally, he serves as Director of Internal Audit, a title which sounds calm and
-    administrative but is, in reality, a frontier job — the sort held by lone sheriffs who
-    know everyone in town is lying and half of them don’t even realize it. He battles
-    financial risk with the grim artistry of a man sharpening a bayonet. He dissects
-    balance sheets the way a Vegas card counter studies the twitch in a dealer’s wrist.
-    He designs SOX frameworks like a mad architect building a cathedral no one else can
-    see but everyone depends upon.
-  </p>
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
 
-  <p>
-    Rumor has it he’s building an AI-powered financial-risk oracle — a swirling cosmic
-    dashboard that will one day awaken, speak in tongues, and tell executives exactly
-    which accounts are about to burst into flame. Whether that makes him a visionary or a
-    danger to society remains unclear, but the project continues, fueled by equal parts
-    caffeine, righteous indignation, and that strange electric joy found only in
-    automation.
-  </p>
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 8px;
+      }
 
-  <p>
-    At home he lives with Stephanie, who tolerates his creative manias with admirable
-    grace, and their squadron of four pets, each of whom seems mildly suspicious that Matt
-    might be building a spreadsheet about them.
-  </p>
+      .content-block {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #101010 0, #050505 65%);
+        border-radius: 10px;
+        padding: 16px 14px;
+        line-height: 1.55;
+      }
 
-  <p>
-    In his free hours he conjures websites, builds journals, draws insane parody cards,
-    creates mosaics made of Pokémon orbs and cardboard fragments, and produces art that
-    looks like it crawled out of an alternate universe where baseball statistics and
-    psychedelic posters achieved full sentience. His MacBook is a traveling circus of
-    half-finished ideas, wild experiments, and repo scraps that read like the notebooks of
-    a polymath who got struck by lightning and became slightly more powerful.
-  </p>
+      .block-title {
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 10px;
+        color: #cfcfcf;
+      }
 
-  <p>
-    And he keeps going. Always. Because once you’ve stared into the abyss of internal
-    audit and lived to tell the tale, there’s really nothing left to fear.
-  </p>
+      .block-note {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 14px;
+      }
 
-  <hr />
+      .block-body p {
+        margin-top: 0;
+        margin-bottom: 14px;
+      }
 
-  <p>m49n · systems</p>
-</body>
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="index.html">← m49n</a>
+
+      <header>
+        <div class="title">archive</div>
+        <div class="subtitle">internal systems, operator files, static references.</div>
+        <hr class="divider" />
+      </header>
+
+      <section>
+        <div class="section-label">operator file</div>
+        <article class="content-block">
+          <div class="block-title">matthew maupin</div>
+          <div class="block-note">bio recovered from the wreckage of a louisville motel notepad</div>
+          <div class="block-body">
+            <p>
+              Matthew Maupin is a long-distance auditor in the grand American tradition — a
+              man who runs until the demons get winded, then walks back inside to file a SOX
+              deficiency memo with greater accuracy than most people can manage a grocery
+              list. Born with the quiet disposition of a man who owns too many spreadsheets
+              and just enough guitars, he took a strange and fateful turn somewhere in the
+              Midwest and wound up in Louisville, Kentucky: bourbon country, horse country,
+              and a fine place to contemplate internal controls.
+            </p>
+
+            <p>
+              He collects baseball cards the way a deranged anthropologist collects skulls:
+              meticulously, feverishly, and with the cold, steady eye of a man who has seen
+              Mickey Mantle prices fluctuate like a bad trip. At any given moment he is
+              hunting down a 1959 Topps high-number card, muttering about centering
+              percentages like a mystic muttering about omens. The CardGoat, they call him. A
+              title earned, not bestowed. A title forged in the sulfur glow of late-night
+              auctions and the kind of purchases only understood at 3:12 AM.
+            </p>
+
+            <p>
+              Maupin is a runner by habit and compulsion, pounding out miles not because
+              it’s healthy but because the alternative is to sit still — a concept he has
+              rejected since 1997. His logs read like dispatches from an ongoing war between
+              man and pavement. There are whispers — unconfirmed, but persistent — that he
+              once went for a “light jog” and ended up crossing a state line by accident.
+              When he isn’t running, he’s planning to run. When he isn’t planning, he’s
+              probably icing something.
+            </p>
+
+            <p>
+              Professionally, he serves as Director of Internal Audit, a title which sounds
+              calm and administrative but is, in reality, a frontier job — the sort held by
+              lone sheriffs who know everyone in town is lying and half of them don’t even
+              realize it. He battles financial risk with the grim artistry of a man
+              sharpening a bayonet. He dissects balance sheets the way a Vegas card counter
+              studies the twitch in a dealer’s wrist. He designs SOX frameworks like a mad
+              architect building a cathedral no one else can see but everyone depends upon.
+            </p>
+
+            <p>
+              Rumor has it he’s building an AI-powered financial-risk oracle — a swirling
+              cosmic dashboard that will one day awaken, speak in tongues, and tell
+              executives exactly which accounts are about to burst into flame. Whether that
+              makes him a visionary or a danger to society remains unclear, but the project
+              continues, fueled by equal parts caffeine, righteous indignation, and that
+              strange electric joy found only in automation.
+            </p>
+
+            <p>
+              At home he lives with Stephanie, who tolerates his creative manias with
+              admirable grace, and their squadron of four pets, each of whom seems mildly
+              suspicious that Matt might be building a spreadsheet about them.
+            </p>
+
+            <p>
+              In his free hours he conjures websites, builds journals, draws insane parody
+              cards, creates mosaics made of Pokémon orbs and cardboard fragments, and
+              produces art that looks like it crawled out of an alternate universe where
+              baseball statistics and psychedelic posters achieved full sentience. His
+              MacBook is a traveling circus of half-finished ideas, wild experiments, and
+              repo scraps that read like the notebooks of a polymath who got struck by
+              lightning and became slightly more powerful.
+            </p>
+
+            <p>
+              And he keeps going. Always. Because once you’ve stared into the abyss of
+              internal audit and lived to tell the tale, there’s really nothing left to
+              fear.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <div class="footer">m49n · systems archive</div>
+    </main>
+  </body>
 </html>
