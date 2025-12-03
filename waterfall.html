@@ -228,8 +228,8 @@
 
     #focus-meta {
       display: flex;
-      justify-content: space-between;
-      gap: 0.75rem;
+      flex-direction: column;
+      gap: 0.5rem;
       font-size: 0.75rem;
       color: #94a3b8;
       border-top: 1px dashed rgba(51, 65, 85, 0.9);
@@ -237,8 +237,40 @@
       margin-top: 0.25rem;
     }
 
+    #focus-meta-stats {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     #focus-meta span {
       white-space: nowrap;
+    }
+
+    #focus-meta-id {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #focus-meta-id .marquee-track {
+      display: inline-flex;
+      gap: 1.5rem;
+      animation: focus-marquee 12s linear infinite;
+    }
+
+    #focus-meta-id .marquee-segment {
+      white-space: nowrap;
+    }
+
+    @keyframes focus-marquee {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
     }
 
     @media (max-width: 640px) {
@@ -283,9 +315,11 @@
       <div id="focus-tagline">unstable entry · m49n field notes</div>
       <p id="focus-blurb"></p>
       <div id="focus-meta">
-        <span id="focus-meta-length"></span>
-        <span id="focus-meta-syllables"></span>
-        <span id="focus-meta-id"></span>
+        <div id="focus-meta-stats">
+          <span id="focus-meta-length"></span>
+          <span id="focus-meta-syllables"></span>
+        </div>
+        <div id="focus-meta-id"></div>
       </div>
     </article>
   </div>
@@ -522,6 +556,21 @@
       ].join(" ");
     }
 
+    function setTickerText(element, text) {
+      const track = document.createElement("div");
+      track.className = "marquee-track";
+
+      for (let i = 0; i < 3; i++) {
+        const segment = document.createElement("span");
+        segment.className = "marquee-segment";
+        segment.textContent = text;
+        track.appendChild(segment);
+      }
+
+      element.innerHTML = "";
+      element.appendChild(track);
+    }
+
     function focusOnName(name) {
       document.body.classList.add("paused");
       overlay.classList.add("visible");
@@ -540,8 +589,10 @@
 
       focusMetaLength.textContent = `letters: ${length}`;
       focusMetaSyllables.textContent = `syllables (approx): ${syllables}`;
-      focusMetaId.textContent =
+      const idString =
         typeof id === "number" ? `dex-ish index: #${id}` : `dex-ish index: ???`;
+
+      setTickerText(focusMetaId, idString);
     }
 
     function closeFocus() {
