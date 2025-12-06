@@ -161,6 +161,39 @@
         font-size: 0.85rem;
       }
 
+      .scratch-sort-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .scratch-sort-label {
+        font-size: 0.75rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .scratch-sort-buttons {
+        display: flex;
+        gap: 6px;
+      }
+
+      .scratch-sort-button {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #0b0b0b;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .scratch-sort-button:hover {
+        border-color: #4af626;
+      }
+
       .scratch-item {
         display: flex;
         align-items: center;
@@ -280,6 +313,18 @@
             <button id="scratch-add" class="scratch-add">add</button>
           </div>
 
+          <div class="scratch-sort-row">
+            <div class="scratch-sort-label">resort</div>
+            <div class="scratch-sort-buttons">
+              <button id="sort-unchecked" class="scratch-sort-button">
+                unchecked first
+              </button>
+              <button id="sort-checked" class="scratch-sort-button">
+                checked first
+              </button>
+            </div>
+          </div>
+
           <ul id="scratch-list" class="scratch-list"></ul>
 
           <div class="scratch-clear-row">
@@ -301,6 +346,8 @@
       const addBtn = document.getElementById("scratch-add");
       const listEl = document.getElementById("scratch-list");
       const clearBtn = document.getElementById("scratch-clear");
+      const sortUncheckedBtn = document.getElementById("sort-unchecked");
+      const sortCheckedBtn = document.getElementById("sort-checked");
 
       let items = [];
 
@@ -360,10 +407,23 @@
         inputEl.focus();
       }
 
+      function sortItems(order) {
+        const direction = order === "checked" ? -1 : 1;
+        items.sort((a, b) => {
+          if (a.done === b.done) return 0;
+          return a.done ? direction : -direction;
+        });
+        saveItems();
+        renderItems();
+      }
+
       addBtn.addEventListener("click", addItem);
       inputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") addItem();
       });
+
+      sortUncheckedBtn.addEventListener("click", () => sortItems("unchecked"));
+      sortCheckedBtn.addEventListener("click", () => sortItems("checked"));
 
       clearBtn.addEventListener("click", () => {
         if (items.length && confirm("clear all items?")) {
