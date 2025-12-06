@@ -322,6 +322,9 @@
               <button id="sort-checked" class="scratch-sort-button">
                 checked first
               </button>
+              <button id="hide-checked" class="scratch-sort-button">
+                hide checked
+              </button>
             </div>
           </div>
 
@@ -341,6 +344,7 @@
 
     <script>
       const STORAGE_KEY = "m49n_scratch_list_v1";
+      const HIDE_STORAGE_KEY = "m49n_scratch_hide_checked_v1";
 
       const inputEl = document.getElementById("scratch-input");
       const addBtn = document.getElementById("scratch-add");
@@ -348,8 +352,10 @@
       const clearBtn = document.getElementById("scratch-clear");
       const sortUncheckedBtn = document.getElementById("sort-unchecked");
       const sortCheckedBtn = document.getElementById("sort-checked");
+      const hideCheckedBtn = document.getElementById("hide-checked");
 
       let items = [];
+      let hideChecked = false;
 
       function loadItems() {
         try {
@@ -364,9 +370,15 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
       }
 
+      function saveHideSetting() {
+        localStorage.setItem(HIDE_STORAGE_KEY, JSON.stringify(hideChecked));
+      }
+
       function renderItems() {
         listEl.innerHTML = "";
         items.forEach((item, idx) => {
+          if (hideChecked && item.done) return;
+
           const li = document.createElement("li");
           li.className = "scratch-item";
 
@@ -395,6 +407,8 @@
           li.appendChild(label);
           listEl.appendChild(li);
         });
+
+        hideCheckedBtn.textContent = hideChecked ? "show checked" : "hide checked";
       }
 
       function addItem() {
@@ -425,6 +439,12 @@
       sortUncheckedBtn.addEventListener("click", () => sortItems("unchecked"));
       sortCheckedBtn.addEventListener("click", () => sortItems("checked"));
 
+      hideCheckedBtn.addEventListener("click", () => {
+        hideChecked = !hideChecked;
+        saveHideSetting();
+        renderItems();
+      });
+
       clearBtn.addEventListener("click", () => {
         if (items.length && confirm("clear all items?")) {
           items = [];
@@ -434,6 +454,13 @@
       });
 
       loadItems();
+      try {
+        const hideSetting = JSON.parse(
+          localStorage.getItem(HIDE_STORAGE_KEY) || "false",
+        );
+        hideChecked = !!hideSetting;
+      } catch (e) {}
+
       renderItems();
     </script>
   </body>
