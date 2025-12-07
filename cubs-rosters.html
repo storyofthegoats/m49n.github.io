@@ -246,9 +246,25 @@
             return;
           }
 
-          roster.sort((a, b) =>
-            a.person.fullName.localeCompare(b.person.fullName)
-          );
+          roster.sort((a, b) => {
+            const positionA = a.position?.abbreviation || "";
+            const positionB = b.position?.abbreviation || "";
+
+            const isPitcherA = positionA === "P";
+            const isPitcherB = positionB === "P";
+
+            if (isPitcherA !== isPitcherB) {
+              return isPitcherA ? 1 : -1;
+            }
+
+            const positionCompare = positionA.localeCompare(positionB);
+            if (positionCompare !== 0) return positionCompare;
+
+            const nameA = a.person?.fullName || "";
+            const nameB = b.person?.fullName || "";
+
+            return nameA.localeCompare(nameB);
+          });
 
           const grid = document.createElement("div");
           grid.className = "roster-grid";
