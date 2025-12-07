@@ -197,22 +197,6 @@
         margin-top: 10px;
       }
 
-      .back-footer {
-        display: block;
-        margin-top: 12px;
-        padding: 12px 14px;
-        background: #4af626;
-        color: #050505;
-        text-align: center;
-        font-weight: 600;
-        border-radius: 10px;
-      }
-
-      .back-footer:hover {
-        text-decoration: none;
-        opacity: 0.9;
-      }
-
       @media (max-width: 800px) {
         body {
           padding: 28px 12px;
@@ -232,7 +216,7 @@
 
   <body>
     <main>
-      <a class="top-link" href="lists.html">← lists</a>
+      <a class="top-link" href="cards.html">← cardboard</a>
 
       <header>
         <div class="title">1959 topps checklist</div>
@@ -251,6 +235,16 @@
           <button class="filter-btn" id="filter-btn" type="button">
             show only need
           </button>
+          <label style="font-size:0.75rem;color:#777;" for="sort-select">
+            sort:
+          </label>
+          <select
+            id="sort-select"
+            style="background:#101010;color:#e5e5e5;border:1px solid #333;border-radius:999px;padding:4px 10px;font-size:0.75rem;"
+          >
+            <option value="number">by number</option>
+            <option value="team">by team</option>
+          </select>
         </div>
         <div class="status-line">
           <span class="status-label">status</span>
@@ -271,12 +265,18 @@
       <div class="footer" style="font-size:0.75rem;color:#666;margin-top:18px;">
         m49n · 1959 topps
       </div>
-      <a class="back-footer" href="index.html">← back to index</a>
     </main>
 
     <script>
+      const sortSelect = document.getElementById("sort-select");
       const filterBtn = document.getElementById("filter-btn");
       let showNeededOnly = false;
+      let currentSort = "number";
+      let cardsData = [];
+      let ownedIndex = -1;
+      let numberIndex = -1;
+      let playerIndex = -1;
+      let teamIndex = -1;
 
       // auto-detect whether the file is comma- or tab-delimited (default comma)
       function detectDelimiter(text) {
@@ -364,6 +364,11 @@
         applyNeededFilter();
       });
 
+      sortSelect.addEventListener("change", () => {
+        currentSort = sortSelect.value;
+        renderTableRows();
+      });
+
       // interpret purchased/owned logic from the cell value
       // In your data: TRUE = purchased, FALSE or blank = need.
       function interpretOwned(value) {
@@ -410,6 +415,78 @@
         return false;
       }
 
+      function buildCardRow(card) {
+        const tr = document.createElement("tr");
+        tr.classList.add(card.purchased ? "row-owned" : "row-needed");
+
+        card.cells.forEach((cell, idx) => {
+          const td = document.createElement("td");
+          const text = (cell || "").trim();
+
+          if (idx === ownedIndex) {
+            if (card.purchased) {
+              td.innerHTML =
+                '<span class="owned-pill owned-pill--yes">purchased</span>';
+            } else {
+              const queryParts = ["1959 topps"];
+              if (numberIndex !== -1 && card.number) {
+                queryParts.push(card.number.trim());
+              }
+              if (playerIndex !== -1 && card.player) {
+                queryParts.push(card.player.trim());
+              }
+              const searchQuery = encodeURIComponent(
+                queryParts.filter(Boolean).join(" ")
+              );
+              const searchUrl =
+                "https://www.ebay.com/sch/i.html?_nkw=" +
+                searchQuery +
+                "&_sop=15";
+              td.innerHTML =
+                '<a href="' +
+                searchUrl +
+                '" target="_blank" rel="noreferrer noopener">' +
+                '<span class="owned-pill owned-pill--no">need</span>' +
+                "</a>";
+            }
+          } else {
+            td.textContent = text;
+          }
+
+          tr.appendChild(td);
+        });
+
+        return tr;
+      }
+
+      function renderTableRows() {
+        const tbody = document.getElementById("cards-tbody");
+        tbody.innerHTML = "";
+
+        const sorted = [...cardsData];
+
+        if (currentSort === "team" && teamIndex !== -1) {
+          sorted.sort((a, b) => {
+            const teamA = (a.team || "").trim().toLowerCase();
+            const teamB = (b.team || "").trim().toLowerCase();
+
+            if (teamA === teamB) {
+              return a.originalIndex - b.originalIndex;
+            }
+
+            return teamA.localeCompare(teamB);
+          });
+        } else {
+          sorted.sort((a, b) => a.originalIndex - b.originalIndex);
+        }
+
+        sorted.forEach((card) => {
+          tbody.appendChild(buildCardRow(card));
+        });
+
+        applyNeededFilter();
+      }
+
       async function loadChecklist() {
         const thead = document.getElementById("cards-thead");
         const tbody = document.getElementById("cards-tbody");
@@ -442,15 +519,16 @@
           thead.appendChild(headerTr);
 
           // find Purchased/Owned column
-          let ownedIndex = findColumnIndex(header, [
+          ownedIndex = findColumnIndex(header, [
             "owned",
             "have",
             "status",
             "purchased",
           ]);
 
-          const numberIndex = findColumnIndex(header, ["number", "no", "card"]);
-          const playerIndex = findColumnIndex(header, ["player", "name"]);
+          numberIndex = findColumnIndex(header, ["number", "no", "card"]);
+          playerIndex = findColumnIndex(header, ["player", "name"]);
+          teamIndex = findColumnIndex(header, ["team", "club"]);
 
           // if we somehow don't find it but we know your file is:
           // Number, Player, Team, Purchased, Paid
@@ -459,63 +537,28 @@
             ownedIndex = 3;
           }
 
+          cardsData = [];
           let purchasedCount = 0;
           const total = dataRows.length;
 
-          dataRows.forEach((row) => {
-            const tr = document.createElement("tr");
-
+          dataRows.forEach((row, idx) => {
             let purchasedFlag = false;
             if (ownedIndex !== -1 && row.length > ownedIndex) {
               purchasedFlag = interpretOwned(row[ownedIndex]);
             }
 
             if (purchasedFlag) {
-              tr.classList.add("row-owned");
               purchasedCount++;
-            } else {
-              tr.classList.add("row-needed");
             }
 
-            row.forEach((cell, idx) => {
-              const td = document.createElement("td");
-              const text = (cell || "").trim();
-
-              if (idx === ownedIndex) {
-                const flag = interpretOwned(cell);
-                if (flag) {
-                  td.innerHTML =
-                    '<span class="owned-pill owned-pill--yes">purchased</span>';
-                } else {
-                  const queryParts = ["1959 topps"];
-                  if (numberIndex !== -1 && row[numberIndex]) {
-                    queryParts.push(row[numberIndex].trim());
-                  }
-                  if (playerIndex !== -1 && row[playerIndex]) {
-                    queryParts.push(row[playerIndex].trim());
-                  }
-                  const searchQuery = encodeURIComponent(
-                    queryParts.filter(Boolean).join(" ")
-                  );
-                  const searchUrl =
-                    "https://www.ebay.com/sch/i.html?_nkw=" +
-                    searchQuery +
-                    "&_sop=15";
-                  td.innerHTML =
-                    '<a href="' +
-                    searchUrl +
-                    '" target="_blank" rel="noreferrer noopener">' +
-                    '<span class="owned-pill owned-pill--no">need</span>' +
-                    "</a>";
-                }
-              } else {
-                td.textContent = text;
-              }
-
-              tr.appendChild(td);
+            cardsData.push({
+              cells: row,
+              purchased: purchasedFlag,
+              number: numberIndex !== -1 ? row[numberIndex] || "" : "",
+              player: playerIndex !== -1 ? row[playerIndex] || "" : "",
+              team: teamIndex !== -1 ? row[teamIndex] || "" : "",
+              originalIndex: idx,
             });
-
-            tbody.appendChild(tr);
           });
 
           const remaining = total - purchasedCount;
@@ -530,7 +573,7 @@
             " · remaining: " +
             remaining;
 
-          applyNeededFilter();
+          renderTableRows();
         } catch (err) {
           console.error(err);
           errorEl.style.display = "block";
