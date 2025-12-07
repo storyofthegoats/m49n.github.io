@@ -64,6 +64,13 @@
         margin-bottom: 14px;
       }
 
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
       .badge {
         display: inline-block;
         font-size: 0.75rem;
@@ -146,6 +153,27 @@
         color: #ff6b6b;
       }
 
+      .filter-btn {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        background: #101010;
+        color: #e5e5e5;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .filter-btn:hover {
+        background: #1a1a1a;
+      }
+
+      .filter-btn--active {
+        background: #ff6b6b;
+        color: #050505;
+        border-color: #ff6b6b;
+      }
+
       .status-line {
         font-size: 0.78rem;
         color: #888;
@@ -216,9 +244,14 @@
       </header>
 
       <section class="summary">
-        <span class="badge">set: 1959 topps</span>
-        <span class="badge badge--good" id="owned-badge">purchased: 0</span>
-        <span class="badge badge--warn" id="needed-badge">needed: 0</span>
+        <div class="controls">
+          <span class="badge">set: 1959 topps</span>
+          <span class="badge badge--good" id="owned-badge">purchased: 0</span>
+          <span class="badge badge--warn" id="needed-badge">needed: 0</span>
+          <button class="filter-btn" id="filter-btn" type="button">
+            show only need
+          </button>
+        </div>
         <div class="status-line">
           <span class="status-label">status</span>
           <span id="status-text">loading checklist…</span>
@@ -242,6 +275,9 @@
     </main>
 
     <script>
+      const filterBtn = document.getElementById("filter-btn");
+      let showNeededOnly = false;
+
       // auto-detect whether the file is comma- or tab-delimited (default comma)
       function detectDelimiter(text) {
         let commaCount = 0;
@@ -306,6 +342,27 @@
       function findColumnIndex(header, names) {
         return header.findIndex((h) => names.includes(normalizeHeader(h)));
       }
+
+      function applyNeededFilter() {
+        const rows = document.querySelectorAll("#cards-tbody tr");
+        rows.forEach((row) => {
+          const isNeeded = row.classList.contains("row-needed");
+          row.style.display = showNeededOnly && !isNeeded ? "none" : "";
+        });
+
+        if (showNeededOnly) {
+          filterBtn.classList.add("filter-btn--active");
+          filterBtn.textContent = "show all cards";
+        } else {
+          filterBtn.classList.remove("filter-btn--active");
+          filterBtn.textContent = "show only need";
+        }
+      }
+
+      filterBtn.addEventListener("click", () => {
+        showNeededOnly = !showNeededOnly;
+        applyNeededFilter();
+      });
 
       // interpret purchased/owned logic from the cell value
       // In your data: TRUE = purchased, FALSE or blank = need.
@@ -472,6 +529,8 @@
             purchasedCount +
             " · remaining: " +
             remaining;
+
+          applyNeededFilter();
         } catch (err) {
           console.error(err);
           errorEl.style.display = "block";
