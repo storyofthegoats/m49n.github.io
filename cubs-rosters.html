@@ -9,6 +9,30 @@
         box-sizing: border-box;
       }
 
+      .roster-name a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #c8ffd0;
+        text-decoration: none;
+      }
+
+      .roster-name a:hover {
+        text-decoration: underline;
+        text-decoration-color: #4af626;
+      }
+
+      .wiki-badge {
+        font-size: 0.65rem;
+        padding: 1px 4px;
+        border-radius: 999px;
+        border: 1px solid #2f6b3c;
+        color: #7af48c;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(74, 246, 38, 0.08);
+      }
+
       body {
         margin: 0;
         padding: 40px 20px;
@@ -304,7 +328,17 @@
               link.href = wikiUrl;
               link.target = "_blank";
               link.rel = "noreferrer noopener";
-              link.textContent = fullName;
+              link.title = "Open Wikipedia page";
+
+              const linkText = document.createElement("span");
+              linkText.textContent = fullName;
+
+              const badge = document.createElement("span");
+              badge.className = "wiki-badge";
+              badge.textContent = "wiki";
+
+              link.appendChild(linkText);
+              link.appendChild(badge);
               name.appendChild(link);
             } else {
               name.textContent = fullName;
