@@ -246,19 +246,8 @@
             return;
           }
 
-          roster.sort((a, b) => sortRoster(a, b));
-
-          const battingAverages = await fetchBattingAverages(roster, year);
-          const pitchingWins = await fetchPitchingWins(roster, year);
-          const topBattingAverage = Math.max(
-            ...Object.values(battingAverages).map((value) =>
-              Number.isFinite(value) ? value : -Infinity
-            )
-          );
-          const topPitchingWins = Math.max(
-            ...Object.values(pitchingWins).map((value) =>
-              Number.isFinite(value) ? value : -Infinity
-            )
+          roster.sort((a, b) =>
+            a.person.fullName.localeCompare(b.person.fullName)
           );
 
           const grid = document.createElement("div");
@@ -270,33 +259,7 @@
 
             const name = document.createElement("div");
             name.className = "roster-name";
-            const playerName = player.person?.fullName || "Unknown";
-            const wikiLink = getWikiLink(playerName);
-            const nameContent = wikiLink
-              ? document.createElement("a")
-              : document.createElement("span");
-
-            if (wikiLink) {
-              nameContent.href = wikiLink;
-              nameContent.textContent = playerName;
-            } else {
-              nameContent.textContent = playerName;
-            }
-
-            const avg = battingAverages[player.person?.id] ?? null;
-            const wins = pitchingWins[player.person?.id] ?? null;
-            const isPitcher = position === "P";
-            const isTopPitcher =
-              isPitcher && wins === topPitchingWins && Number.isFinite(wins);
-
-            if (
-              isTopPitcher ||
-              (avg === topBattingAverage && Number.isFinite(avg))
-            ) {
-              name.style.color = "#4af626";
-            }
-
-            name.appendChild(nameContent);
+            name.textContent = player.person?.fullName || "Unknown";
 
             const meta = document.createElement("div");
             meta.className = "roster-meta";
@@ -314,99 +277,6 @@
         } catch (error) {
           target.textContent = `Could not load roster for ${year}.`;
         }
-      }
-
-      function sortRoster(a, b) {
-        const posA = a.position?.abbreviation || "";
-        const posB = b.position?.abbreviation || "";
-
-        const isPitcherA = posA === "P";
-        const isPitcherB = posB === "P";
-
-        if (isPitcherA !== isPitcherB) {
-          return isPitcherA ? 1 : -1;
-        }
-
-        if (posA !== posB) {
-          return posA.localeCompare(posB);
-        }
-
-        return a.person.fullName.localeCompare(b.person.fullName);
-      }
-
-      async function fetchBattingAverages(roster, year) {
-        const results = await Promise.all(
-          roster.map(async (player) => {
-            const id = player.person?.id;
-            if (!id) return [null, null];
-
-            try {
-              const response = await fetch(
-                `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${year}&group=hitting`
-              );
-
-              if (!response.ok) {
-                return [id, null];
-              }
-
-              const statsData = await response.json();
-              const avgString =
-                statsData?.stats?.[0]?.splits?.[0]?.stat?.avg ?? null;
-              const avgNumber = avgString ? Number(avgString) : null;
-              return [id, Number.isFinite(avgNumber) ? avgNumber : null];
-            } catch (error) {
-              return [id, null];
-            }
-          })
-        );
-
-        return Object.fromEntries(results.filter(([id]) => id !== null));
-      }
-
-      async function fetchPitchingWins(roster, year) {
-        const results = await Promise.all(
-          roster.map(async (player) => {
-            const id = player.person?.id;
-            if (!id) return [null, null];
-
-            try {
-              const response = await fetch(
-                `https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&season=${year}&group=pitching`
-              );
-
-              if (!response.ok) {
-                return [id, null];
-              }
-
-              const statsData = await response.json();
-              const winsString =
-                statsData?.stats?.[0]?.splits?.[0]?.stat?.wins ?? null;
-              const winsNumber = winsString ? Number(winsString) : null;
-              return [id, Number.isFinite(winsNumber) ? winsNumber : null];
-            } catch (error) {
-              return [id, null];
-            }
-          })
-        );
-
-        return Object.fromEntries(results.filter(([id]) => id !== null));
-      }
-
-      function getWikiLink(name) {
-        const wikiMap = {
-          "Anthony Rizzo": "https://en.wikipedia.org/wiki/Anthony_Rizzo",
-          "David Ross": "https://en.wikipedia.org/wiki/David_Ross_(baseball)",
-          "Kris Bryant": "https://en.wikipedia.org/wiki/Kris_Bryant",
-          "Pete Crow-Armstrong": "https://en.wikipedia.org/wiki/Pete_Crow-Armstrong",
-          "Ryne Sandberg": "https://en.wikipedia.org/wiki/Ryne_Sandberg",
-        };
-
-        return (
-          wikiMap[name] ||
-          `https://en.wikipedia.org/wiki/${encodeURIComponent(
-            name.replace(/\s+/g, "_")
-          )}`
-        );
       }
     </script>
   </body>
