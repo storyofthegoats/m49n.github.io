@@ -1,0 +1,40 @@
+name: Publish public version of site
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 🔒 Remove private content from the build
+      # Add/remove paths here as your private areas change
+      - name: Strip private content
+        run: |
+          rm -rf journal
+          rm -rf entries
+          rm -rf health
+          rm -f journal.html
+          rm -f entries.html
+          # Add any other private files/folders below, e.g.:
+          # rm -rf drafts
+          # rm -f health-journal.html
+
+      # 📦 Deploy remaining files to the `public` branch
+      - name: Deploy to public branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: public         # Branch that GitHub Pages will serve
+          folder: .              # Deploy the current directory
+          clean: true            # Wipe existing public branch before deploy
