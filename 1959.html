@@ -303,6 +303,10 @@
         return name.trim().toLowerCase();
       }
 
+      function findColumnIndex(header, names) {
+        return header.findIndex((h) => names.includes(normalizeHeader(h)));
+      }
+
       // interpret purchased/owned logic from the cell value
       // In your data: TRUE = purchased, FALSE or blank = need.
       function interpretOwned(value) {
@@ -381,16 +385,15 @@
           thead.appendChild(headerTr);
 
           // find Purchased/Owned column
-          let ownedIndex = -1;
-          header.forEach((h, idx) => {
-            const n = normalizeHeader(h);
-            if (
-              ownedIndex === -1 &&
-              ["owned", "have", "status", "purchased"].includes(n)
-            ) {
-              ownedIndex = idx;
-            }
-          });
+          let ownedIndex = findColumnIndex(header, [
+            "owned",
+            "have",
+            "status",
+            "purchased",
+          ]);
+
+          const numberIndex = findColumnIndex(header, ["number", "no", "card"]);
+          const playerIndex = findColumnIndex(header, ["player", "name"]);
 
           // if we somehow don't find it but we know your file is:
           // Number, Player, Team, Purchased, Paid
@@ -427,8 +430,26 @@
                   td.innerHTML =
                     '<span class="owned-pill owned-pill--yes">purchased</span>';
                 } else {
+                  const queryParts = ["1959 topps"];
+                  if (numberIndex !== -1 && row[numberIndex]) {
+                    queryParts.push(row[numberIndex].trim());
+                  }
+                  if (playerIndex !== -1 && row[playerIndex]) {
+                    queryParts.push(row[playerIndex].trim());
+                  }
+                  const searchQuery = encodeURIComponent(
+                    queryParts.filter(Boolean).join(" ")
+                  );
+                  const searchUrl =
+                    "https://www.ebay.com/sch/i.html?_nkw=" +
+                    searchQuery +
+                    "&_sop=15";
                   td.innerHTML =
-                    '<span class="owned-pill owned-pill--no">need</span>';
+                    '<a href="' +
+                    searchUrl +
+                    '" target="_blank" rel="noreferrer noopener">' +
+                    '<span class="owned-pill owned-pill--no">need</span>' +
+                    "</a>";
                 }
               } else {
                 td.textContent = text;
