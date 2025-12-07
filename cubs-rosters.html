@@ -246,16 +246,17 @@
             return;
           }
 
-          roster.sort((a, b) => {
+          const pitchers = roster.filter(
+            (player) => player.position?.abbreviation === "P"
+          );
+
+          const positionPlayers = roster.filter(
+            (player) => player.position?.abbreviation !== "P"
+          );
+
+          const sortByPositionThenName = (a, b) => {
             const positionA = a.position?.abbreviation || "";
             const positionB = b.position?.abbreviation || "";
-
-            const isPitcherA = positionA === "P";
-            const isPitcherB = positionB === "P";
-
-            if (isPitcherA !== isPitcherB) {
-              return isPitcherA ? 1 : -1;
-            }
 
             const positionCompare = positionA.localeCompare(positionB);
             if (positionCompare !== 0) return positionCompare;
@@ -264,18 +265,50 @@
             const nameB = b.person?.fullName || "";
 
             return nameA.localeCompare(nameB);
-          });
+          };
+
+          positionPlayers.sort(sortByPositionThenName);
+          pitchers.sort(sortByPositionThenName);
+
+          const orderedRoster = [...positionPlayers, ...pitchers];
+
+          const wikiLinks = {
+            "Mark Grace": "https://en.wikipedia.org/wiki/Mark_Grace",
+            "Ryne Sandberg": "https://en.wikipedia.org/wiki/Ryne_Sandberg",
+            "Andre Dawson": "https://en.wikipedia.org/wiki/Andre_Dawson",
+            "Kerry Wood": "https://en.wikipedia.org/wiki/Kerry_Wood",
+            "Anthony Rizzo": "https://en.wikipedia.org/wiki/Anthony_Rizzo",
+            "Kris Bryant": "https://en.wikipedia.org/wiki/Kris_Bryant",
+            "David Ross": "https://en.wikipedia.org/wiki/David_Ross_(baseball)",
+            "Jon Lester": "https://en.wikipedia.org/wiki/Jon_Lester",
+            "Jake Arrieta": "https://en.wikipedia.org/wiki/Jake_Arrieta",
+            "Pete Crow-Armstrong":
+              "https://en.wikipedia.org/wiki/Pete_Crow-Armstrong",
+            "Shota Imanaga": "https://en.wikipedia.org/wiki/Sh%C5%8Dta_Imanaga",
+          };
 
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
-          roster.forEach((player) => {
+          orderedRoster.forEach((player) => {
             const card = document.createElement("div");
             card.className = "roster-item";
 
             const name = document.createElement("div");
             name.className = "roster-name";
-            name.textContent = player.person?.fullName || "Unknown";
+            const fullName = player.person?.fullName || "Unknown";
+
+            const wikiUrl = wikiLinks[fullName];
+            if (wikiUrl) {
+              const link = document.createElement("a");
+              link.href = wikiUrl;
+              link.target = "_blank";
+              link.rel = "noreferrer noopener";
+              link.textContent = fullName;
+              name.appendChild(link);
+            } else {
+              name.textContent = fullName;
+            }
 
             const meta = document.createElement("div");
             meta.className = "roster-meta";
