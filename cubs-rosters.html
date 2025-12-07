@@ -115,6 +115,9 @@
         letter-spacing: 0.04em;
         cursor: pointer;
         list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
       .year-summary::-webkit-details-marker {
@@ -123,12 +126,17 @@
 
       .year-summary::after {
         content: "↓";
-        float: right;
+        margin-left: auto;
         color: #4af626;
       }
 
       .year-panel[open] .year-summary::after {
         content: "↑";
+      }
+
+      .record-badge {
+        color: #4af626;
+        font-size: 0.9rem;
       }
 
       .roster-content {
@@ -231,8 +239,24 @@
 
         const summary = document.createElement("summary");
         summary.className = "year-summary";
-        summary.textContent = year;
+        const yearLabel = document.createElement("span");
+        yearLabel.textContent = year;
+
+        const record = document.createElement("span");
+        record.className = "record-badge";
+        record.textContent = "loading record...";
+
+        summary.appendChild(yearLabel);
+        summary.appendChild(record);
         details.appendChild(summary);
+
+        fetchSeasonRecord(year)
+          .then((recordText) => {
+            record.textContent = recordText;
+          })
+          .catch(() => {
+            record.textContent = "record unavailable";
+          });
 
         const content = document.createElement("div");
         content.className = "roster-content";
@@ -249,6 +273,38 @@
 
         rosterList.appendChild(details);
       });
+
+      async function fetchSeasonRecord(year) {
+        const standingsUrl =
+          "https://statsapi.mlb.com/api/v1/standings?leagueId=104" +
+          `&season=${year}` +
+          "&teamId=112&standingsTypes=regularSeason";
+
+        const response = await fetch(standingsUrl);
+
+        if (!response.ok) {
+          throw new Error("Could not load standings");
+        }
+
+        const data = await response.json();
+        const teamRecords = (data.records || []).reduce((all, record) => {
+          if (record.teamRecords) {
+            return all.concat(record.teamRecords);
+          }
+          return all;
+        }, []);
+
+        const cubsRecord = teamRecords.find((record) => record.team?.id === 112);
+
+        const wins = cubsRecord?.wins;
+        const losses = cubsRecord?.losses;
+
+        if (typeof wins === "number" && typeof losses === "number") {
+          return `${wins}-${losses}`;
+        }
+
+        throw new Error("No record data found");
+      }
 
       async function loadRoster(year, target) {
         target.textContent = "Loading roster...";
