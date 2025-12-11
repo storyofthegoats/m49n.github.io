@@ -19,7 +19,7 @@
       }
 
       main {
-        max-width: 960px;
+        max-width: 720px;
         margin: 0 auto;
       }
 
@@ -52,187 +52,229 @@
         margin-bottom: 18px;
       }
 
-      .link-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin: 10px 0 18px;
-      }
-
-      .link-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1px solid #333;
-        background: #101010;
-        color: #e5e5e5;
-        font-size: 0.8rem;
-      }
-
-      .link-button:hover {
-        text-decoration: none;
-        background: #1a1a1a;
-      }
-
       .divider {
         border: none;
         border-top: 1px solid #222;
-        margin: 0 0 18px 0;
+        margin: 0 0 24px 0;
       }
 
-      .summary {
+      .section-label {
         font-size: 0.8rem;
-        color: #aaa;
-        margin-bottom: 14px;
-      }
-
-      .controls {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .badge {
-        display: inline-block;
-        font-size: 0.75rem;
-        padding: 2px 6px;
-        border-radius: 999px;
-        border: 1px solid #333;
-        margin-right: 6px;
-      }
-
-      .badge--good {
-        color: #4af626;
-      }
-
-      .badge--warn {
-        color: #ff6b6b;
-      }
-
-      .table-wrapper {
-        border: 1px solid #151515;
-        border-radius: 10px;
-        background: radial-gradient(circle at top left, #141414 0, #050505 60%);
-        padding: 10px;
-        max-height: 70vh;
-        overflow: auto;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.8rem;
-      }
-
-      thead {
-        position: sticky;
-        top: 0;
-        background: #101010;
-        z-index: 1;
-      }
-
-      th,
-      td {
-        padding: 4px 6px;
-        border-bottom: 1px solid #111;
-        text-align: left;
-        white-space: nowrap;
-      }
-
-      th {
-        font-weight: 500;
-        color: #bbb;
-        border-bottom: 1px solid #222;
-      }
-
-      tbody tr:nth-child(even) {
-        background: rgba(255, 255, 255, 0.01);
-      }
-
-      .row-owned {
-        opacity: 0.55;
-      }
-
-      .row-needed {
-        border-left: 2px solid #ff6b6b;
-      }
-
-      .owned-pill {
-        font-size: 0.7rem;
-        padding: 1px 4px;
-        border-radius: 999px;
-        border: 1px solid #333;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .owned-pill--yes {
-        color: #4af626;
-      }
-
-      .owned-pill--no {
-        color: #ff6b6b;
-      }
-
-      .filter-btn {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        border-radius: 999px;
-        border: 1px solid #333;
-        background: #101010;
-        color: #e5e5e5;
-        cursor: pointer;
-        transition: background 0.15s, color 0.15s;
-      }
-
-      .filter-btn:hover {
-        background: #1a1a1a;
-      }
-
-      .filter-btn--active {
-        background: #ff6b6b;
-        color: #050505;
-        border-color: #ff6b6b;
-      }
-
-      .status-line {
-        font-size: 0.78rem;
-        color: #888;
-        margin-top: 8px;
-      }
-
-      .status-line span {
-        margin-right: 10px;
-      }
-
-      .status-label {
         color: #777;
         text-transform: uppercase;
         letter-spacing: 0.12em;
-        font-size: 0.72rem;
+        margin-bottom: 8px;
       }
 
-      .error {
+      /* card lists section */
+
+      .cards-wrapper {
+        border-top: 1px solid #222;
+        margin-bottom: 28px;
+      }
+
+      .cards-row {
+        border-bottom: 1px solid #111;
+        padding: 10px 0;
+      }
+
+      .cards-name {
+        font-size: 0.95rem;
+      }
+
+      .cards-note {
         font-size: 0.8rem;
-        color: #ff6b6b;
-        margin-top: 10px;
+        color: #777;
+        margin-top: 2px;
       }
 
-      @media (max-width: 800px) {
+      /* scratch list widget */
+
+      .scratch-wrapper {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #141414 0, #050505 60%);
+        border-radius: 10px;
+        padding: 16px 14px;
+      }
+
+      .scratch-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+      }
+
+      .scratch-title {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #aaa;
+      }
+
+      .scratch-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 999px;
+        border: 1px solid #333;
+        color: #4af626;
+      }
+
+      .scratch-input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .scratch-input {
+        flex: 1;
+        padding: 6px 8px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      .scratch-input:focus {
+        outline: none;
+        border-color: #4af626;
+      }
+
+      .scratch-add {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #111;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .scratch-add:hover {
+        border-color: #4af626;
+      }
+
+      .scratch-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 8px 0;
+        font-size: 0.85rem;
+      }
+
+      .scratch-sort-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .scratch-sort-label {
+        font-size: 0.75rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .scratch-sort-buttons {
+        display: flex;
+        gap: 6px;
+      }
+
+      .scratch-sort-button {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #0b0b0b;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .scratch-sort-button:hover {
+        border-color: #4af626;
+      }
+
+      .scratch-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid #111;
+      }
+
+      .scratch-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .scratch-checkbox {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+      }
+
+      .scratch-text {
+        word-break: break-word;
+      }
+
+      .scratch-text--done {
+        text-decoration: line-through;
+        color: #777;
+      }
+
+      .scratch-clear-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .scratch-clear {
+        font-size: 0.75rem;
+        color: #777;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+
+      .scratch-clear:hover {
+        text-decoration: underline;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      .back-footer {
+        display: block;
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: #4af626;
+        color: #050505;
+        text-align: center;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+
+      .back-footer:hover {
+        text-decoration: none;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 600px) {
         body {
-          padding: 28px 12px;
+          padding: 28px 16px;
         }
 
-        table {
-          font-size: 0.75rem;
+        .scratch-input-row {
+          flex-direction: column;
         }
 
-        th,
-        td {
-          padding: 4px 4px;
+        .scratch-add {
+          width: 100%;
         }
       }
     </style>
@@ -240,378 +282,186 @@
 
   <body>
     <main>
-      <a class="top-link" href="cards.html">← cardboard</a>
+      <a class="top-link" href="index.html">← m49n</a>
 
       <header>
         <div class="title">1959 topps purchase log</div>
         <div class="subtitle">
-          temporary log for cards in hand that still need to be filed into the
-          permanent 1959 database. sourced from
-          <span style="color:#aaa">data/1959-topps-intake.csv</span>.
-        </div>
-        <div class="link-buttons">
-          <a class="link-button" href="1959.html">↩︎ back to full checklist</a>
+          From the desk of m49n
         </div>
         <hr class="divider" />
       </header>
 
-      <section class="summary">
-        <div class="controls">
-          <span class="badge">set: 1959 topps</span>
-          <span class="badge badge--good" id="owned-badge">logged: 0</span>
-          <span class="badge badge--warn" id="needed-badge">to log: 0</span>
-          <button class="filter-btn" id="filter-btn" type="button">
-            show only to log
-          </button>
-          <label style="font-size:0.75rem;color:#777;" for="sort-select">
-            sort:
-          </label>
-          <select
-            id="sort-select"
-            style="background:#101010;color:#e5e5e5;border:1px solid #333;border-radius:999px;padding:4px 10px;font-size:0.75rem;"
-          >
-            <option value="number">by number</option>
-            <option value="team">by team</option>
-          </select>
-        </div>
-        <div class="status-line">
-          <span class="status-label">status</span>
-          <span id="status-text">loading purchase log…</span>
-        </div>
-      </section>
 
+
+      <!-- scratch list widget -->
       <section>
-        <div class="table-wrapper">
-          <table id="cards-table">
-            <thead id="cards-thead"></thead>
-            <tbody id="cards-tbody"></tbody>
-          </table>
+        <div class="section-label">today / scratch</div>
+        <div class="scratch-wrapper">
+          <div class="scratch-header">
+            <div class="scratch-title">you can do it</div>
+            <div class="scratch-badge">saved locally</div>
+          </div>
+
+          <div class="scratch-input-row">
+            <input
+              id="scratch-input"
+              class="scratch-input"
+              type="text"
+              placeholder="add an item..."
+            />
+            <button id="scratch-add" class="scratch-add">add</button>
+          </div>
+
+          <div class="scratch-sort-row">
+            <div class="scratch-sort-label">resort</div>
+            <div class="scratch-sort-buttons">
+              <button id="sort-unchecked" class="scratch-sort-button">
+                unchecked first
+              </button>
+              <button id="sort-checked" class="scratch-sort-button">
+                checked first
+              </button>
+              <button id="hide-checked" class="scratch-sort-button">
+                hide checked
+              </button>
+            </div>
+          </div>
+
+          <ul id="scratch-list" class="scratch-list"></ul>
+
+          <div class="scratch-clear-row">
+            <button id="scratch-clear" class="scratch-clear">
+              clear all
+            </button>
+          </div>
         </div>
-        <div class="error" id="error-msg" style="display:none;"></div>
       </section>
 
-      <div class="footer" style="font-size:0.75rem;color:#666;margin-top:18px;">
-        m49n · 1959 topps purchase log
-      </div>
+      <div class="footer">m49n · purchase log</div>
+      <a class="back-footer" href="index.html">← back to index</a>
     </main>
 
     <script>
-      const sortSelect = document.getElementById("sort-select");
-      const filterBtn = document.getElementById("filter-btn");
-      let showNeededOnly = false;
-      let currentSort = "number";
-      let cardsData = [];
-      let ownedIndex = -1;
-      let numberIndex = -1;
-      let playerIndex = -1;
-      let teamIndex = -1;
+      const STORAGE_KEY = "m49n_scratch_list_v1";
+      const HIDE_STORAGE_KEY = "m49n_scratch_hide_checked_v1";
 
-      // auto-detect whether the file is comma- or tab-delimited (default comma)
-      function detectDelimiter(text) {
-        let commaCount = 0;
-        let tabCount = 0;
+      const inputEl = document.getElementById("scratch-input");
+      const addBtn = document.getElementById("scratch-add");
+      const listEl = document.getElementById("scratch-list");
+      const clearBtn = document.getElementById("scratch-clear");
+      const sortUncheckedBtn = document.getElementById("sort-unchecked");
+      const sortCheckedBtn = document.getElementById("sort-checked");
+      const hideCheckedBtn = document.getElementById("hide-checked");
 
-        for (let i = 0; i < text.length; i++) {
-          const char = text[i];
-          if (char === ",") commaCount++;
-          if (char === "\t") tabCount++;
-          if (char === "\n" || char === "\r") break; // only look at first line
-        }
+      let items = [];
+      let hideChecked = false;
 
-        return tabCount > commaCount ? "\t" : ",";
-      }
-
-      // CSV/TSV parser with optional quotes.
-      function parseSeparated(text) {
-        const delimiter = detectDelimiter(text);
-        const rows = [];
-        let current = "";
-        let row = [];
-        let insideQuotes = false;
-
-        for (let i = 0; i < text.length; i++) {
-          const char = text[i];
-          const next = text[i + 1];
-
-          if (char === '"' && insideQuotes && next === '"') {
-            // escaped quote: ""
-            current += '"';
-            i++;
-          } else if (char === '"') {
-            insideQuotes = !insideQuotes;
-          } else if (char === delimiter && !insideQuotes) {
-            row.push(current);
-            current = "";
-          } else if ((char === "\n" || char === "\r") && !insideQuotes) {
-            if (current !== "" || row.length > 0) {
-              row.push(current);
-              rows.push(row);
-              row = [];
-              current = "";
-            }
-          } else {
-            current += char;
-          }
-        }
-
-        if (current !== "" || row.length > 0) {
-          row.push(current);
-          rows.push(row);
-        }
-
-        // drop rows that are completely empty
-        return rows.filter((r) => r.some((c) => c.trim() !== ""));
-      }
-
-      function normalizeHeader(name) {
-        return name.trim().toLowerCase();
-      }
-
-      function findColumnIndex(header, names) {
-        return header.findIndex((h) => names.includes(normalizeHeader(h)));
-      }
-
-      function applyNeededFilter() {
-        const rows = document.querySelectorAll("#cards-tbody tr");
-        rows.forEach((row) => {
-          const isNeeded = row.classList.contains("row-needed");
-          row.style.display = showNeededOnly && !isNeeded ? "none" : "";
-        });
-
-        if (showNeededOnly) {
-          filterBtn.classList.add("filter-btn--active");
-          filterBtn.textContent = "show entire log";
-        } else {
-          filterBtn.classList.remove("filter-btn--active");
-          filterBtn.textContent = "show only to log";
-        }
-      }
-
-      filterBtn.addEventListener("click", () => {
-        showNeededOnly = !showNeededOnly;
-        applyNeededFilter();
-      });
-
-      sortSelect.addEventListener("change", () => {
-        currentSort = sortSelect.value;
-        renderTableRows();
-      });
-
-      // interpret purchased/owned logic from the cell value
-      // In this log: TRUE = logged, FALSE or blank = still to log.
-      function interpretOwned(value) {
-        if (value === undefined || value === null) return false;
-        const trimmed = value.trim();
-        if (trimmed === "") return false;
-
-        const v = trimmed.toLowerCase();
-
-        // treat these as "yes / logged"
-        if (
-          [
-            "y",
-            "yes",
-            "x",
-            "owned",
-            "have",
-            "1",
-            "purchased",
-            "true",
-            "t"
-          ].includes(v)
-        ) {
-          return true;
-        }
-
-        // treat these as "no / need"
-        if (
-          [
-            "n",
-            "no",
-            "need",
-            "want",
-            "0",
-            "not purchased",
-            "false",
-            "f"
-          ].includes(v)
-        ) {
-          return false;
-        }
-
-        // fallback: unknown treated as "not yet logged" for your use case
-        return false;
-      }
-
-      function buildCardRow(card) {
-        const tr = document.createElement("tr");
-        tr.classList.add(card.purchased ? "row-owned" : "row-needed");
-
-        card.cells.forEach((cell, idx) => {
-          const td = document.createElement("td");
-          const text = (cell || "").trim();
-
-          if (idx === ownedIndex) {
-            if (card.purchased) {
-              td.innerHTML =
-                '<span class="owned-pill owned-pill--yes">logged</span>';
-            } else {
-              const queryParts = ["1959 topps"];
-              if (numberIndex !== -1 && card.number) {
-                queryParts.push(card.number.trim());
-              }
-              if (playerIndex !== -1 && card.player) {
-                queryParts.push(card.player.trim());
-              }
-              const searchQuery = encodeURIComponent(
-                queryParts.filter(Boolean).join(" ")
-              );
-              const searchUrl =
-                "https://www.ebay.com/sch/i.html?_nkw=" +
-                searchQuery +
-                "&_sop=15";
-              td.innerHTML =
-                '<a href="' +
-                searchUrl +
-                '" target="_blank" rel="noreferrer noopener">' +
-                '<span class="owned-pill owned-pill--no">to log</span>' +
-                "</a>";
-            }
-          } else {
-            td.textContent = text;
-          }
-
-          tr.appendChild(td);
-        });
-
-        return tr;
-      }
-
-      function renderTableRows() {
-        const tbody = document.getElementById("cards-tbody");
-        tbody.innerHTML = "";
-
-        const sorted = [...cardsData];
-
-        if (currentSort === "team" && teamIndex !== -1) {
-          sorted.sort((a, b) => {
-            const teamA = (a.team || "").trim().toLowerCase();
-            const teamB = (b.team || "").trim().toLowerCase();
-
-            if (teamA === teamB) {
-              return a.originalIndex - b.originalIndex;
-            }
-
-            return teamA.localeCompare(teamB);
-          });
-        } else {
-          sorted.sort((a, b) => a.originalIndex - b.originalIndex);
-        }
-
-        sorted.forEach((card) => {
-          tbody.appendChild(buildCardRow(card));
-        });
-
-        applyNeededFilter();
-      }
-
-      async function loadChecklist() {
-        const thead = document.getElementById("cards-thead");
-        const tbody = document.getElementById("cards-tbody");
-        const errorEl = document.getElementById("error-msg");
-        const ownedBadge = document.getElementById("owned-badge");
-        const neededBadge = document.getElementById("needed-badge");
-        const statusText = document.getElementById("status-text");
-
+      function loadItems() {
         try {
-          const res = await fetch("data/1959-topps-intake.csv?" + Date.now());
-          if (!res.ok) {
-            throw new Error("http " + res.status);
-          }
-          const text = await res.text();
-          const rows = parseSeparated(text);
-          if (!rows.length) {
-            throw new Error("no rows found in csv/tsv");
-          }
-
-          const header = rows[0];
-          const dataRows = rows.slice(1);
-
-          // build header row exactly as in file
-          const headerTr = document.createElement("tr");
-          header.forEach((col) => {
-            const th = document.createElement("th");
-            th.textContent = col.trim();
-            headerTr.appendChild(th);
-          });
-          thead.appendChild(headerTr);
-
-          // find Purchased/Owned column
-          ownedIndex = findColumnIndex(header, [
-            "owned",
-            "have",
-            "status",
-            "purchased",
-          ]);
-
-          numberIndex = findColumnIndex(header, ["number", "no", "card"]);
-          playerIndex = findColumnIndex(header, ["player", "name"]);
-          teamIndex = findColumnIndex(header, ["team", "club"]);
-
-          // if we somehow don't find it but we know your file is:
-          // Number, Player, Team, Purchased, Paid
-          // then the 4th column (index 3) is Purchased
-          if (ownedIndex === -1 && header.length >= 4) {
-            ownedIndex = 3;
-          }
-
-          cardsData = [];
-          let purchasedCount = 0;
-          const total = dataRows.length;
-
-          dataRows.forEach((row, idx) => {
-            let purchasedFlag = false;
-            if (ownedIndex !== -1 && row.length > ownedIndex) {
-              purchasedFlag = interpretOwned(row[ownedIndex]);
-            }
-
-            if (purchasedFlag) {
-              purchasedCount++;
-            }
-
-            cardsData.push({
-              cells: row,
-              purchased: purchasedFlag,
-              number: numberIndex !== -1 ? row[numberIndex] || "" : "",
-              player: playerIndex !== -1 ? row[playerIndex] || "" : "",
-              team: teamIndex !== -1 ? row[teamIndex] || "" : "",
-              originalIndex: idx,
-            });
-          });
-
-          const remaining = total - purchasedCount;
-
-          ownedBadge.textContent = "logged: " + purchasedCount;
-          neededBadge.textContent = "to log: " + remaining;
-          statusText.textContent =
-            "total cards in log: " +
-            total +
-            " · logged: " +
-            purchasedCount +
-            " · to log: " +
-            remaining;
-
-          renderTableRows();
-        } catch (err) {
-          console.error(err);
-          errorEl.style.display = "block";
-          errorEl.textContent =
-            "error loading data/1959-topps-intake.csv — check the filename, path, and delimiter (comma or tab).";
-          statusText.textContent = "could not load purchase log.";
-        }
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) items = parsed;
+        } catch (e) {}
       }
 
-      loadChecklist();
+      function saveItems() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
+
+      function saveHideSetting() {
+        localStorage.setItem(HIDE_STORAGE_KEY, JSON.stringify(hideChecked));
+      }
+
+      function renderItems() {
+        listEl.innerHTML = "";
+        items.forEach((item, idx) => {
+          if (hideChecked && item.done) return;
+
+          const li = document.createElement("li");
+          li.className = "scratch-item";
+
+          const label = document.createElement("div");
+          label.className = "scratch-label";
+
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.className = "scratch-checkbox";
+          cb.checked = !!item.done;
+
+          cb.addEventListener("change", () => {
+            items[idx].done = cb.checked;
+            saveItems();
+            renderItems();
+          });
+
+          const text = document.createElement("div");
+          text.className =
+            "scratch-text" + (item.done ? " scratch-text--done" : "");
+          text.textContent = item.text;
+
+          label.appendChild(cb);
+          label.appendChild(text);
+
+          li.appendChild(label);
+          listEl.appendChild(li);
+        });
+
+        hideCheckedBtn.textContent = hideChecked ? "show checked" : "hide checked";
+      }
+
+      function addItem() {
+        const value = inputEl.value.trim();
+        if (!value) return;
+        items.push({ text: value, done: false });
+        inputEl.value = "";
+        saveItems();
+        renderItems();
+        inputEl.focus();
+      }
+
+      function sortItems(order) {
+        const direction = order === "checked" ? -1 : 1;
+        items.sort((a, b) => {
+          if (a.done === b.done) return 0;
+          return a.done ? direction : -direction;
+        });
+        saveItems();
+        renderItems();
+      }
+
+      addBtn.addEventListener("click", addItem);
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addItem();
+      });
+
+      sortUncheckedBtn.addEventListener("click", () => sortItems("unchecked"));
+      sortCheckedBtn.addEventListener("click", () => sortItems("checked"));
+
+      hideCheckedBtn.addEventListener("click", () => {
+        hideChecked = !hideChecked;
+        saveHideSetting();
+        renderItems();
+      });
+
+      clearBtn.addEventListener("click", () => {
+        if (items.length && confirm("clear all items?")) {
+          items = [];
+          saveItems();
+          renderItems();
+        }
+      });
+
+      loadItems();
+      try {
+        const hideSetting = JSON.parse(
+          localStorage.getItem(HIDE_STORAGE_KEY) || "false",
+        );
+        hideChecked = !!hideSetting;
+      } catch (e) {}
+
+      renderItems();
     </script>
   </body>
 </html>
