@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>1959 topps purchase log · m49n</title>
+    <title>1959 topps card purchases (temporary) · m49n</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       * {
@@ -285,10 +285,8 @@
       <a class="top-link" href="index.html">← m49n</a>
 
       <header>
-        <div class="title">1959 topps purchase log</div>
-        <div class="subtitle">
-          From the desk of m49n
-        </div>
+        <div class="title">1959 topps card purchases</div>
+        <div class="subtitle">Temporary log for cards I've bought recently.</div>
         <hr class="divider" />
       </header>
 
@@ -296,11 +294,11 @@
 
       <!-- scratch list widget -->
       <section>
-        <div class="section-label">today / scratch</div>
+        <div class="section-label">temporary purchase log</div>
         <div class="scratch-wrapper">
           <div class="scratch-header">
-            <div class="scratch-title">you can do it</div>
-            <div class="scratch-badge">saved locally</div>
+            <div class="scratch-title">cards acquired</div>
+            <div class="scratch-badge">saved locally (purchase cache)</div>
           </div>
 
           <div class="scratch-input-row">
@@ -308,7 +306,7 @@
               id="scratch-input"
               class="scratch-input"
               type="text"
-              placeholder="add an item..."
+              placeholder="add a card you picked up..."
             />
             <button id="scratch-add" class="scratch-add">add</button>
           </div>
@@ -343,8 +341,8 @@
     </main>
 
     <script>
-      const STORAGE_KEY = "m49n_scratch_list_v1";
-      const HIDE_STORAGE_KEY = "m49n_scratch_hide_checked_v1";
+      const STORAGE_KEY = "m49n_purchase_log_list_v1";
+      const HIDE_STORAGE_KEY = "m49n_purchase_log_hide_checked_v1";
 
       const inputEl = document.getElementById("scratch-input");
       const addBtn = document.getElementById("scratch-add");
