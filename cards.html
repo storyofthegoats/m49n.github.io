@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>the list · m49n</title>
+    <title>lists · m49n</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       * {
@@ -161,39 +161,6 @@
         font-size: 0.85rem;
       }
 
-      .scratch-sort-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 10px;
-      }
-
-      .scratch-sort-label {
-        font-size: 0.75rem;
-        color: #777;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-      }
-
-      .scratch-sort-buttons {
-        display: flex;
-        gap: 6px;
-      }
-
-      .scratch-sort-button {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-        border-radius: 6px;
-        border: 1px solid #333;
-        background: #0b0b0b;
-        color: #e5e5e5;
-        cursor: pointer;
-      }
-
-      .scratch-sort-button:hover {
-        border-color: #4af626;
-      }
-
       .scratch-item {
         display: flex;
         align-items: center;
@@ -285,55 +252,49 @@
       <a class="top-link" href="index.html">← m49n</a>
 
       <header>
-        <div class="title">this will self-destruct</div>
+        <div class="title">lists</div>
         <div class="subtitle">
-          From the desk of m49n
+          a quiet place for lists that matter. cards first, everything else can
+          follow.
         </div>
         <hr class="divider" />
       </header>
 
-
-
-      <!-- scratch list widget -->
+      <!-- cards section -->
       <section>
-        <div class="section-label">today / scratch</div>
-        <div class="scratch-wrapper">
-          <div class="scratch-header">
-            <div class="scratch-title">you can do it</div>
-            <div class="scratch-badge">saved locally</div>
-          </div>
+        <div class="section-label">cards</div>
+        <div class="cards-wrapper">
+          <div class="cards-row">
+            <div class="cards-name">1959 topps set build</div>
+            <div class="cards-note">
+  full set chase; key needs include Mantle, Gibson, Berra, Musial,
+  and the high-number all-stars.
+  <br />
+  <a href="1959.html" style="color:#4af626;">→ view checklist</a>
+</div>
 
-          <div class="scratch-input-row">
-            <input
-              id="scratch-input"
-              class="scratch-input"
-              type="text"
-              placeholder="add an item..."
-            />
-            <button id="scratch-add" class="scratch-add">add</button>
           </div>
-
-          <div class="scratch-sort-row">
-            <div class="scratch-sort-label">resort</div>
-            <div class="scratch-sort-buttons">
-              <button id="sort-unchecked" class="scratch-sort-button">
-                unchecked first
-              </button>
-              <button id="sort-checked" class="scratch-sort-button">
-                checked first
-              </button>
-              <button id="hide-checked" class="scratch-sort-button">
-                hide checked
-              </button>
+          <div class="cards-row">
+            <div class="cards-name">cubs</div>
+            <div class="cards-note">
+              general Cubs players, Cubs team cards, and Cubs autographs that
+              actually feel special.
+              <br />
+              <a href="mlb-rosters.html" style="color:#4af626;">→ cubs rosters by year</a>
             </div>
           </div>
-
-          <ul id="scratch-list" class="scratch-list"></ul>
-
-          <div class="scratch-clear-row">
-            <button id="scratch-clear" class="scratch-clear">
-              clear all
-            </button>
+          <div class="cards-row">
+            <div class="cards-name">player pcs</div>
+            <div class="cards-note">
+              Kyle Schwarber and Vladimir Guerrero Jr., with extra focus on 2024
+              Stadium Club Vlad and 2024 Topps Chrome Schwarber.
+            </div>
+          </div>
+          <div class="cards-row">
+            <div class="cards-name">special hunts</div>
+            <div class="cards-note">
+              any card serial-numbered 1612, plus rainbows worth building out.
+            </div>
           </div>
         </div>
       </section>
@@ -341,127 +302,5 @@
       <div class="footer">m49n · lists</div>
       <a class="back-footer" href="index.html">← back to index</a>
     </main>
-
-    <script>
-      const STORAGE_KEY = "m49n_scratch_list_v1";
-      const HIDE_STORAGE_KEY = "m49n_scratch_hide_checked_v1";
-
-      const inputEl = document.getElementById("scratch-input");
-      const addBtn = document.getElementById("scratch-add");
-      const listEl = document.getElementById("scratch-list");
-      const clearBtn = document.getElementById("scratch-clear");
-      const sortUncheckedBtn = document.getElementById("sort-unchecked");
-      const sortCheckedBtn = document.getElementById("sort-checked");
-      const hideCheckedBtn = document.getElementById("hide-checked");
-
-      let items = [];
-      let hideChecked = false;
-
-      function loadItems() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return;
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) items = parsed;
-        } catch (e) {}
-      }
-
-      function saveItems() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-      }
-
-      function saveHideSetting() {
-        localStorage.setItem(HIDE_STORAGE_KEY, JSON.stringify(hideChecked));
-      }
-
-      function renderItems() {
-        listEl.innerHTML = "";
-        items.forEach((item, idx) => {
-          if (hideChecked && item.done) return;
-
-          const li = document.createElement("li");
-          li.className = "scratch-item";
-
-          const label = document.createElement("div");
-          label.className = "scratch-label";
-
-          const cb = document.createElement("input");
-          cb.type = "checkbox";
-          cb.className = "scratch-checkbox";
-          cb.checked = !!item.done;
-
-          cb.addEventListener("change", () => {
-            items[idx].done = cb.checked;
-            saveItems();
-            renderItems();
-          });
-
-          const text = document.createElement("div");
-          text.className =
-            "scratch-text" + (item.done ? " scratch-text--done" : "");
-          text.textContent = item.text;
-
-          label.appendChild(cb);
-          label.appendChild(text);
-
-          li.appendChild(label);
-          listEl.appendChild(li);
-        });
-
-        hideCheckedBtn.textContent = hideChecked ? "show checked" : "hide checked";
-      }
-
-      function addItem() {
-        const value = inputEl.value.trim();
-        if (!value) return;
-        items.push({ text: value, done: false });
-        inputEl.value = "";
-        saveItems();
-        renderItems();
-        inputEl.focus();
-      }
-
-      function sortItems(order) {
-        const direction = order === "checked" ? -1 : 1;
-        items.sort((a, b) => {
-          if (a.done === b.done) return 0;
-          return a.done ? direction : -direction;
-        });
-        saveItems();
-        renderItems();
-      }
-
-      addBtn.addEventListener("click", addItem);
-      inputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") addItem();
-      });
-
-      sortUncheckedBtn.addEventListener("click", () => sortItems("unchecked"));
-      sortCheckedBtn.addEventListener("click", () => sortItems("checked"));
-
-      hideCheckedBtn.addEventListener("click", () => {
-        hideChecked = !hideChecked;
-        saveHideSetting();
-        renderItems();
-      });
-
-      clearBtn.addEventListener("click", () => {
-        if (items.length && confirm("clear all items?")) {
-          items = [];
-          saveItems();
-          renderItems();
-        }
-      });
-
-      loadItems();
-      try {
-        const hideSetting = JSON.parse(
-          localStorage.getItem(HIDE_STORAGE_KEY) || "false",
-        );
-        hideChecked = !!hideSetting;
-      } catch (e) {}
-
-      renderItems();
-    </script>
   </body>
 </html>
