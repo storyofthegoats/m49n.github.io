@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>1959 topps checklist · m49n</title>
+    <title>1959 topps intake · m49n</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       * {
@@ -243,13 +243,14 @@
       <a class="top-link" href="cards.html">← cardboard</a>
 
       <header>
-        <div class="title">1959 topps checklist</div>
+        <div class="title">1959 topps intake</div>
         <div class="subtitle">
-          set build overview pulled from the csv file in
-          <span style="color:#aaa">data/1959-topps.csv</span>.
+          temporary holding pen for cards in hand that still need to be filed
+          into the permanent 1959 database. sourced from
+          <span style="color:#aaa">data/1959-topps-intake.csv</span>.
         </div>
         <div class="link-buttons">
-          <a class="link-button" href="1959-inbox.html">→ intake holding pen</a>
+          <a class="link-button" href="1959.html">↩︎ back to full checklist</a>
         </div>
         <hr class="divider" />
       </header>
@@ -257,10 +258,10 @@
       <section class="summary">
         <div class="controls">
           <span class="badge">set: 1959 topps</span>
-          <span class="badge badge--good" id="owned-badge">purchased: 0</span>
-          <span class="badge badge--warn" id="needed-badge">needed: 0</span>
+          <span class="badge badge--good" id="owned-badge">logged: 0</span>
+          <span class="badge badge--warn" id="needed-badge">to log: 0</span>
           <button class="filter-btn" id="filter-btn" type="button">
-            show only need
+            show only to log
           </button>
           <label style="font-size:0.75rem;color:#777;" for="sort-select">
             sort:
@@ -275,7 +276,7 @@
         </div>
         <div class="status-line">
           <span class="status-label">status</span>
-          <span id="status-text">loading checklist…</span>
+          <span id="status-text">loading intake list…</span>
         </div>
       </section>
 
@@ -290,7 +291,7 @@
       </section>
 
       <div class="footer" style="font-size:0.75rem;color:#666;margin-top:18px;">
-        m49n · 1959 topps
+        m49n · 1959 topps intake
       </div>
     </main>
 
@@ -379,10 +380,10 @@
 
         if (showNeededOnly) {
           filterBtn.classList.add("filter-btn--active");
-          filterBtn.textContent = "show all cards";
+          filterBtn.textContent = "show entire intake";
         } else {
           filterBtn.classList.remove("filter-btn--active");
-          filterBtn.textContent = "show only need";
+          filterBtn.textContent = "show only to log";
         }
       }
 
@@ -397,7 +398,7 @@
       });
 
       // interpret purchased/owned logic from the cell value
-      // In your data: TRUE = purchased, FALSE or blank = need.
+      // In this intake: TRUE = logged, FALSE or blank = still to log.
       function interpretOwned(value) {
         if (value === undefined || value === null) return false;
         const trimmed = value.trim();
@@ -405,7 +406,7 @@
 
         const v = trimmed.toLowerCase();
 
-        // treat these as "yes / purchased"
+        // treat these as "yes / logged"
         if (
           [
             "y",
@@ -438,7 +439,7 @@
           return false;
         }
 
-        // fallback: unknown treated as "not purchased" for your use case
+        // fallback: unknown treated as "not yet logged" for your use case
         return false;
       }
 
@@ -453,7 +454,7 @@
           if (idx === ownedIndex) {
             if (card.purchased) {
               td.innerHTML =
-                '<span class="owned-pill owned-pill--yes">purchased</span>';
+                '<span class="owned-pill owned-pill--yes">logged</span>';
             } else {
               const queryParts = ["1959 topps"];
               if (numberIndex !== -1 && card.number) {
@@ -473,7 +474,7 @@
                 '<a href="' +
                 searchUrl +
                 '" target="_blank" rel="noreferrer noopener">' +
-                '<span class="owned-pill owned-pill--no">need</span>' +
+                '<span class="owned-pill owned-pill--no">to log</span>' +
                 "</a>";
             }
           } else {
@@ -523,7 +524,7 @@
         const statusText = document.getElementById("status-text");
 
         try {
-          const res = await fetch("data/1959-topps.csv?" + Date.now());
+          const res = await fetch("data/1959-topps-intake.csv?" + Date.now());
           if (!res.ok) {
             throw new Error("http " + res.status);
           }
@@ -590,14 +591,14 @@
 
           const remaining = total - purchasedCount;
 
-          ownedBadge.textContent = "purchased: " + purchasedCount;
-          neededBadge.textContent = "needed: " + remaining;
+          ownedBadge.textContent = "logged: " + purchasedCount;
+          neededBadge.textContent = "to log: " + remaining;
           statusText.textContent =
-            "total cards: " +
+            "total cards in intake: " +
             total +
-            " · purchased: " +
+            " · logged: " +
             purchasedCount +
-            " · remaining: " +
+            " · to log: " +
             remaining;
 
           renderTableRows();
@@ -605,8 +606,8 @@
           console.error(err);
           errorEl.style.display = "block";
           errorEl.textContent =
-            "error loading data/1959-topps.csv — check the filename, path, and delimiter (comma or tab).";
-          statusText.textContent = "could not load checklist.";
+            "error loading data/1959-topps-intake.csv — check the filename, path, and delimiter (comma or tab).";
+          statusText.textContent = "could not load intake list.";
         }
       }
 
