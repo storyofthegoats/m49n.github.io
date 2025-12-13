@@ -78,6 +78,10 @@
         background: radial-gradient(circle at top left, #0f0f0f 0, #050505 70%);
         border-radius: 10px;
         padding: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
       }
 
       .team-name {
@@ -85,16 +89,17 @@
         letter-spacing: 0.02em;
       }
 
-      .team-note {
-        font-size: 0.85rem;
-        color: #9a9a9a;
-        margin-top: 6px;
+      .team-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #4af626;
+        font-weight: 600;
       }
 
-      .team-link {
-        margin-top: 8px;
-        display: inline-block;
-        color: #4af626;
+      .team-link::after {
+        content: "→";
+        font-size: 0.9rem;
       }
 
       .team-link:hover {
@@ -149,31 +154,19 @@
         <div class="teams-list">
           <div class="team-card" id="cubs">
             <div class="team-name">chicago cubs</div>
-            <div class="team-note">
-              year-by-year rosters from 1904 through the current season, pulled
-              live from MLB's public stats API.
-            </div>
-            <a class="team-link" href="cubs-rosters.html">→ cubs roster explorer</a>
+            <a class="team-link" href="cubs-rosters.html">cubs roster explorer</a>
           </div>
           <div class="team-card" id="blue-jays">
             <div class="team-name">toronto blue jays</div>
-            <div class="team-note">
-              rosters from the past 25 seasons, updated live from MLB's public
-              stats API.
-            </div>
-            <a class="team-link" href="blue-jays-rosters.html"
-              >→ blue jays roster explorer</a
-            >
+            <a class="team-link" href="blue-jays-rosters.html">blue jays roster explorer</a>
           </div>
           <div class="team-card" id="dodgers">
             <div class="team-name">los angeles dodgers</div>
-            <div class="team-note">
-              rosters from the past 25 seasons, updated live from MLB's public
-              stats API.
-            </div>
-            <a class="team-link" href="dodgers-rosters.html"
-              >→ dodgers roster explorer</a
-            >
+            <a class="team-link" href="dodgers-rosters.html">dodgers roster explorer</a>
+          </div>
+          <div class="team-card" id="reds">
+            <div class="team-name">cincinnati reds</div>
+            <a class="team-link" href="reds-rosters.html">reds roster explorer</a>
           </div>
         </div>
       </section>
