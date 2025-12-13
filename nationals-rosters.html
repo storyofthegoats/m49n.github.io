@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>nationals rosters · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .roster-name a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #c8ffd0;
+        text-decoration: none;
+      }
+
+      .roster-name a:hover {
+        text-decoration: underline;
+        text-decoration-color: #4af626;
+      }
+
+      .wiki-badge {
+        font-size: 0.65rem;
+        padding: 1px 4px;
+        border-radius: 999px;
+        border: 1px solid #2f6b3c;
+        color: #7af48c;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(74, 246, 38, 0.08);
+      }
+
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+        line-height: 1.6;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 12px;
+      }
+
+      .roster-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .year-panel {
+        border: 1px solid #111;
+        border-radius: 10px;
+        overflow: hidden;
+        background: radial-gradient(circle at top left, #0d0d0d 0, #040404 70%);
+      }
+
+      .year-panel[open] {
+        border-color: #1f1f1f;
+        box-shadow: 0 0 0 1px #0f0f0f;
+      }
+
+      .year-summary {
+        padding: 12px 14px;
+        font-size: 1rem;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .year-summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .year-summary::after {
+        content: "↓";
+        margin-left: auto;
+        color: #4af626;
+      }
+
+      .year-panel[open] .year-summary::after {
+        content: "↑";
+      }
+
+      .record-badge {
+        color: #4af626;
+        font-size: 0.9rem;
+      }
+
+      .roster-content {
+        padding: 0 14px 14px 14px;
+        font-size: 0.9rem;
+        color: #cfcfcf;
+      }
+
+      .roster-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .roster-item {
+        border: 1px solid #151515;
+        border-radius: 8px;
+        padding: 10px;
+        background: #0a0a0a;
+      }
+
+      .roster-name {
+        font-size: 0.95rem;
+      }
+
+      .roster-meta {
+        font-size: 0.8rem;
+        color: #888;
+        margin-top: 4px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      .back-footer {
+        display: block;
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: #4af626;
+        color: #050505;
+        text-align: center;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+
+      .back-footer:hover {
+        text-decoration: none;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+
+        .year-summary {
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
+
+      <header>
+        <div class="title">nationals rosters</div>
+        <div class="subtitle">
+          every Washington Nationals player on the roster, listed year by year
+          from the 2025 season back through the past 25 seasons. Expand a season
+          to load the names, numbers, and positions directly from MLB's public
+          stats API.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <section>
+        <div class="section-label">rosters by year</div>
+        <div id="roster-list" class="roster-list"></div>
+      </section>
+
+      <div class="footer">m49n · nationals rosters</div>
+      <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
+    </main>
+
+    <script>
+      const rosterList = document.getElementById("roster-list");
+      const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+
+      years.forEach((year) => {
+        const details = document.createElement("details");
+        details.className = "year-panel";
+
+        const summary = document.createElement("summary");
+        summary.className = "year-summary";
+        const yearLabel = document.createElement("span");
+        yearLabel.textContent = year;
+
+        const record = document.createElement("span");
+        record.className = "record-badge";
+        record.textContent = "loading record...";
+
+        summary.appendChild(yearLabel);
+        summary.appendChild(record);
+        details.appendChild(summary);
+
+        fetchSeasonRecord(year)
+          .then((recordText) => {
+            record.textContent = recordText;
+          })
+          .catch(() => {
+            record.textContent = "record unavailable";
+          });
+
+        const content = document.createElement("div");
+        content.className = "roster-content";
+        content.textContent = "Open to load roster...";
+        details.appendChild(content);
+
+        let loaded = false;
+        details.addEventListener("toggle", () => {
+          if (details.open && !loaded) {
+            loaded = true;
+            loadRoster(year, content);
+          }
+        });
+
+        rosterList.appendChild(details);
+      });
+
+      function toOrdinal(value) {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) {
+          return null;
+        }
+
+        const remainderTen = number % 10;
+        const remainderHundred = number % 100;
+
+        if (remainderTen === 1 && remainderHundred !== 11) return `${number}st`;
+        if (remainderTen === 2 && remainderHundred !== 12) return `${number}nd`;
+        if (remainderTen === 3 && remainderHundred !== 13) return `${number}rd`;
+        return `${number}th`;
+      }
+
+      function formatAccolades(record) {
+        if (!record || typeof record !== "object") return [];
+
+        const accolades = [];
+        const leagueName = record.league?.abbrev || record.league?.name;
+
+        if (record.divisionLeader || record.divisionChamp) {
+          accolades.push("division title");
+        }
+
+        if (record.leagueChamp) {
+          accolades.push(leagueName ? `${leagueName} champions` : "league champions");
+        }
+
+        if (record.worldSeriesChamp) {
+          accolades.push("World Series champions");
+        }
+        return accolades;
+      }
+
+      async function fetchSeasonRecord(year) {
+        const standingsUrl =
+          "https://statsapi.mlb.com/api/v1/standings?leagueId=104" +
+          `&season=${year}` +
+          "&teamId=120&standingsTypes=regularSeason";
+
+        const response = await fetch(standingsUrl);
+
+        if (!response.ok) {
+          throw new Error("Could not load standings");
+        }
+
+        const data = await response.json();
+        const teamRecords = (data.records || []).reduce((all, record) => {
+          if (record.teamRecords) {
+            return all.concat(record.teamRecords);
+          }
+          return all;
+        }, []);
+
+        const nationalsRecord = teamRecords.find((record) => record.team?.id === 120);
+
+        const wins = nationalsRecord?.wins;
+        const losses = nationalsRecord?.losses;
+        const divisionRank = nationalsRecord?.divisionRank;
+        const divisionName = nationalsRecord?.division?.name;
+
+        const ordinalRank = toOrdinal(divisionRank);
+        const placeText = ordinalRank
+          ? divisionName
+            ? `${ordinalRank} place ${divisionName}`
+            : `${ordinalRank} place`
+          : null;
+
+        const accolades = formatAccolades(nationalsRecord);
+
+        if (typeof wins === "number" && typeof losses === "number") {
+          let display = `${wins} W - ${losses} L`;
+
+          if (placeText) {
+            display += `, ${placeText}`;
+          }
+
+          if (accolades.length) {
+            display += ` (${accolades.join("; ")})`;
+          }
+
+          return display;
+        }
+
+        throw new Error("No record data found");
+      }
+
+      async function loadRoster(year, target) {
+        target.textContent = "Loading roster...";
+
+        try {
+          const response = await fetch(
+            `https://statsapi.mlb.com/api/v1/teams/120/roster?rosterType=fullSeason&season=${year}`
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const data = await response.json();
+          const roster = data.roster || [];
+
+          if (!roster.length) {
+            target.textContent = "No roster data available for this season.";
+            return;
+          }
+
+          const pitchers = roster.filter(
+            (player) => player.position?.abbreviation === "P"
+          );
+
+          const positionPlayers = roster.filter(
+            (player) => player.position?.abbreviation !== "P"
+          );
+
+          const sortByPositionThenName = (a, b) => {
+            const positionA = a.position?.abbreviation || "";
+            const positionB = b.position?.abbreviation || "";
+
+            const positionCompare = positionA.localeCompare(positionB);
+            if (positionCompare !== 0) return positionCompare;
+
+            const nameA = a.person?.fullName || "";
+            const nameB = b.person?.fullName || "";
+
+            return nameA.localeCompare(nameB);
+          };
+
+          positionPlayers.sort(sortByPositionThenName);
+          pitchers.sort(sortByPositionThenName);
+
+          const orderedRoster = [...positionPlayers, ...pitchers];
+
+          const wikiLinks = {
+            "Ryan Zimmerman": "https://en.wikipedia.org/wiki/Ryan_Zimmerman",
+            "Bryce Harper": "https://en.wikipedia.org/wiki/Bryce_Harper",
+            "Max Scherzer": "https://en.wikipedia.org/wiki/Max_Scherzer",
+            "Stephen Strasburg": "https://en.wikipedia.org/wiki/Stephen_Strasburg",
+            "Juan Soto": "https://en.wikipedia.org/wiki/Juan_Soto",
+          };
+
+          const grid = document.createElement("div");
+          grid.className = "roster-grid";
+
+          orderedRoster.forEach((player) => {
+            const card = document.createElement("div");
+            card.className = "roster-item";
+
+            const name = document.createElement("div");
+            name.className = "roster-name";
+            const fullName = player.person?.fullName || "Unknown";
+
+            const wikiUrl = wikiLinks[fullName];
+            if (wikiUrl) {
+              const link = document.createElement("a");
+              link.href = wikiUrl;
+              link.target = "_blank";
+              link.rel = "noreferrer noopener";
+              link.title = "Open Wikipedia page";
+
+              const linkText = document.createElement("span");
+              linkText.textContent = fullName;
+
+              const badge = document.createElement("span");
+              badge.className = "wiki-badge";
+              badge.textContent = "wiki";
+
+              link.appendChild(linkText);
+              link.appendChild(badge);
+              name.appendChild(link);
+            } else {
+              name.textContent = fullName;
+            }
+
+            const meta = document.createElement("div");
+            meta.className = "roster-meta";
+            const number = player.jerseyNumber ? `#${player.jerseyNumber}` : "#—";
+            const position = player.position?.abbreviation || "—";
+            meta.textContent = `${number} · ${position}`;
+
+            card.appendChild(name);
+            card.appendChild(meta);
+            grid.appendChild(card);
+          });
+
+          target.innerHTML = "";
+          target.appendChild(grid);
+        } catch (error) {
+          target.textContent = `Could not load roster for ${year}.`;
+        }
+      }
+    </script>
+  </body>
+</html>
