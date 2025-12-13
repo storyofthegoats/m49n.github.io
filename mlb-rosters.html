@@ -73,6 +73,8 @@
         padding: 14px;
         background: #080808;
         margin-bottom: 16px;
+        display: grid;
+        gap: 8px;
       }
 
       .league-title {
@@ -80,63 +82,35 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #b5b5b5;
-        margin-bottom: 12px;
+        margin-bottom: 4px;
       }
 
-      .division {
-        margin-bottom: 12px;
+      .selector-label {
+        font-size: 0.85rem;
+        color: #888;
       }
 
-      .division:last-child {
-        margin-bottom: 0;
-      }
-
-      .division-label {
-        font-size: 0.8rem;
-        color: #777;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-      }
-
-      .teams-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .team-card {
+      .team-select {
+        width: 100%;
+        padding: 12px;
+        background: #050505;
+        color: #e5e5e5;
         border: 1px solid #151515;
-        background: radial-gradient(circle at top left, #0f0f0f 0, #050505 70%);
         border-radius: 10px;
-        padding: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        appearance: none;
+        background-image: linear-gradient(45deg, transparent 50%, #4af626 50%),
+          linear-gradient(135deg, #4af626 50%, transparent 50%);
+        background-position: calc(100% - 18px) calc(50% - 4px),
+          calc(100% - 12px) calc(50% - 4px);
+        background-size: 6px 6px, 6px 6px;
+        background-repeat: no-repeat;
       }
 
-      .team-name {
-        font-size: 1rem;
-        letter-spacing: 0.02em;
-      }
-
-      .team-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: #4af626;
-        font-weight: 600;
-      }
-
-      .team-link::after {
-        content: "→";
-        font-size: 0.9rem;
-      }
-
-      .team-link:hover {
-        text-decoration: none;
-        opacity: 0.9;
+      .team-select:focus {
+        outline: 2px solid #4af626;
+        outline-offset: 2px;
       }
 
       .footer {
@@ -186,86 +160,50 @@
 
         <div class="league-section">
           <div class="league-title">american league</div>
-
-          <div class="division">
-            <div class="division-label">east</div>
-            <div class="teams-list">
-              <div class="team-card" id="red-sox">
-                <div class="team-name">boston red sox</div>
-                <a class="team-link" href="red-sox-rosters.html">red sox roster explorer</a>
-              </div>
-              <div class="team-card" id="blue-jays">
-                <div class="team-name">toronto blue jays</div>
-                <a class="team-link" href="blue-jays-rosters.html">blue jays roster explorer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="division">
-            <div class="division-label">central</div>
-            <div class="teams-list">
-              <div class="team-card" id="white-sox">
-                <div class="team-name">chicago white sox</div>
-                <a class="team-link" href="white-sox-rosters.html">white sox roster explorer</a>
-              </div>
-              <div class="team-card" id="tigers">
-                <div class="team-name">detroit tigers</div>
-                <a class="team-link" href="tigers-rosters.html">tigers roster explorer</a>
-              </div>
-            </div>
-          </div>
+          <label class="selector-label" for="american-league-select"
+            >choose a team to open its roster explorer</label
+          >
+          <select class="team-select" id="american-league-select">
+            <option value="" disabled selected>select a club</option>
+            <option value="red-sox-rosters.html">boston red sox</option>
+            <option value="blue-jays-rosters.html">toronto blue jays</option>
+            <option value="white-sox-rosters.html">chicago white sox</option>
+            <option value="tigers-rosters.html">detroit tigers</option>
+          </select>
         </div>
 
         <div class="league-section">
           <div class="league-title">national league</div>
-
-          <div class="division">
-            <div class="division-label">east</div>
-            <div class="teams-list">
-              <div class="team-card" id="mets">
-                <div class="team-name">new york mets</div>
-                <a class="team-link" href="mets-rosters.html">mets roster explorer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="division">
-            <div class="division-label">central</div>
-            <div class="teams-list">
-              <div class="team-card" id="cubs">
-                <div class="team-name">chicago cubs</div>
-                <a class="team-link" href="cubs-rosters.html">cubs roster explorer</a>
-              </div>
-              <div class="team-card" id="reds">
-                <div class="team-name">cincinnati reds</div>
-                <a class="team-link" href="reds-rosters.html">reds roster explorer</a>
-              </div>
-              <div class="team-card" id="brewers">
-                <div class="team-name">milwaukee brewers</div>
-                <a class="team-link" href="brewers-rosters.html">brewers roster explorer</a>
-              </div>
-              <div class="team-card" id="pirates">
-                <div class="team-name">pittsburgh pirates</div>
-                <a class="team-link" href="pirates-rosters.html">pirates roster explorer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="division">
-            <div class="division-label">west</div>
-            <div class="teams-list">
-              <div class="team-card" id="dodgers">
-                <div class="team-name">los angeles dodgers</div>
-                <a class="team-link" href="dodgers-rosters.html">dodgers roster explorer</a>
-              </div>
-              <div class="team-card" id="rockies">
-                <div class="team-name">colorado rockies</div>
-                <a class="team-link" href="rockies-rosters.html">rockies roster explorer</a>
-              </div>
-            </div>
-          </div>
+          <label class="selector-label" for="national-league-select"
+            >choose a team to open its roster explorer</label
+          >
+          <select class="team-select" id="national-league-select">
+            <option value="" disabled selected>select a club</option>
+            <option value="mets-rosters.html">new york mets</option>
+            <option value="cubs-rosters.html">chicago cubs</option>
+            <option value="reds-rosters.html">cincinnati reds</option>
+            <option value="brewers-rosters.html">milwaukee brewers</option>
+            <option value="pirates-rosters.html">pittsburgh pirates</option>
+            <option value="dodgers-rosters.html">los angeles dodgers</option>
+            <option value="rockies-rosters.html">colorado rockies</option>
+          </select>
         </div>
       </section>
+
+      <script>
+        const selectors = document.querySelectorAll(".team-select");
+
+        selectors.forEach((select) => {
+          select.addEventListener("change", (event) => {
+            const target = event.target;
+            const destination = target.value;
+
+            if (destination) {
+              window.location.href = destination;
+            }
+          });
+        });
+      </script>
 
       <div class="footer">m49n · mlb rosters</div>
       <a class="back-footer" href="index.html">← back to index</a>
