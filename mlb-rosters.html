@@ -67,10 +67,42 @@
         margin-bottom: 10px;
       }
 
+      .league-section {
+        border: 1px solid #0f0f0f;
+        border-radius: 10px;
+        padding: 14px;
+        background: #080808;
+        margin-bottom: 16px;
+      }
+
+      .league-title {
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #b5b5b5;
+        margin-bottom: 12px;
+      }
+
+      .division {
+        margin-bottom: 12px;
+      }
+
+      .division:last-child {
+        margin-bottom: 0;
+      }
+
+      .division-label {
+        font-size: 0.8rem;
+        color: #777;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
       .teams-list {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
       }
 
       .team-card {
@@ -151,34 +183,86 @@
 
       <section>
         <div id="teams" class="section-label">teams</div>
-        <div class="teams-list">
-          <div class="team-card" id="cubs">
-            <div class="team-name">chicago cubs</div>
-            <a class="team-link" href="cubs-rosters.html">cubs roster explorer</a>
+
+        <div class="league-section">
+          <div class="league-title">american league</div>
+
+          <div class="division">
+            <div class="division-label">east</div>
+            <div class="teams-list">
+              <div class="team-card" id="red-sox">
+                <div class="team-name">boston red sox</div>
+                <a class="team-link" href="red-sox-rosters.html">red sox roster explorer</a>
+              </div>
+              <div class="team-card" id="blue-jays">
+                <div class="team-name">toronto blue jays</div>
+                <a class="team-link" href="blue-jays-rosters.html">blue jays roster explorer</a>
+              </div>
+            </div>
           </div>
-          <div class="team-card" id="white-sox">
-            <div class="team-name">chicago white sox</div>
-            <a class="team-link" href="white-sox-rosters.html">white sox roster explorer</a>
+
+          <div class="division">
+            <div class="division-label">central</div>
+            <div class="teams-list">
+              <div class="team-card" id="white-sox">
+                <div class="team-name">chicago white sox</div>
+                <a class="team-link" href="white-sox-rosters.html">white sox roster explorer</a>
+              </div>
+              <div class="team-card" id="tigers">
+                <div class="team-name">detroit tigers</div>
+                <a class="team-link" href="tigers-rosters.html">tigers roster explorer</a>
+              </div>
+            </div>
           </div>
-          <div class="team-card" id="blue-jays">
-            <div class="team-name">toronto blue jays</div>
-            <a class="team-link" href="blue-jays-rosters.html">blue jays roster explorer</a>
+        </div>
+
+        <div class="league-section">
+          <div class="league-title">national league</div>
+
+          <div class="division">
+            <div class="division-label">east</div>
+            <div class="teams-list">
+              <div class="team-card" id="mets">
+                <div class="team-name">new york mets</div>
+                <a class="team-link" href="mets-rosters.html">mets roster explorer</a>
+              </div>
+            </div>
           </div>
-          <div class="team-card" id="dodgers">
-            <div class="team-name">los angeles dodgers</div>
-            <a class="team-link" href="dodgers-rosters.html">dodgers roster explorer</a>
+
+          <div class="division">
+            <div class="division-label">central</div>
+            <div class="teams-list">
+              <div class="team-card" id="cubs">
+                <div class="team-name">chicago cubs</div>
+                <a class="team-link" href="cubs-rosters.html">cubs roster explorer</a>
+              </div>
+              <div class="team-card" id="reds">
+                <div class="team-name">cincinnati reds</div>
+                <a class="team-link" href="reds-rosters.html">reds roster explorer</a>
+              </div>
+              <div class="team-card" id="brewers">
+                <div class="team-name">milwaukee brewers</div>
+                <a class="team-link" href="brewers-rosters.html">brewers roster explorer</a>
+              </div>
+              <div class="team-card" id="pirates">
+                <div class="team-name">pittsburgh pirates</div>
+                <a class="team-link" href="pirates-rosters.html">pirates roster explorer</a>
+              </div>
+            </div>
           </div>
-          <div class="team-card" id="reds">
-            <div class="team-name">cincinnati reds</div>
-            <a class="team-link" href="reds-rosters.html">reds roster explorer</a>
-          </div>
-          <div class="team-card" id="red-sox">
-            <div class="team-name">boston red sox</div>
-            <a class="team-link" href="red-sox-rosters.html">red sox roster explorer</a>
-          </div>
-          <div class="team-card" id="tigers">
-            <div class="team-name">detroit tigers</div>
-            <a class="team-link" href="tigers-rosters.html">tigers roster explorer</a>
+
+          <div class="division">
+            <div class="division-label">west</div>
+            <div class="teams-list">
+              <div class="team-card" id="dodgers">
+                <div class="team-name">los angeles dodgers</div>
+                <a class="team-link" href="dodgers-rosters.html">dodgers roster explorer</a>
+              </div>
+              <div class="team-card" id="rockies">
+                <div class="team-name">colorado rockies</div>
+                <a class="team-link" href="rockies-rosters.html">rockies roster explorer</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
