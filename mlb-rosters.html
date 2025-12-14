@@ -112,6 +112,14 @@
         color: #b5b5b5;
       }
 
+      .league-title.nl {
+        color: #58a6ff;
+      }
+
+      .league-title.al {
+        color: #ff6a6a;
+      }
+
       .division-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -197,13 +205,11 @@
   <body>
     <div class="page-layout">
       <main>
-        <a class="top-link" href="index.html">← m49n</a>
-
         <header>
           <div class="title">mlb rosters</div>
           <div class="subtitle">
             central home for team-by-team roster explorers. start here, then dive
-            into the clubs.
+            into the clubs—starting with the cubs, obviously.
           </div>
           <hr class="divider" />
         </header>
@@ -212,7 +218,7 @@
           <div id="teams" class="section-label">teams</div>
 
           <div class="league-section">
-            <a class="league-title" href="https://www.mlb.com/standings">national league</a>
+            <a class="league-title nl" href="https://www.mlb.com/standings">national league</a>
             <div class="division-grid">
               <div class="division-card">
                 <div class="division-title">east</div>
@@ -248,7 +254,7 @@
           </div>
 
           <div class="league-section">
-            <a class="league-title" href="https://www.mlb.com/standings">american league</a>
+            <a class="league-title al" href="https://www.mlb.com/standings">american league</a>
             <div class="division-grid">
               <div class="division-card">
                 <div class="division-title">east</div>
@@ -286,6 +292,7 @@
         </section>
 
         <div class="footer">m49n · mlb rosters</div>
+        <a class="top-link" href="index.html">← m49n</a>
       </main>
 
       <aside aria-label="side banner">
