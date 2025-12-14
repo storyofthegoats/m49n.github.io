@@ -18,9 +18,37 @@
         color: #e5e5e5;
       }
 
+      .page-layout {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        gap: 28px;
+        align-items: start;
+      }
+
       main {
         max-width: 720px;
-        margin: 0 auto;
+        width: 100%;
+      }
+
+      aside {
+        width: 100%;
+      }
+
+      .side-banner {
+        border: 1px solid #0f0f0f;
+        background: #080808;
+        border-radius: 14px;
+        overflow: hidden;
+        position: sticky;
+        top: 24px;
+      }
+
+      .side-banner img {
+        display: block;
+        width: 100%;
+        height: auto;
       }
 
       a {
@@ -154,100 +182,117 @@
         body {
           padding: 28px 16px;
         }
+
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        aside {
+          max-width: 360px;
+          margin: 0 auto;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <a class="top-link" href="index.html">← m49n</a>
+    <div class="page-layout">
+      <main>
+        <a class="top-link" href="index.html">← m49n</a>
 
-      <header>
-        <div class="title">mlb rosters</div>
-        <div class="subtitle">
-          central home for team-by-team roster explorers. start here, then dive
-          into the clubs.
-        </div>
-        <hr class="divider" />
-      </header>
+        <header>
+          <div class="title">mlb rosters</div>
+          <div class="subtitle">
+            central home for team-by-team roster explorers. start here, then dive
+            into the clubs.
+          </div>
+          <hr class="divider" />
+        </header>
 
-      <section>
-        <div id="teams" class="section-label">teams</div>
+        <section>
+          <div id="teams" class="section-label">teams</div>
 
-        <div class="league-section">
-          <a class="league-title" href="https://www.mlb.com/standings">national league</a>
-          <div class="division-grid">
-            <div class="division-card">
-              <div class="division-title">east</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="braves-rosters.html">atlanta braves</a></li>
-                <li><a class="team-link" href="marlins-rosters.html">miami marlins</a></li>
-                <li><a class="team-link" href="mets-rosters.html">new york mets</a></li>
-                <li><a class="team-link" href="phillies-rosters.html">philadelphia phillies</a></li>
-                <li><a class="team-link" href="nationals-rosters.html">washington nationals</a></li>
-              </ul>
-            </div>
-            <div class="division-card">
-              <div class="division-title">central</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="cubs-rosters.html">chicago cubs</a></li>
-                <li><a class="team-link" href="reds-rosters.html">cincinnati reds</a></li>
-                <li><a class="team-link" href="brewers-rosters.html">milwaukee brewers</a></li>
-                <li><a class="team-link" href="pirates-rosters.html">pittsburgh pirates</a></li>
-                <li><a class="team-link" href="cardinals-rosters.html">st. louis cardinals</a></li>
-              </ul>
-            </div>
-            <div class="division-card">
-              <div class="division-title">west</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="diamondbacks-rosters.html">arizona diamondbacks</a></li>
-                <li><a class="team-link" href="rockies-rosters.html">colorado rockies</a></li>
-                <li><a class="team-link" href="dodgers-rosters.html">los angeles dodgers</a></li>
-                <li><a class="team-link" href="padres-rosters.html">san diego padres</a></li>
-                <li><a class="team-link" href="giants-rosters.html">san francisco giants</a></li>
-              </ul>
+          <div class="league-section">
+            <a class="league-title" href="https://www.mlb.com/standings">national league</a>
+            <div class="division-grid">
+              <div class="division-card">
+                <div class="division-title">east</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="braves-rosters.html">atlanta braves</a></li>
+                  <li><a class="team-link" href="marlins-rosters.html">miami marlins</a></li>
+                  <li><a class="team-link" href="mets-rosters.html">new york mets</a></li>
+                  <li><a class="team-link" href="phillies-rosters.html">philadelphia phillies</a></li>
+                  <li><a class="team-link" href="nationals-rosters.html">washington nationals</a></li>
+                </ul>
+              </div>
+              <div class="division-card">
+                <div class="division-title">central</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="cubs-rosters.html">chicago cubs</a></li>
+                  <li><a class="team-link" href="reds-rosters.html">cincinnati reds</a></li>
+                  <li><a class="team-link" href="brewers-rosters.html">milwaukee brewers</a></li>
+                  <li><a class="team-link" href="pirates-rosters.html">pittsburgh pirates</a></li>
+                  <li><a class="team-link" href="cardinals-rosters.html">st. louis cardinals</a></li>
+                </ul>
+              </div>
+              <div class="division-card">
+                <div class="division-title">west</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="diamondbacks-rosters.html">arizona diamondbacks</a></li>
+                  <li><a class="team-link" href="rockies-rosters.html">colorado rockies</a></li>
+                  <li><a class="team-link" href="dodgers-rosters.html">los angeles dodgers</a></li>
+                  <li><a class="team-link" href="padres-rosters.html">san diego padres</a></li>
+                  <li><a class="team-link" href="giants-rosters.html">san francisco giants</a></li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="league-section">
-          <a class="league-title" href="https://www.mlb.com/standings">american league</a>
-          <div class="division-grid">
-            <div class="division-card">
-              <div class="division-title">east</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="orioles-rosters.html">baltimore orioles</a></li>
-                <li><a class="team-link" href="red-sox-rosters.html">boston red sox</a></li>
-                <li><a class="team-link" href="yankees-rosters.html">new york yankees</a></li>
-                <li><a class="team-link" href="rays-rosters.html">tampa bay rays</a></li>
-                <li><a class="team-link" href="blue-jays-rosters.html">toronto blue jays</a></li>
-              </ul>
-            </div>
-            <div class="division-card">
-              <div class="division-title">central</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="white-sox-rosters.html">chicago white sox</a></li>
-                <li><a class="team-link" href="guardians-rosters.html">cleveland guardians</a></li>
-                <li><a class="team-link" href="tigers-rosters.html">detroit tigers</a></li>
-                <li><a class="team-link" href="royals-rosters.html">kansas city royals</a></li>
-                <li><a class="team-link" href="twins-rosters.html">minnesota twins</a></li>
-              </ul>
-            </div>
-            <div class="division-card">
-              <div class="division-title">west</div>
-              <ul class="team-list">
-                <li><a class="team-link" href="angels-rosters.html">anaheim angels</a></li>
-                <li><a class="team-link" href="astros-rosters.html">houston astros</a></li>
-                <li><a class="team-link" href="athletics-rosters.html">oakland athletics</a></li>
-                <li><a class="team-link" href="mariners-rosters.html">seattle mariners</a></li>
-                <li><a class="team-link" href="rangers-rosters.html">texas rangers</a></li>
-              </ul>
+          <div class="league-section">
+            <a class="league-title" href="https://www.mlb.com/standings">american league</a>
+            <div class="division-grid">
+              <div class="division-card">
+                <div class="division-title">east</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="orioles-rosters.html">baltimore orioles</a></li>
+                  <li><a class="team-link" href="red-sox-rosters.html">boston red sox</a></li>
+                  <li><a class="team-link" href="yankees-rosters.html">new york yankees</a></li>
+                  <li><a class="team-link" href="rays-rosters.html">tampa bay rays</a></li>
+                  <li><a class="team-link" href="blue-jays-rosters.html">toronto blue jays</a></li>
+                </ul>
+              </div>
+              <div class="division-card">
+                <div class="division-title">central</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="white-sox-rosters.html">chicago white sox</a></li>
+                  <li><a class="team-link" href="guardians-rosters.html">cleveland guardians</a></li>
+                  <li><a class="team-link" href="tigers-rosters.html">detroit tigers</a></li>
+                  <li><a class="team-link" href="royals-rosters.html">kansas city royals</a></li>
+                  <li><a class="team-link" href="twins-rosters.html">minnesota twins</a></li>
+                </ul>
+              </div>
+              <div class="division-card">
+                <div class="division-title">west</div>
+                <ul class="team-list">
+                  <li><a class="team-link" href="angels-rosters.html">anaheim angels</a></li>
+                  <li><a class="team-link" href="astros-rosters.html">houston astros</a></li>
+                  <li><a class="team-link" href="athletics-rosters.html">oakland athletics</a></li>
+                  <li><a class="team-link" href="mariners-rosters.html">seattle mariners</a></li>
+                  <li><a class="team-link" href="rangers-rosters.html">texas rangers</a></li>
+                </ul>
+              </div>
             </div>
           </div>
+
+        </section>
+
+        <div class="footer">m49n · mlb rosters</div>
+      </main>
+
+      <aside aria-label="side banner">
+        <div class="side-banner">
+          <img src="images/banners/vlad.png" alt="Vladimir Guerrero Jr. bat drop banner" />
         </div>
-
-      </section>
-
-      <div class="footer">m49n · mlb rosters</div>
-    </main>
+      </aside>
+    </div>
   </body>
 </html>
