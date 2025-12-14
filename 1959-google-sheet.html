@@ -451,11 +451,11 @@
         const tr = document.createElement("tr");
         tr.classList.add(card.purchased ? "row-owned" : "row-needed");
 
-        card.cells.forEach((cell, idx) => {
+        card.displayCells.forEach((cell) => {
           const td = document.createElement("td");
-          const text = (cell || "").trim();
+          const text = (cell.value || "").trim();
 
-          if (idx === ownedIndex) {
+          if (cell.originalIndex === ownedIndex) {
             if (card.purchased) {
               td.innerHTML =
                 '<span class="owned-pill owned-pill--yes">purchased</span>';
@@ -541,13 +541,25 @@
           const header = rows[0];
           const dataRows = rows.slice(1);
 
-          // build header row exactly as in file
+          const excludedHeaders = new Set([
+            "low price",
+            "high price",
+            "low price high price",
+            "replace",
+          ]);
+
+          // build header row without excluded columns
           const headerTr = document.createElement("tr");
-          header.forEach((col) => {
-            const th = document.createElement("th");
-            th.textContent = col.trim();
-            headerTr.appendChild(th);
-          });
+          const displayColumnIndices = header.reduce((acc, col, idx) => {
+            const normalized = normalizeHeader(col);
+            if (!excludedHeaders.has(normalized)) {
+              acc.push(idx);
+              const th = document.createElement("th");
+              th.textContent = col.trim();
+              headerTr.appendChild(th);
+            }
+            return acc;
+          }, []);
           thead.appendChild(headerTr);
 
           // find Purchased/Owned column
@@ -584,7 +596,11 @@
             }
 
             cardsData.push({
-              cells: row,
+              originalRow: row,
+              displayCells: displayColumnIndices.map((colIdx) => ({
+                value: row[colIdx] || "",
+                originalIndex: colIdx,
+              })),
               purchased: purchasedFlag,
               number: numberIndex !== -1 ? row[numberIndex] || "" : "",
               player: playerIndex !== -1 ? row[playerIndex] || "" : "",
