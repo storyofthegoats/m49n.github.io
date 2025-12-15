@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>m49n — personal ledger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* ===== Base ===== */
+
+      * {
+        box-sizing: border-box;
+      }
+
+ body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
+  background: #050505;
+  color: #e5e5e5;
+}
+
+
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* ===== Header ===== */
+
+      .title {
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 1.4rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      /* ===== Nav / Sections ===== */
+
+      .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 40px 0;
+      }
+
+      .nav-item {
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95rem;
+        text-transform: lowercase;
+        padding: 6px 0;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+      }
+
+      .nav-label {
+        min-width: 120px;
+      }
+
+      .nav-tag {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #4af626;
+      }
+
+      /* ===== Quote / Footer ===== */
+
+      .quote {
+        font-size: 0.95rem;
+        margin: 24px 0 10px 0;
+      }
+
+      .quote span {
+        opacity: 0.95;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+
+        .nav-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav-label {
+          min-width: auto;
+        }
+      }
+
+      .cursor {
+  color: #4af626;
+  animation: blink 1s steps(1, start) infinite;
+  margin-left: 4px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="title">m49n<span class="cursor">▍</span></div>
+        <div class="subtitle">
+          a structured archive of selected work, thought, and memory.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <nav>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="lists.html">the dump</a>
+            </span>
+            <span class="nav-tag">a local todo</span>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="cards.html">cardboard</a>
+            </span>
+            <span class="nav-tag">pc, checklists, tracking</span>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="mlb-rosters.html">mlb rosters</a>
+            </span>
+            <span class="nav-tag">club explorers</span>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="everything.html">the hem</a>
+            </span>
+            <span class="nav-tag">experimental, off-center</span>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="systems.html">archive</a>
+            </span>
+            <span class="nav-tag">static</span>
+          </li>
+        </ul>
+      </nav>
+
+      <section>
+        <p class="quote">
+          <span>and in his pain he knew he was not dead</span>
+        </p>
+        <div class="footer">m49n © 2025</div>
+      </section>
+
+      <!--
+        future note for us:
+        - archive will live at something like /archive.html or /archive/index.html
+        - we'll wire a hidden access pattern to reveal it later
+      -->
+    </main>
+  </body>
+</html>
+
