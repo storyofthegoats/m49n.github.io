@@ -46,7 +46,7 @@
         max-width: 1240px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: 1fr 260px;
+        grid-template-columns: 260px 1fr;
         gap: 24px;
         align-items: start;
       }
@@ -55,6 +55,7 @@
         max-width: 960px;
         width: 100%;
         margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -203,7 +204,8 @@
 
       .banner-column {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
+        grid-column: 1;
       }
 
       .banner-card {
@@ -224,6 +226,11 @@
       @media (max-width: 960px) {
         .page-layout {
           grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
         }
 
         .banner-column {
