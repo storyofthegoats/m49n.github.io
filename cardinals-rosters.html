@@ -42,8 +42,32 @@
         color: #e5e5e5;
       }
 
+      .page-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .page-banner {
+        position: sticky;
+        top: 24px;
+        width: 220px;
+        flex: 0 0 auto;
+      }
+
+      .page-banner img {
+        width: 100%;
+        display: block;
+        border-radius: 12px;
+        border: 1px solid #151515;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+      }
+
       main {
         max-width: 960px;
+        width: 100%;
         margin: 0 auto;
       }
 
@@ -191,6 +215,18 @@
         opacity: 0.9;
       }
 
+      @media (max-width: 900px) {
+        .page-layout {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .page-banner {
+          position: static;
+          width: min(100%, 420px);
+        }
+      }
+
       @media (max-width: 600px) {
         body {
           padding: 28px 16px;
@@ -204,28 +240,37 @@
   </head>
 
   <body>
-    <main>
-      <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
+    <div class="page-layout">
+      <aside class="page-banner">
+        <img
+          src="images/banners/markmc.jpg"
+          alt="Mark McGwire celebrates a home run for the St. Louis Cardinals"
+        />
+      </aside>
 
-      <header>
-        <div class="title">cardinals rosters</div>
-        <div class="subtitle">
-          every St. Louis Cardinal on the roster, listed year by year from the
-          2025 season back through the past 25 seasons. Expand a season to load
-          the names, numbers, and positions directly from MLB's public stats
-          API.
-        </div>
-        <hr class="divider" />
-      </header>
+      <main>
+        <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
-      <section>
-        <div class="section-label">rosters by year</div>
-        <div id="roster-list" class="roster-list"></div>
-      </section>
+        <header>
+          <div class="title">cardinals rosters</div>
+          <div class="subtitle">
+            every St. Louis Cardinal on the roster, listed year by year from the
+            2025 season back through the past 25 seasons. Expand a season to
+            load the names, numbers, and positions directly from MLB's public
+            stats API.
+          </div>
+          <hr class="divider" />
+        </header>
 
-      <div class="footer">m49n · cardinals rosters</div>
-      <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
-    </main>
+        <section>
+          <div class="section-label">rosters by year</div>
+          <div id="roster-list" class="roster-list"></div>
+        </section>
+
+        <div class="footer">m49n · cardinals rosters</div>
+        <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
+      </main>
+    </div>
 
     <script>
       const rosterList = document.getElementById("roster-list");
