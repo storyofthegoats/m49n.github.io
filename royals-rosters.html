@@ -192,19 +192,20 @@
       }
 
       .page-banner {
-        width: min(100%, 320px);
+        width: 100%;
         border: 1px solid #151515;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 0 0 1px #0a0a0a, 0 8px 24px rgba(0, 0, 0, 0.45);
-        margin-bottom: 16px;
+        margin: 0 0 18px 0;
         background: #0a0a0a;
       }
 
       .page-banner img {
         display: block;
         width: 100%;
-        height: auto;
+        height: 200px;
+        object-fit: cover;
       }
 
       @media (max-width: 600px) {
@@ -223,15 +224,14 @@
     <main>
       <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
-      <div class="page-banner">
-        <img
-          src="images/banners/witt.jpg"
-          alt="Bobby Witt Jr. raising his bat"
-          loading="lazy"
-        />
-      </div>
-
       <header>
+        <div class="page-banner">
+          <img
+            src="images/banners/witt.jpg"
+            alt="Bobby Witt Jr. raising his bat"
+            loading="lazy"
+          />
+        </div>
         <div class="title">royals rosters</div>
         <div class="subtitle">
           every Kansas City Royals player on the roster, listed year by year from
