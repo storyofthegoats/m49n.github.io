@@ -32,10 +32,16 @@
         text-decoration: underline;
       }
 
+      .top-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
       .top-link {
         font-size: 0.8rem;
         color: #777;
-        margin-bottom: 12px;
         display: inline-block;
       }
 
@@ -240,7 +246,10 @@
 
   <body>
     <main>
-      <a class="top-link" href="cards.html">← cardboard</a>
+      <div class="top-links">
+        <a class="top-link" href="cards.html">← cardboard</a>
+        <a class="top-link" href="index.html">← index</a>
+      </div>
 
       <header>
         <div class="title">1959 topps checklist</div>
