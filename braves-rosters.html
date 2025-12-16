@@ -488,16 +488,6 @@
 
           const orderedRoster = [...positionPlayers, ...pitchers];
 
-          const wikiLinks = {
-            "Chipper Jones": "https://en.wikipedia.org/wiki/Chipper_Jones",
-            "Andruw Jones": "https://en.wikipedia.org/wiki/Andruw_Jones",
-            "Greg Maddux": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "John Smoltz": "https://en.wikipedia.org/wiki/John_Smoltz",
-            "Tom Glavine": "https://en.wikipedia.org/wiki/Tom_Glavine",
-            "Freddie Freeman": "https://en.wikipedia.org/wiki/Freddie_Freeman",
-            "Ronald Acuna Jr.": "https://en.wikipedia.org/wiki/Ronald_Acu%C3%B1a_Jr.",
-          };
-
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
@@ -509,38 +499,16 @@
             name.className = "roster-name";
             const fullName = player.person?.fullName || "Unknown";
             const position = player.position?.abbreviation || "—";
-            const is2025Season = year === 2025;
+            const ebayUrl = buildEbaySearchUrl(fullName);
 
-            const wikiUrl = wikiLinks[fullName];
-            if (is2025Season) {
-              const ebayUrl = buildEbaySearchUrl(fullName);
-              const link = document.createElement("a");
-              link.href = ebayUrl;
-              link.target = "_blank";
-              link.rel = "noreferrer noopener";
-              link.title = "Search eBay sportscards ending soonest";
-              link.textContent = fullName;
-              name.appendChild(link);
-            } else if (wikiUrl) {
-              const link = document.createElement("a");
-              link.href = wikiUrl;
-              link.target = "_blank";
-              link.rel = "noreferrer noopener";
-              link.title = "Open Wikipedia page";
+            const link = document.createElement("a");
+            link.href = ebayUrl;
+            link.target = "_blank";
+            link.rel = "noreferrer noopener";
+            link.title = "Search eBay sportscards ending soonest";
+            link.textContent = fullName;
 
-              const linkText = document.createElement("span");
-              linkText.textContent = fullName;
-
-              const badge = document.createElement("span");
-              badge.className = "wiki-badge";
-              badge.textContent = "wiki";
-
-              link.appendChild(linkText);
-              link.appendChild(badge);
-              name.appendChild(link);
-            } else {
-              name.textContent = fullName;
-            }
+            name.appendChild(link);
 
             const meta = document.createElement("div");
             meta.className = "roster-meta";
