@@ -127,7 +127,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -148,6 +148,23 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
       }
 
       .roster-content {
@@ -341,6 +358,109 @@
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto"];
 
+      const seasonSummaries = {
+        2025: {
+          place: "season ahead",
+          summary: "Season still to come for a core aiming at another October run.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Chasing another NL East flag with a powerhouse lineup and rotation.",
+        },
+        2023: {
+          place: "1st place NL East",
+          summary: "104-58 juggernaut with MLB's best offense before an early NLDS exit.",
+        },
+        2022: {
+          place: "1st place NL East",
+          summary: "101-61 rally past the Mets to repeat as champs before an NLDS upset.",
+        },
+        2021: {
+          place: "1st place NL East",
+          summary: "88-73 retooled at the deadline and stormed to a World Series title.",
+        },
+        2020: {
+          place: "1st place NL East",
+          summary: "35-25 in the shortened slate and pushed the Dodgers to seven in the NLCS.",
+        },
+        2019: {
+          place: "1st place NL East",
+          summary: "97-65 repeat division winners, edged by St. Louis in a five-game NLDS.",
+        },
+        2018: {
+          place: "1st place NL East",
+          summary: "90-72 breakout with the young core back in October before an NLDS exit.",
+        },
+        2017: {
+          place: "3rd place NL East",
+          summary: "72-90 rebuilding year during SunTrust Park's debut season.",
+        },
+        2016: {
+          place: "5th place NL East",
+          summary: "68-93 farewell to Turner Field as the club leaned on a youth movement.",
+        },
+        2015: {
+          place: "4th place NL East",
+          summary: "67-95 rebuild brought growing pains and limited offense around Freeman.",
+        },
+        2014: {
+          place: "2nd place NL East",
+          summary: "79-83 strong pitching couldn't cover for an offense that faded down the stretch.",
+        },
+        2013: {
+          place: "1st place NL East",
+          summary: "96-66 ran away with the division behind a stingy staff, fell in the NLDS.",
+        },
+        2012: {
+          place: "2nd place NL East",
+          summary: "94-68 Wild Card berth ended by the infield-fly drama in Chipper's finale.",
+        },
+        2011: {
+          place: "2nd place NL East",
+          summary: "89-73 September slide cost them the Wild Card despite elite pitching.",
+        },
+        2010: {
+          place: "2nd place NL East",
+          summary: "91-71 Bobby Cox's last year ended with a Wild Card and NLDS loss.",
+        },
+        2009: {
+          place: "3rd place NL East",
+          summary: "86-76 late surge wasn't enough to grab a Wild Card spot.",
+        },
+        2008: {
+          place: "4th place NL East",
+          summary: "72-90 injury-hit roster snapped the franchise's postseason streak.",
+        },
+        2007: {
+          place: "3rd place NL East",
+          summary: "84-78 mid-pack finish even after the midseason Teixeira splash.",
+        },
+        2006: {
+          place: "3rd place NL East",
+          summary: "79-83 ended the run of consecutive division titles and missed October.",
+        },
+        2005: {
+          place: "1st place NL East",
+          summary: "90-72 made it 14 straight division crowns before a marathon NLDS loss to Houston.",
+        },
+        2004: {
+          place: "1st place NL East",
+          summary: "96-66 kept the division streak alive and bowed out in the NLDS.",
+        },
+        2003: {
+          place: "1st place NL East",
+          summary: "101-61 loaded lineup fell to the Cubs in a five-game NLDS.",
+        },
+        2002: {
+          place: "1st place NL East",
+          summary: "101-59 dominant pitching staff couldn't solve the Giants in the NLDS.",
+        },
+        2001: {
+          place: "1st place NL East",
+          summary: "88-74 topped the division and reached the NLCS before the D-backs halted them.",
+        },
+      };
+
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
@@ -405,21 +525,36 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
-        const record = document.createElement("span");
-        record.className = "record-badge";
-        record.textContent = "loading record...";
+        const seasonData = seasonSummaries[year];
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        if (seasonData) {
+          const summaryText = document.createElement("div");
+          summaryText.className = "summary-text";
+
+          const headerRow = document.createElement("div");
+          headerRow.className = "year-header";
+
+          const place = document.createElement("span");
+          place.className = "record-badge";
+          place.textContent = seasonData.place;
+
+          headerRow.appendChild(yearLabel);
+          headerRow.appendChild(place);
+          summaryText.appendChild(headerRow);
+
+          if (seasonData.summary) {
+            const description = document.createElement("div");
+            description.className = "season-note";
+            description.textContent = seasonData.summary;
+            summaryText.appendChild(description);
+          }
+
+          summary.appendChild(summaryText);
+        } else {
+          summary.appendChild(yearLabel);
+        }
+
         details.appendChild(summary);
-
-        fetchSeasonRecord(year)
-          .then((recordText) => {
-            record.textContent = recordText;
-          })
-          .catch(() => {
-            record.textContent = "record unavailable";
-          });
 
         const content = document.createElement("div");
         content.className = "roster-content";
