@@ -45,10 +45,10 @@
       .page-layout {
         max-width: 1200px;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: 260px 1fr;
-        gap: 28px;
-        align-items: start;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: center;
       }
 
       main {
@@ -200,20 +200,15 @@
         opacity: 0.9;
       }
 
-      aside {
+      .top-banner {
         width: 100%;
-      }
-
-      .side-banner {
         border: 1px solid #0f0f0f;
         background: #080808;
         border-radius: 14px;
         overflow: hidden;
-        position: sticky;
-        top: 24px;
       }
 
-      .side-banner img {
+      .top-banner img {
         display: block;
         width: 100%;
         height: auto;
@@ -228,28 +223,18 @@
           font-size: 0.95rem;
         }
 
-        .page-layout {
-          grid-template-columns: 1fr;
-        }
-
-        .side-banner {
-          position: relative;
-          top: auto;
-        }
       }
     </style>
   </head>
 
   <body>
     <div class="page-layout">
-      <aside aria-label="side banner">
-        <div class="side-banner">
-          <img
-            src="images/banners/schwarber.jpeg"
-            alt="Kyle Schwarber pumping his fist in a Phillies uniform"
-          />
-        </div>
-      </aside>
+      <div class="top-banner" aria-label="Phillies banner">
+        <img
+          src="images/banners/kyle.jpg"
+          alt="Kyle Schwarber celebrating in a Phillies uniform"
+        />
+      </div>
 
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
