@@ -170,6 +170,79 @@
         margin-top: 24px;
       }
 
+      .random-section {
+        margin-top: 32px;
+        padding: 16px;
+        border: 1px solid #0f0f0f;
+        border-radius: 12px;
+        background: #080808;
+      }
+
+      .random-title {
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: lowercase;
+        margin: 0 0 4px 0;
+      }
+
+      .random-description {
+        margin: 0 0 12px 0;
+        color: #888;
+        font-size: 0.95rem;
+      }
+
+      .random-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .random-button {
+        padding: 10px 14px;
+        background: #4af626;
+        color: #050505;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: lowercase;
+      }
+
+      .random-button:hover {
+        opacity: 0.9;
+      }
+
+      .random-result {
+        margin-top: 14px;
+        padding: 12px;
+        border: 1px solid #111;
+        border-radius: 10px;
+        background: #0a0a0a;
+        min-height: 60px;
+      }
+
+      .player-name {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+      }
+
+      .player-meta {
+        font-size: 0.9rem;
+        color: #9b9b9b;
+        margin: 0 0 8px 0;
+      }
+
+      .player-meta span + span::before {
+        content: " · ";
+      }
+
+      .player-link {
+        display: inline-block;
+        color: #c8ffd0;
+      }
+
       .back-footer {
         display: block;
         margin-top: 12px;
@@ -302,5 +375,120 @@
         </div>
       </aside>
     </div>
+
+    <section class="random-section" aria-label="random player generator">
+      <div class="random-title">the hit</div>
+      <p class="random-description">
+        generate a random player from across the league—name, team, position, and a quick ebay link.
+      </p>
+      <div class="random-actions">
+        <button id="random-button" class="random-button" type="button">
+          generate random player
+        </button>
+      </div>
+      <div id="random-result" class="random-result" aria-live="polite"></div>
+    </section>
+
+    <script>
+      const LATEST_SEASON = 2025;
+
+      const randomButton = document.getElementById("random-button");
+      const randomResult = document.getElementById("random-result");
+
+      let cachedTeams = null;
+
+      function buildEbaySearchUrl(playerName, addon = "All") {
+        if (!playerName) return null;
+
+        const searchAddon = addon === "All" ? playerName : `${playerName} ${addon}`;
+
+        return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(
+          searchAddon
+        )}`;
+      }
+
+      function pickRandom(items) {
+        if (!items || !items.length) return null;
+        const index = Math.floor(Math.random() * items.length);
+        return items[index];
+      }
+
+      async function fetchTeams() {
+        if (cachedTeams) return cachedTeams;
+
+        const response = await fetch(
+          `https://statsapi.mlb.com/api/v1/teams?sportId=1&season=${LATEST_SEASON}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not load teams");
+        }
+
+        const data = await response.json();
+        cachedTeams = data.teams || [];
+        return cachedTeams;
+      }
+
+      async function fetchRoster(teamId) {
+        const response = await fetch(
+          `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=fullSeason&season=${LATEST_SEASON}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not load roster");
+        }
+
+        const data = await response.json();
+        return data.roster || [];
+      }
+
+      function renderPlayerCard(player, teamName) {
+        const fullName = player.person?.fullName || "Unknown player";
+        const position =
+          player.position?.abbreviation || player.position?.name || "Unknown";
+
+        const ebayUrl = buildEbaySearchUrl(fullName);
+
+        randomResult.innerHTML = `
+          <div class="player-name">${fullName}</div>
+          <div class="player-meta">
+            <span>${teamName || "Unknown team"}</span>
+            <span>${position}</span>
+          </div>
+          <a class="player-link" href="${ebayUrl}" target="_blank" rel="noopener noreferrer">eBay search</a>
+        `;
+      }
+
+      async function generateRandomPlayer() {
+        randomResult.textContent = "loading player...";
+
+        try {
+          const teams = await fetchTeams();
+          const team = pickRandom(teams);
+
+          if (!team?.id) {
+            throw new Error("No teams available");
+          }
+
+          const roster = await fetchRoster(team.id);
+          const player = pickRandom(roster);
+
+          if (!player) {
+            throw new Error("No players available");
+          }
+
+          renderPlayerCard(player, team.name);
+        } catch (error) {
+          randomResult.textContent = "couldn't load a player — try again";
+          console.error(error);
+        }
+      }
+
+      randomButton.addEventListener("click", generateRandomPlayer);
+
+      fetchTeams().catch((error) => {
+        console.error(error);
+      });
+    </script>
   </body>
 </html>
