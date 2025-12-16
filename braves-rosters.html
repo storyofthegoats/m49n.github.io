@@ -375,6 +375,20 @@
         return accolades;
       }
 
+      function buildEbaySearchUrl(playerName) {
+        if (!playerName) return null;
+
+        const encodedName = encodeURIComponent(playerName);
+        const sportscardCategory = "261328";
+
+        return (
+          "https://www.ebay.com/sch/i.html" +
+          `?_nkw=${encodedName}` +
+          `&_sacat=${sportscardCategory}` +
+          "&_sop=1"
+        );
+      }
+
       async function fetchSeasonRecord(year) {
         const standingsUrl =
           "https://statsapi.mlb.com/api/v1/standings?leagueId=104" +
@@ -494,9 +508,21 @@
             const name = document.createElement("div");
             name.className = "roster-name";
             const fullName = player.person?.fullName || "Unknown";
+            const position = player.position?.abbreviation || "—";
+            const isPitcher = position === "P";
+            const is2025PositionPlayer = year === 2025 && !isPitcher;
 
             const wikiUrl = wikiLinks[fullName];
-            if (wikiUrl) {
+            if (is2025PositionPlayer) {
+              const ebayUrl = buildEbaySearchUrl(fullName);
+              const link = document.createElement("a");
+              link.href = ebayUrl;
+              link.target = "_blank";
+              link.rel = "noreferrer noopener";
+              link.title = "Search eBay sportscards ending soonest";
+              link.textContent = fullName;
+              name.appendChild(link);
+            } else if (wikiUrl) {
               const link = document.createElement("a");
               link.href = wikiUrl;
               link.target = "_blank";
@@ -520,7 +546,6 @@
             const meta = document.createElement("div");
             meta.className = "roster-meta";
             const number = player.jerseyNumber ? `#${player.jerseyNumber}` : "#—";
-            const position = player.position?.abbreviation || "—";
             meta.textContent = `${number} · ${position}`;
 
             card.appendChild(name);
