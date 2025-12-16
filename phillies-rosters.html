@@ -43,17 +43,19 @@
       }
 
       .page-layout {
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: 260px 1fr;
-        gap: 28px;
+        gap: 24px;
         align-items: start;
       }
 
       main {
         max-width: 960px;
         width: 100%;
+        margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -200,23 +202,47 @@
         opacity: 0.9;
       }
 
-      aside {
-        width: 100%;
+      .banner-column {
+        display: flex;
+        justify-content: flex-start;
+        grid-column: 1;
+        grid-row: 1;
       }
 
-      .side-banner {
-        border: 1px solid #0f0f0f;
-        background: #080808;
-        border-radius: 14px;
-        overflow: hidden;
-        position: sticky;
-        top: 24px;
+      .banner-card {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: #0a0a0a;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       }
 
-      .side-banner img {
+      .banner-image {
         display: block;
         width: 100%;
         height: auto;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 960px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .banner-column {
+          justify-content: center;
+        }
+
+        .banner-card {
+          max-width: 360px;
+          width: 100%;
+        }
       }
 
       @media (max-width: 600px) {
@@ -228,29 +254,12 @@
           font-size: 0.95rem;
         }
 
-        .page-layout {
-          grid-template-columns: 1fr;
-        }
-
-        .side-banner {
-          position: relative;
-          top: auto;
-        }
       }
     </style>
   </head>
 
   <body>
     <div class="page-layout">
-      <aside aria-label="side banner">
-        <div class="side-banner">
-          <img
-            src="images/banners/schwarber.jpeg"
-            alt="Kyle Schwarber pumping his fist in a Phillies uniform"
-          />
-        </div>
-      </aside>
-
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
@@ -273,6 +282,17 @@
         <div class="footer">m49n · phillies rosters</div>
         <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
       </main>
+
+      <aside class="banner-column" aria-label="Kyle Schwarber banner">
+        <div class="banner-card">
+          <img
+            class="banner-image"
+            src="images/banners/kyle.jpg"
+            alt="Kyle Schwarber Phillies banner"
+            loading="lazy"
+          />
+        </div>
+      </aside>
     </div>
 
     <script>
