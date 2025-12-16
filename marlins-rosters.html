@@ -47,6 +47,23 @@
         margin: 0 auto;
       }
 
+      .side-banner {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        width: 150px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .side-banner img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
       a {
         color: inherit;
         text-decoration: none;
@@ -196,6 +213,12 @@
           padding: 28px 16px;
         }
 
+        .side-banner {
+          width: 120px;
+          top: 12px;
+          left: 12px;
+        }
+
         .year-summary {
           font-size: 0.95rem;
         }
@@ -204,6 +227,9 @@
   </head>
 
   <body>
+    <div class="side-banner">
+      <img src="images/banners/marlin.jpg" alt="Miami Marlins banner" />
+    </div>
     <main>
       <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
