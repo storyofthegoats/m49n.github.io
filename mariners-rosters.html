@@ -42,9 +42,21 @@
         color: #e5e5e5;
       }
 
+
+      .page-layout {
+        max-width: 1240px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
       main {
         max-width: 960px;
+        width: 100%;
         margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -228,6 +240,50 @@
         opacity: 0.9;
       }
 
+
+      .banner-column {
+        display: flex;
+        justify-content: flex-start;
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .banner-card {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: #0a0a0a;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+
+      .banner-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 960px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .banner-column {
+          justify-content: center;
+        }
+
+        .banner-card {
+          max-width: 360px;
+          width: 100%;
+        }
+      }
+
       @media (max-width: 600px) {
         body {
           padding: 28px 16px;
@@ -241,34 +297,47 @@
   </head>
 
   <body>
-    <main>
-      <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
-
-      <header>
-        <div class="title">mariners rosters</div>
-        <div class="subtitle">
-          every Seattle Mariners player on the roster, listed year by year from
-          the 2025 season back through the past 25 seasons. Expand a season to
-          load the names, numbers, and positions directly from MLB's public
-          stats API.
-        </div>
-        
-          <div class="ebay-toggle" aria-label="eBay search toggle">
-            <span class="ebay-toggle-label">Ebay Search Toggle</span>
-            <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+    <div class="page-layout">
+      <main>
+        <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
+  
+        <header>
+          <div class="title">mariners rosters</div>
+          <div class="subtitle">
+            every Seattle Mariners player on the roster, listed year by year from
+            the 2025 season back through the past 25 seasons. Expand a season to
+            load the names, numbers, and positions directly from MLB's public
+            stats API.
           </div>
-          <hr class="divider" />
+          
+            <div class="ebay-toggle" aria-label="eBay search toggle">
+              <span class="ebay-toggle-label">Ebay Search Toggle</span>
+              <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+            </div>
+            <hr class="divider" />
+  
+        </header>
+  
+        <section>
+          <div class="section-label">rosters by year</div>
+          <div id="roster-list" class="roster-list"></div>
+        </section>
+  
+        <div class="footer">m49n · mariners rosters</div>
+        <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
+      </main>
 
-      </header>
-
-      <section>
-        <div class="section-label">rosters by year</div>
-        <div id="roster-list" class="roster-list"></div>
-      </section>
-
-      <div class="footer">m49n · mariners rosters</div>
-      <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
-    </main>
+      <aside class="banner-column" aria-label="MLB banner">
+        <div class="banner-card">
+          <img
+            class="banner-image"
+            src="images/banners/mlbbanner.jpg"
+            alt="MLB banner"
+            loading="lazy"
+          />
+        </div>
+      </aside>
+    </div>
 
     <script>
       const rosterList = document.getElementById("roster-list");
