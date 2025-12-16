@@ -169,6 +169,43 @@
         margin-top: 4px;
       }
 
+      .ebay-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+      }
+
+      .ebay-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .ebay-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .ebay-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #0a0a0a;
+        color: #e5e5e5;
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.85rem;
+      }
+
+      .ebay-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+      }
+
       .footer {
         font-size: 0.75rem;
         color: #666;
@@ -214,7 +251,13 @@
           2025 season back through the past 25 seasons. Expand a season to load
           the names, numbers, and positions directly from MLB's public stats API.
         </div>
-        <hr class="divider" />
+        
+          <div class="ebay-toggle" aria-label="eBay search toggle">
+            <span class="ebay-toggle-label">Ebay Search Toggle</span>
+            <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+          </div>
+          <hr class="divider" />
+
       </header>
 
       <section>
@@ -228,7 +271,67 @@
 
     <script>
       const rosterList = document.getElementById("roster-list");
+
+      const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
+      const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+
+
+      const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
+      let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
+        ? savedAddon
+        : "All";
+
+      function setEbayAddon(addon) {
+        currentEbayAddon = addon;
+        localStorage.setItem(EBAY_ADDON_KEY, addon);
+
+        ebayToggleOptions
+          .querySelectorAll(".ebay-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.addon === currentEbayAddon
+            );
+          });
+      }
+
+      function renderEbayToggle() {
+        EBAY_ADDON_OPTIONS.forEach((option) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "ebay-toggle-button";
+          button.dataset.addon = option;
+          button.textContent = option;
+
+          button.addEventListener("click", () => {
+            setEbayAddon(option);
+          });
+
+          ebayToggleOptions.appendChild(button);
+        });
+
+        setEbayAddon(currentEbayAddon);
+      }
+
+      renderEbayToggle();
+
+      rosterList.addEventListener("click", (event) => {
+        const link = event.target.closest(".roster-name a");
+
+        if (!link) return;
+
+        const playerName = link.dataset.player || link.textContent;
+
+        if (!playerName) return;
+
+        event.preventDefault();
+
+        const searchUrl = buildEbaySearchUrl(playerName);
+
+        window.open(searchUrl, "_blank", "noopener,noreferrer");
+      });
 
       years.forEach((year) => {
         const details = document.createElement("details");
@@ -305,6 +408,15 @@
           accolades.push("World Series champions");
         }
         return accolades;
+      }
+
+
+      function buildEbaySearchUrl(playerName, addon = currentEbayAddon) {
+        if (!playerName) return null;
+
+        const searchAddon = addon === "All" ? playerName : `${playerName} ${addon}`;
+
+        return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(searchAddon)}`;
       }
 
       async function fetchSeasonRecord(year) {
@@ -405,19 +517,7 @@
           pitchers.sort(sortByPositionThenName);
 
           const orderedRoster = [...positionPlayers, ...pitchers];
-
-          const wikiLinks = {
-            "David Ortiz": "https://en.wikipedia.org/wiki/David_Ortiz",
-            "Pedro Martinez": "https://en.wikipedia.org/wiki/Pedro_Mart%C3%ADnez",
-            "Dustin Pedroia": "https://en.wikipedia.org/wiki/Dustin_Pedroia",
-            "Mookie Betts": "https://en.wikipedia.org/wiki/Mookie_Betts",
-            "Xander Bogaerts": "https://en.wikipedia.org/wiki/Xander_Bogaerts",
-            "Manny Ramirez": "https://en.wikipedia.org/wiki/Manny_Ram%C3%ADrez",
-            "Jason Varitek": "https://en.wikipedia.org/wiki/Jason_Varitek",
-            "Jon Lester": "https://en.wikipedia.org/wiki/Jon_Lester",
-            "Chris Sale": "https://en.wikipedia.org/wiki/Chris_Sale",
-          };
-
+          
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
@@ -428,40 +528,28 @@
             const name = document.createElement("div");
             name.className = "roster-name";
             const fullName = player.person?.fullName || "Unknown";
+            const position = player.position?.abbreviation || "—";
+            const ebayUrl = buildEbaySearchUrl(fullName);
 
-            const wikiUrl = wikiLinks[fullName];
-            if (wikiUrl) {
-              const link = document.createElement("a");
-              link.href = wikiUrl;
-              link.target = "_blank";
-              link.rel = "noreferrer noopener";
-              link.title = "Open Wikipedia page";
+            const link = document.createElement("a");
+            link.href = ebayUrl;
+            link.target = "_blank";
+            link.rel = "noreferrer noopener";
+            link.title = "Search eBay sportscards ending soonest";
+            link.textContent = fullName;
+            link.dataset.player = fullName;
 
-              const linkText = document.createElement("span");
-              linkText.textContent = fullName;
-
-              const badge = document.createElement("span");
-              badge.className = "wiki-badge";
-              badge.textContent = "wiki";
-
-              link.appendChild(linkText);
-              link.appendChild(badge);
-              name.appendChild(link);
-            } else {
-              name.textContent = fullName;
-            }
+            name.appendChild(link);
 
             const meta = document.createElement("div");
             meta.className = "roster-meta";
             const number = player.jerseyNumber ? `#${player.jerseyNumber}` : "#—";
-            const position = player.position?.abbreviation || "—";
             meta.textContent = `${number} · ${position}`;
 
             card.appendChild(name);
             card.appendChild(meta);
             grid.appendChild(card);
           });
-
           target.innerHTML = "";
           target.appendChild(grid);
         } catch (error) {
