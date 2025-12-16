@@ -360,7 +360,7 @@
 
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading place...";
+        record.textContent = "loading record...";
 
         const description = document.createElement("div");
         description.className = "season-note";
@@ -414,6 +414,27 @@
         return `${number}th`;
       }
 
+      function formatAccolades(record) {
+        if (!record || typeof record !== "object") return [];
+
+        const accolades = [];
+        const leagueName = record.league?.abbrev || record.league?.name;
+
+        if (record.divisionLeader || record.divisionChamp) {
+          accolades.push("division title");
+        }
+
+        if (record.leagueChamp) {
+          accolades.push(leagueName ? `${leagueName} champions` : "league champions");
+        }
+
+        if (record.worldSeriesChamp) {
+          accolades.push("World Series champions");
+        }
+
+        return accolades;
+      }
+
       async function fetchSeasonRecord(year) {
         const standingsUrl =
           "https://statsapi.mlb.com/api/v1/standings?leagueId=104" +
@@ -436,16 +457,35 @@
 
         const cubsRecord = teamRecords.find((record) => record.team?.id === 112);
 
+        const wins = cubsRecord?.wins;
+        const losses = cubsRecord?.losses;
         const divisionRank = cubsRecord?.divisionRank;
+        const divisionName = cubsRecord?.division?.name;
 
         const ordinalRank = toOrdinal(divisionRank);
-        const placeText = ordinalRank ? `${ordinalRank} place` : null;
+        const placeText = ordinalRank
+          ? divisionName
+            ? `${ordinalRank} place ${divisionName}`
+            : `${ordinalRank} place`
+          : null;
 
-        if (placeText) {
-          return placeText;
+        const accolades = formatAccolades(cubsRecord);
+
+        if (typeof wins === "number" && typeof losses === "number") {
+          let display = `${wins} - ${losses}`;
+
+          if (placeText) {
+            display += `, ${placeText}`;
+          }
+
+          if (accolades.length) {
+            display += ` (${accolades.join("; ")})`;
+          }
+
+          return display;
         }
 
-        throw new Error("No place data found");
+        throw new Error("No record data found");
       }
 
       async function loadRoster(year, target) {

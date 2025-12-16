@@ -527,34 +527,36 @@
 
         const seasonData = seasonSummaries[year];
 
-        if (seasonData) {
-          const summaryText = document.createElement("div");
-          summaryText.className = "summary-text";
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
 
-          const headerRow = document.createElement("div");
-          headerRow.className = "year-header";
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
 
-          const place = document.createElement("span");
-          place.className = "record-badge";
-          place.textContent = seasonData.place;
+        const record = document.createElement("span");
+        record.className = "record-badge";
+        record.textContent = seasonData?.place || "loading record...";
 
-          headerRow.appendChild(yearLabel);
-          headerRow.appendChild(place);
-          summaryText.appendChild(headerRow);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
 
-          if (seasonData.summary) {
-            const description = document.createElement("div");
-            description.className = "season-note";
-            description.textContent = seasonData.summary;
-            summaryText.appendChild(description);
-          }
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
 
-          summary.appendChild(summaryText);
-        } else {
-          summary.appendChild(yearLabel);
-        }
-
+        summary.appendChild(summaryText);
         details.appendChild(summary);
+
+        fetchSeasonRecord(year)
+          .then((recordText) => {
+            record.textContent = recordText;
+          })
+          .catch(() => {
+            record.textContent = seasonData?.place || "record unavailable";
+          });
 
         const content = document.createElement("div");
         content.className = "roster-content";
