@@ -217,6 +217,43 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       }
 
+      .ebay-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+      }
+
+      .ebay-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .ebay-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .ebay-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #0a0a0a;
+        color: #e5e5e5;
+        padding: 6px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.85rem;
+      }
+
+      .ebay-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+      }
+
       .banner-image {
         display: block;
         width: 100%;
@@ -269,6 +306,10 @@
             season back through the past 25 seasons. Expand a season to load the
             names, numbers, and positions directly from MLB's public stats API.
           </div>
+          <div class="ebay-toggle" aria-label="eBay search toggle">
+            <span class="ebay-toggle-label">eBay addon</span>
+            <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+          </div>
           <hr class="divider" />
         </header>
 
@@ -296,6 +337,64 @@
     <script>
       const rosterList = document.getElementById("roster-list");
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+      const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
+      const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini"];
+
+      const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
+      let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
+        ? savedAddon
+        : "All";
+
+      function setEbayAddon(addon) {
+        currentEbayAddon = addon;
+        localStorage.setItem(EBAY_ADDON_KEY, addon);
+
+        ebayToggleOptions
+          .querySelectorAll(".ebay-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.addon === currentEbayAddon
+            );
+          });
+      }
+
+      function renderEbayToggle() {
+        EBAY_ADDON_OPTIONS.forEach((option) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "ebay-toggle-button";
+          button.dataset.addon = option;
+          button.textContent = option;
+
+          button.addEventListener("click", () => {
+            setEbayAddon(option);
+          });
+
+          ebayToggleOptions.appendChild(button);
+        });
+
+        setEbayAddon(currentEbayAddon);
+      }
+
+      renderEbayToggle();
+
+      rosterList.addEventListener("click", (event) => {
+        const link = event.target.closest(".roster-name a");
+
+        if (!link) return;
+
+        const playerName = link.dataset.player || link.textContent;
+
+        if (!playerName) return;
+
+        event.preventDefault();
+
+        const searchUrl = buildEbaySearchUrl(playerName);
+
+        window.open(searchUrl, "_blank", "noopener,noreferrer");
+      });
 
       years.forEach((year) => {
         const details = document.createElement("details");
@@ -375,18 +474,12 @@
         return accolades;
       }
 
-      function buildEbaySearchUrl(playerName) {
+      function buildEbaySearchUrl(playerName, addon = currentEbayAddon) {
         if (!playerName) return null;
 
-        const encodedName = encodeURIComponent(playerName);
-        const sportscardCategory = "261328";
+        const searchAddon = addon === "All" ? playerName : `${playerName} ${addon}`;
 
-        return (
-          "https://www.ebay.com/sch/i.html" +
-          `?_nkw=${encodedName}` +
-          `&_sacat=${sportscardCategory}` +
-          "&_sop=1"
-        );
+        return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(searchAddon)}`;
       }
 
       async function fetchSeasonRecord(year) {
@@ -507,6 +600,7 @@
             link.rel = "noreferrer noopener";
             link.title = "Search eBay sportscards ending soonest";
             link.textContent = fullName;
+            link.dataset.player = fullName;
 
             name.appendChild(link);
 
