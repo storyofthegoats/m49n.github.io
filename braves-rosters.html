@@ -509,11 +509,10 @@
             name.className = "roster-name";
             const fullName = player.person?.fullName || "Unknown";
             const position = player.position?.abbreviation || "—";
-            const isPitcher = position === "P";
-            const is2025PositionPlayer = year === 2025 && !isPitcher;
+            const is2025Season = year === 2025;
 
             const wikiUrl = wikiLinks[fullName];
-            if (is2025PositionPlayer) {
+            if (is2025Season) {
               const ebayUrl = buildEbaySearchUrl(fullName);
               const link = document.createElement("a");
               link.href = ebayUrl;
