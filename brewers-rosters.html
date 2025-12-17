@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -344,6 +361,108 @@
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Aiming to extend their pitching-driven run atop the Central.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Playing their trademark run-prevention game while chasing another title.",
+        },
+        2023: {
+          place: "1st place NL Central",
+          summary: "Elite staff earned a division crown before a quick NLDS exit to Arizona.",
+        },
+        2022: {
+          place: "2nd place NL Central",
+          summary: "Hot start faded as a sluggish offense cost them a playoff spot.",
+        },
+        2021: {
+          place: "1st place NL Central",
+          summary: "Rotation and defense carried them to October before an NLDS upset.",
+        },
+        2020: {
+          place: "4th place NL Central",
+          summary: "Sneaked into the expanded playoffs despite a sub-.500 record.",
+        },
+        2019: {
+          place: "2nd place NL Central",
+          summary: "Late surge without Christian Yelich ended with Wild Card heartbreak in D.C.",
+        },
+        2018: {
+          place: "1st place NL Central",
+          summary: "Won Game 163 and came within one win of the World Series.",
+        },
+        2017: {
+          place: "2nd place NL Central",
+          summary: "Surprised the league but fell just short of the Wild Card.",
+        },
+        2016: {
+          place: "4th place NL Central",
+          summary: "Early rebuild steps with flashes from a young roster.",
+        },
+        2015: {
+          place: "4th place NL Central",
+          summary: "Slow start led to a midseason overhaul and 94 losses.",
+        },
+        2014: {
+          place: "3rd place NL Central",
+          summary: "First-half darlings collapsed after August to finish third.",
+        },
+        2013: {
+          place: "4th place NL Central",
+          summary: "Ryan Braun's suspension headlined a disappointing campaign.",
+        },
+        2012: {
+          place: "3rd place NL Central",
+          summary: "Recovered from a rough start but missed October by a few games.",
+        },
+        2011: {
+          place: "1st place NL Central",
+          summary: "Franchise-record 96 wins powered them to the NLCS.",
+        },
+        2010: {
+          place: "3rd place NL Central",
+          summary: "Big bats couldn't offset thin pitching in a sub-.500 year.",
+        },
+        2009: {
+          place: "3rd place NL Central",
+          summary: "Post-CC hangover left them shy of another playoff berth.",
+        },
+        2008: {
+          place: "2nd place NL Central",
+          summary: "CC Sabathia heroics delivered the club's first playoff berth since 1982.",
+        },
+        2007: {
+          place: "2nd place NL Central",
+          summary: "Led most of the year before a late slide let the Cubs steal the division.",
+        },
+        2006: {
+          place: "4th place NL Central",
+          summary: "Injuries mounted for a club stuck under the .500 mark.",
+        },
+        2005: {
+          place: "3rd place NL Central",
+          summary: "Ended a long run of losing seasons with a .500 record.",
+        },
+        2004: {
+          place: "6th place NL Central",
+          summary: "Rough year as the rebuild dragged on in a six-team division.",
+        },
+        2003: {
+          place: "6th place NL Central",
+          summary: "Another 90-loss season despite Richie Sexson's power bat.",
+        },
+        2002: {
+          place: "6th place NL Central",
+          summary: "Franchise-worst 106 losses underscored severe pitching woes.",
+        },
+        2001: {
+          place: "4th place NL Central",
+          summary: "Opened Miller Park with a 94-loss season amid growing pains.",
+        },
+      };
       const currentYear = new Date().getFullYear();
       const years = Array.from({ length: 25 }, (_, index) => currentYear - index);
 
@@ -412,12 +531,28 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent = seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +560,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");

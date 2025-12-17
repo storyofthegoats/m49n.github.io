@@ -150,6 +150,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -342,6 +359,110 @@
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
+
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Betting on the youth movement to push them into true contention.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Dynamic young core aiming to build on last year's near-miss.",
+        },
+        2023: {
+          place: "3rd place NL Central",
+          summary: "Energized by rookies but fell just short of a surprise playoff spot.",
+        },
+        2022: {
+          place: "4th place NL Central",
+          summary: "Injury-riddled reset produced 100 losses and a look toward the future.",
+        },
+        2021: {
+          place: "3rd place NL Central",
+          summary: "Strong offense faded in September and a Wild Card bid slipped away.",
+        },
+        2020: {
+          place: "3rd place NL Central",
+          summary: "Pitching-led group made the expanded playoffs but was shut out in the Wild Card round.",
+        },
+        2019: {
+          place: "4th place NL Central",
+          summary: "Improved pitching wasn't enough to climb beyond fourth place.",
+        },
+        2018: {
+          place: "5th place NL Central",
+          summary: "Another last-place finish despite a midseason managerial change.",
+        },
+        2017: {
+          place: "5th place NL Central",
+          summary: "Rebuild continued with Joey Votto starring on a 94-loss team.",
+        },
+        2016: {
+          place: "5th place NL Central",
+          summary: "Development year marked by big homer totals but thin pitching.",
+        },
+        2015: {
+          place: "5th place NL Central",
+          summary: "Trade-deadline teardown led to a franchise-record losing skid.",
+        },
+        2014: {
+          place: "4th place NL Central",
+          summary: "Injuries to stars derailed a season that spiraled after the break.",
+        },
+        2013: {
+          place: "3rd place NL Central",
+          summary: "Won 90 games but bowed out in the Wild Card Game in Pittsburgh.",
+        },
+        2012: {
+          place: "1st place NL Central",
+          summary: "97-win powerhouse stunned by San Francisco after leading the NLDS 2-0.",
+        },
+        2011: {
+          place: "3rd place NL Central",
+          summary: "Could not replicate 2010's magic amid injuries and inconsistency.",
+        },
+        2010: {
+          place: "1st place NL Central",
+          summary: "Breakthrough division title ended by a sweep from the Phillies in the NLDS.",
+        },
+        2009: {
+          place: "4th place NL Central",
+          summary: "Late-season improvement set the stage for the next year's leap.",
+        },
+        2008: {
+          place: "5th place NL Central",
+          summary: "Another rebuilding year under new skipper Dusty Baker.",
+        },
+        2007: {
+          place: "5th place NL Central",
+          summary: "Offense-heavy club couldn't overcome persistent pitching woes.",
+        },
+        2006: {
+          place: "3rd place NL Central",
+          summary: "Hung in the race into September before fading to third.",
+        },
+        2005: {
+          place: "5th place NL Central",
+          summary: "Powerful bats couldn't mask a shaky pitching staff.",
+        },
+        2004: {
+          place: "4th place NL Central",
+          summary: "Early promise faded into a sub-.500 finish.",
+        },
+        2003: {
+          place: "5th place NL Central",
+          summary: "Injuries sank the Reds' first season at Great American Ball Park.",
+        },
+        2002: {
+          place: "3rd place NL Central",
+          summary: "Solid start gave way to a middling finish without October baseball.",
+        },
+        2001: {
+          place: "5th place NL Central",
+          summary: "Injury-plagued club tumbled after a hot April.",
+        },
+      };
+
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
 
@@ -409,12 +530,28 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent = seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -422,7 +559,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");

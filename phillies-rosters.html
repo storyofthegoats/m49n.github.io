@@ -148,6 +148,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -308,6 +325,110 @@
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
+
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Hoping the veteran core keeps them in the pennant chase all summer.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Gunning for a third straight deep October run with a loaded roster.",
+        },
+        2023: {
+          place: "2nd place NL East",
+          summary: "Another Wild Card surge that carried them back to the NLCS before running out of gas.",
+        },
+        2022: {
+          place: "3rd place NL East",
+          summary: "Snuck in as the final NL Wild Card and rode the wave to a World Series berth.",
+        },
+        2021: {
+          place: "2nd place NL East",
+          summary: "Stayed in the race into late September before fading out of contention.",
+        },
+        2020: {
+          place: "3rd place NL East",
+          summary: "Shortened slate marred by bullpen woes that spoiled a playoff push.",
+        },
+        2019: {
+          place: "4th place NL East",
+          summary: "Bryce Harper's first season ended with a .500 finish outside the postseason.",
+        },
+        2018: {
+          place: "3rd place NL East",
+          summary: "Surprise first-half surge collapsed down the stretch to miss October.",
+        },
+        2017: {
+          place: "5th place NL East",
+          summary: "Rebuild year that auditioned young pieces despite a last-place result.",
+        },
+        2016: {
+          place: "4th place NL East",
+          summary: "Lean roster took small steps forward while prospects gained experience.",
+        },
+        2015: {
+          place: "5th place NL East",
+          summary: "Rebuild bottomed out as veterans departed and the losses piled up.",
+        },
+        2014: {
+          place: "5th place NL East",
+          summary: "Aging core couldn't keep pace, leading to another losing campaign.",
+        },
+        2013: {
+          place: "4th place NL East",
+          summary: "Injuries and decline pushed the club toward a midseason reset.",
+        },
+        2012: {
+          place: "3rd place NL East",
+          summary: "Late charge after a sell-off but the streak ended just short of October.",
+        },
+        2011: {
+          place: "1st place NL East",
+          summary: "Franchise-best 102 wins ended abruptly with an NLDS upset by St. Louis.",
+        },
+        2010: {
+          place: "1st place NL East",
+          summary: "Star-studded rotation powered another division crown before an NLCS exit.",
+        },
+        2009: {
+          place: "1st place NL East",
+          summary: "Returned to the Fall Classic but the repeat bid fell short against the Yankees.",
+        },
+        2008: {
+          place: "1st place NL East",
+          summary: "Closed strong, stormed through October, and captured a World Series title.",
+        },
+        2007: {
+          place: "1st place NL East",
+          summary: "Overtook the Mets late for the division before getting swept in the NLDS.",
+        },
+        2006: {
+          place: "2nd place NL East",
+          summary: "September push fell a game shy of the Wild Card spot.",
+        },
+        2005: {
+          place: "2nd place NL East",
+          summary: "Won 88 games yet missed October by the narrowest of margins.",
+        },
+        2004: {
+          place: "2nd place NL East",
+          summary: "Inaugural Citizens Bank Park season finished with a middling record.",
+        },
+        2003: {
+          place: "3rd place NL East",
+          summary: "Final season at Veterans Stadium ended just shy of the postseason.",
+        },
+        2002: {
+          place: "3rd place NL East",
+          summary: "Surprise Wild Card chase faded in September after a strong first half.",
+        },
+        2001: {
+          place: "2nd place NL East",
+          summary: "Hot start produced 86 wins but the Braves held them off down the stretch.",
+        },
+      };
+
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
 
@@ -375,12 +496,28 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent = seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -388,7 +525,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
