@@ -198,6 +198,47 @@
         flex-wrap: wrap;
       }
 
+      .ebay-toggle {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #101010;
+        background: #0a0a0a;
+      }
+
+      .ebay-toggle-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #777;
+      }
+
+      .ebay-toggle-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .ebay-toggle-button {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid #1a1a1a;
+        background: #0f0f0f;
+        color: #e5e5e5;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.85rem;
+        transition: border-color 0.15s ease, background-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .ebay-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+      }
+
       .random-button {
         padding: 10px 14px;
         background: #4af626;
@@ -375,6 +416,10 @@
           <div class="random-title">the hit</div>
           <p class="random-description">who'd ya pull?</p>
           <div class="random-actions">
+            <div class="ebay-toggle" aria-label="eBay search toggle">
+              <span class="ebay-toggle-label">Ebay Search Toggle</span>
+              <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+            </div>
             <button id="random-button" class="random-button" type="button">
               generate random player
             </button>
@@ -399,10 +444,66 @@
 
       const randomButton = document.getElementById("random-button");
       const randomResult = document.getElementById("random-result");
+      const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+
+      const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
+      const EBAY_ADDON_OPTIONS = [
+        "All",
+        "Topps",
+        "Stadium Club",
+        "Panini",
+        "Chrome",
+        "Auto",
+        "RC",
+      ];
+
+      const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
+      let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
+        ? savedAddon
+        : "All";
+
+      function setEbayAddon(addon) {
+        currentEbayAddon = addon;
+        localStorage.setItem(EBAY_ADDON_KEY, addon);
+
+        ebayToggleOptions
+          .querySelectorAll(".ebay-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.addon === currentEbayAddon
+            );
+          });
+
+        const playerLink = randomResult.querySelector(".player-link");
+        const playerName = randomResult.querySelector(".player-name")?.textContent;
+
+        if (playerLink && playerName) {
+          playerLink.href = buildEbaySearchUrl(playerName, currentEbayAddon);
+        }
+      }
+
+      function renderEbayToggle() {
+        EBAY_ADDON_OPTIONS.forEach((option) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "ebay-toggle-button";
+          button.dataset.addon = option;
+          button.textContent = option;
+
+          button.addEventListener("click", () => {
+            setEbayAddon(option);
+          });
+
+          ebayToggleOptions.appendChild(button);
+        });
+
+        setEbayAddon(currentEbayAddon);
+      }
 
       let cachedTeams = null;
 
-      function buildEbaySearchUrl(playerName, addon = "All") {
+      function buildEbaySearchUrl(playerName, addon = currentEbayAddon) {
         if (!playerName) return null;
 
         const searchAddon = addon === "All" ? playerName : `${playerName} ${addon}`;
@@ -488,6 +589,8 @@
           console.error(error);
         }
       }
+
+      renderEbayToggle();
 
       randomButton.addEventListener("click", generateRandomPlayer);
 
