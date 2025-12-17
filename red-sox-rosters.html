@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -345,7 +362,84 @@
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
-
+      const seasonSummaries = {
+        2025: {
+          summary: "Season snapshot forthcoming for Boston's 2025 club.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Season still unfolding with the roster chasing October hopes.",
+        },
+        2023: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2022: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2021: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2020: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2019: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2018: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2017: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2016: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2015: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2014: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2013: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2012: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2011: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2010: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2009: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2008: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2007: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2006: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2005: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2004: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2003: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2002: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+        2001: {
+          summary: "Season summary not yet written for this campaign.",
+        },
+      };
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -411,12 +505,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -424,7 +535,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
