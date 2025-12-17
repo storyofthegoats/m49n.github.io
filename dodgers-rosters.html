@@ -150,6 +150,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -341,8 +358,110 @@
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
-      const currentYear = new Date().getFullYear();
-      const years = Array.from({ length: 25 }, (_, index) => currentYear - index);
+      const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+
+      const seasonSummaries = {
+        2025: {
+          place: "season ahead",
+          summary: "Looking to extend the postseason streak with another star-studded roster.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "A Betts-Ohtani-Freeman core leads another run at October glory.",
+        },
+        2023: {
+          place: "1st place NL West",
+          summary: "Regular-season juggernaut shocked by the D-backs in the NLDS.",
+        },
+        2022: {
+          place: "1st place NL West",
+          summary: "Franchise-record 111 wins ended early against the rival Padres.",
+        },
+        2021: {
+          place: "2nd place NL West",
+          summary: "A 106-win Wild Card team fell short in an NLCS rematch with Atlanta.",
+        },
+        2020: {
+          place: "World Series champions",
+          summary: "Powered through the shortened season to claim the club's first title since 1988.",
+        },
+        2019: {
+          place: "1st place NL West",
+          summary: "Another 100-win march halted by Washington's NLDS comeback.",
+        },
+        2018: {
+          place: "1st place NL West",
+          summary: "Won a second straight pennant before falling to Boston in the World Series.",
+        },
+        2017: {
+          place: "1st place NL West",
+          summary: "104-win powerhouse lost a seven-game World Series heartbreaker.",
+        },
+        2016: {
+          place: "1st place NL West",
+          summary: "Rallied past a rash of injuries to reach the NLCS against the Cubs.",
+        },
+        2015: {
+          place: "1st place NL West",
+          summary: "Clayton Kershaw and Zack Greinke fronted another division crown before an NLDS exit.",
+        },
+        2014: {
+          place: "1st place NL West",
+          summary: "Back-to-back titles with Kershaw's MVP season ending in NLDS defeat.",
+        },
+        2013: {
+          place: "1st place NL West",
+          summary: "Yasiel Puig's arrival sparked a summer surge to the NLCS.",
+        },
+        2012: {
+          place: "2nd place NL West",
+          summary: "New ownership spent big but a late slide missed the postseason.",
+        },
+        2011: {
+          place: "3rd place NL West",
+          summary: "Matt Kemp's near 40-40 season highlighted an otherwise middling year.",
+        },
+        2010: {
+          place: "4th place NL West",
+          summary: "Post-Manny era stumbled to a rare losing record.",
+        },
+        2009: {
+          place: "1st place NL West",
+          summary: "Rolled to another division flag before the Phillies stopped them in the NLCS.",
+        },
+        2008: {
+          place: "1st place NL West",
+          summary: "Mannywood run delivered an NLCS trip before another loss to Philadelphia.",
+        },
+        2007: {
+          place: "4th place NL West",
+          summary: "Late-season skid left them outside the playoff bracket.",
+        },
+        2006: {
+          place: "Wild Card",
+          summary: "A furious September push earned the Wild Card but ended in an NLDS sweep.",
+        },
+        2005: {
+          place: "4th place NL West",
+          summary: "Injuries piled up during a reset under manager Jim Tracy.",
+        },
+        2004: {
+          place: "1st place NL West",
+          summary: "Clinched the division with Adrian Beltre's breakout before falling in the NLDS.",
+        },
+        2003: {
+          place: "2nd place NL West",
+          summary: "Elite pitching kept them close but the offense fell short of October.",
+        },
+        2002: {
+          place: "3rd place NL West",
+          summary: "A 92-win club stunningly missed the postseason in a tight division race.",
+        },
+        2001: {
+          place: "3rd place NL West",
+          summary: "Shawn Green's 49 homers weren't enough to catch Arizona or San Francisco.",
+        },
+      };
 
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
@@ -409,12 +528,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -422,7 +558,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
