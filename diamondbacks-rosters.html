@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -347,6 +364,109 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season ahead",
+          summary: "Hunting another October shot with the Corbin Carroll-led core.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Looking to build on a surprise pennant with young stars pacing the club.",
+        },
+        2023: {
+          place: "2nd place NL West",
+          summary: "From 84-win Wild Card to stunning run at the NL crown and World Series berth.",
+        },
+        2022: {
+          place: "4th place NL West",
+          summary: "Progress showed through Zac Gallen's breakout and Carroll's debut.",
+        },
+        2021: {
+          place: "5th place NL West",
+          summary: "A 110-loss spiral marked a reset amid injuries and roster churn.",
+        },
+        2020: {
+          place: "5th place NL West",
+          summary: "Slow start in the shortened season led to a last-place finish.",
+        },
+        2019: {
+          place: "2nd place NL West",
+          summary: "Balanced club stayed in the Wild Card chase behind Ketel Marte's breakout.",
+        },
+        2018: {
+          place: "3rd place NL West",
+          summary: "First-half surge faded after a quiet deadline and Goldschmidt's finale.",
+        },
+        2017: {
+          place: "2nd place NL West",
+          summary: "Won the NL Wild Card game before falling to the Dodgers in the NLDS.",
+        },
+        2016: {
+          place: "4th place NL West",
+          summary: "High expectations fizzled as injuries and pitching woes mounted.",
+        },
+        2015: {
+          place: "3rd place NL West",
+          summary: "Paul Goldschmidt's MVP-caliber season highlighted an offense on the rise.",
+        },
+        2014: {
+          place: "5th place NL West",
+          summary: "Injuries and a slow start led to a last-place finish and front office change.",
+        },
+        2013: {
+          place: "2nd place NL West",
+          summary: "Finished .500 again with late bullpen hiccups costing a Wild Card spot.",
+        },
+        2012: {
+          place: "3rd place NL West",
+          summary: "Hovering around .500 after the 2011 breakthrough left them short of October.",
+        },
+        2011: {
+          place: "1st place NL West",
+          summary: "NL West champs stunned the league before a tight NLDS loss to Milwaukee.",
+        },
+        2010: {
+          place: "5th place NL West",
+          summary: "Strikeouts and bullpen issues piled up in a 97-loss campaign.",
+        },
+        2009: {
+          place: "5th place NL West",
+          summary: "Injuries to Brandon Webb and key bats fueled a steep drop in the standings.",
+        },
+        2008: {
+          place: "2nd place NL West",
+          summary: "Hot start faded as the Dodgers overtook them down the stretch.",
+        },
+        2007: {
+          place: "1st place NL West",
+          summary: "Won a young-leaning division title before being swept in the NLCS.",
+        },
+        2006: {
+          place: "4th place NL West",
+          summary: "Youthful roster took lumps but set the stage for the next year's rise.",
+        },
+        2005: {
+          place: "2nd place NL West",
+          summary: "Rebounded from 111 losses with a quick turnaround into contention.",
+        },
+        2004: {
+          place: "5th place NL West",
+          summary: "A 111-loss freefall prompted sweeping changes across the roster.",
+        },
+        2003: {
+          place: "3rd place NL West",
+          summary: "Aging rotation battled injuries while the offense struggled for consistency.",
+        },
+        2002: {
+          place: "1st place NL West",
+          summary: "Randy Johnson and Curt Schilling followed the title run with another division crown.",
+        },
+        2001: {
+          place: "1st place NL West",
+          summary: "Walk-off World Series champs in just the franchise's fourth season.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -412,12 +532,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +562,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");

@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -344,8 +361,110 @@
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
-      const currentYear = new Date().getFullYear();
-      const years = Array.from({ length: 25 }, (_, index) => currentYear - index);
+      const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+
+      const seasonSummaries = {
+        2025: {
+          place: "season ahead",
+          summary: "Hoping a young core finally sparks a step forward at Coors Field.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Growing pains continue while prospects trickle into the big-league roster.",
+        },
+        2023: {
+          place: "5th place NL West",
+          summary: "Injuries and thin pitching depth produced the franchise's first 100-loss year.",
+        },
+        2022: {
+          place: "5th place NL West",
+          summary: "A Kris Bryant signing couldn't overcome shaky pitching or a last-place finish.",
+        },
+        2021: {
+          place: "4th place NL West",
+          summary: "Quiet deadline year that still ended ahead of only Arizona in the division.",
+        },
+        2020: {
+          place: "4th place NL West",
+          summary: "Fast start in the shortened slate faded into another sub-.500 campaign.",
+        },
+        2019: {
+          place: "4th place NL West",
+          summary: "A rocky pitching staff derailed hopes of a third straight postseason trip.",
+        },
+        2018: {
+          place: "2nd place NL West",
+          summary: "Won the NL Wild Card after a Game 163 before bowing out in the NLDS.",
+        },
+        2017: {
+          place: "3rd place NL West",
+          summary: "Wild Card berth powered by Arenado, Blackmon, and a revived pitching staff.",
+        },
+        2016: {
+          place: "3rd place NL West",
+          summary: "A top-five offense couldn't offset thin rotation depth.",
+        },
+        2015: {
+          place: "5th place NL West",
+          summary: "Another last-place finish despite big numbers from Nolan Arenado.",
+        },
+        2014: {
+          place: "4th place NL West",
+          summary: "Injuries to Tulowitzki and CarGo sank a promising first half.",
+        },
+        2013: {
+          place: "5th place NL West",
+          summary: "Hot April gave way to a slide that ended in the division cellar.",
+        },
+        2012: {
+          place: "5th place NL West",
+          summary: "Historic pitching struggles led to a franchise-worst record.",
+        },
+        2011: {
+          place: "4th place NL West",
+          summary: "A big second-half slump overshadowed another CarGo and Tulo showcase.",
+        },
+        2010: {
+          place: "3rd place NL West",
+          summary: "Stayed in the hunt until September before fading from contention.",
+        },
+        2009: {
+          place: "2nd place NL West",
+          summary: "Midseason surge earned a Wild Card spot before an NLDS loss to Philadelphia.",
+        },
+        2008: {
+          place: "3rd place NL West",
+          summary: "Injuries and inconsistency kept the club from defending its pennant.",
+        },
+        2007: {
+          place: "2nd place NL West",
+          summary: "Rocktober run carried a tiebreaker winner all the way to the World Series.",
+        },
+        2006: {
+          place: "4th place NL West",
+          summary: "Young rotation pieces got their first extended looks at altitude.",
+        },
+        2005: {
+          place: "5th place NL West",
+          summary: "Youth movement at Coors finished well off the division pace.",
+        },
+        2004: {
+          place: "4th place NL West",
+          summary: "Todd Helton led the way during another rebuilding year in Denver.",
+        },
+        2003: {
+          place: "4th place NL West",
+          summary: "Power bats couldn't overcome pitching woes on the road.",
+        },
+        2002: {
+          place: "4th place NL West",
+          summary: "Mile High offense met familiar struggles away from Denver.",
+        },
+        2001: {
+          place: "4th place NL West",
+          summary: "First post-Big Cat season showed flashes from Helton and a young lineup.",
+        },
+      };
 
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
@@ -412,12 +531,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +561,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
