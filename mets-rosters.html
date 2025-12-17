@@ -125,7 +125,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -146,6 +146,23 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
       }
 
       .roster-content {
@@ -384,23 +401,47 @@
 
         const summary = document.createElement("summary");
         summary.className = "year-summary";
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
-        const record = document.createElement("span");
-        record.className = "record-badge";
-        record.textContent = "loading record...";
+        const standingLabel = document.createElement("span");
+        standingLabel.className = "record-badge";
+        standingLabel.textContent = "loading standing...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(standingLabel);
+        summaryText.appendChild(headerRow);
+
+        const seasonNote = document.createElement("div");
+        seasonNote.className = "season-note";
+        seasonNote.textContent = "Loading season summary...";
+        summaryText.appendChild(seasonNote);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
-          .then((recordText) => {
-            record.textContent = recordText;
+          .then((recordData) => {
+            const { placeText, recordText, description } = recordData;
+
+            standingLabel.textContent = placeText || "standing unavailable";
+
+            const descriptionParts = [recordText, description]
+              .filter(Boolean)
+              .join(" ");
+
+            seasonNote.textContent =
+              descriptionParts || "Season summary not available.";
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            standingLabel.textContent = "standing unavailable";
+            seasonNote.textContent = "Season summary not available.";
           });
 
         const content = document.createElement("div");
@@ -501,17 +542,20 @@
         const accolades = formatAccolades(metsRecord);
 
         if (typeof wins === "number" && typeof losses === "number") {
-          let display = `${wins} - ${losses}`;
+          const recordText = `${wins}-${losses}`;
+          const descriptionParts = [];
 
           if (placeText) {
-            display += `, ${placeText}`;
+            descriptionParts.push(placeText);
           }
 
           if (accolades.length) {
-            display += ` (${accolades.join("; ")})`;
+            descriptionParts.push(accolades.join("; "));
           }
 
-          return display;
+          const description = descriptionParts.join("; ");
+
+          return { recordText, placeText, description };
         }
 
         throw new Error("No record data found");
