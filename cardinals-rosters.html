@@ -140,7 +140,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -161,6 +161,23 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
       }
 
       .roster-content {
@@ -322,6 +339,109 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Looking to rebound behind a refreshed rotation and cornerstone bats.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Re-tooling on the fly with eyes on returning to the NL Central race.",
+        },
+        2023: {
+          place: "5th place NL Central",
+          summary: "Injuries and thin pitching led to a rare last-place stumble.",
+        },
+        2022: {
+          place: "1st place NL Central",
+          summary: "Farewell season for Pujols and Molina ended with a Wild Card sweep by Philadelphia.",
+        },
+        2021: {
+          place: "2nd place NL Central",
+          summary: "A 17-game win streak vaulted them to the Wild Card before a loss in Los Angeles.",
+        },
+        2020: {
+          place: "2nd place NL Central",
+          summary: "Navigated COVID pauses to grab a playoff spot and fell in the Wild Card Series to San Diego.",
+        },
+        2019: {
+          place: "1st place NL Central",
+          summary: "Returned to October and advanced to the NLCS before being swept by Washington.",
+        },
+        2018: {
+          place: "3rd place NL Central",
+          summary: "Late summer surge under Mike Shildt fell just shy of a Wild Card berth.",
+        },
+        2017: {
+          place: "3rd place NL Central",
+          summary: "Hovering around .500 left them outside the postseason picture again.",
+        },
+        2016: {
+          place: "2nd place NL Central",
+          summary: "Won 86 games but missed the playoffs in the season's final weekend.",
+        },
+        2015: {
+          place: "1st place NL Central",
+          summary: "Baseball's lone 100-win team was bounced by the Cubs in the NLDS.",
+        },
+        2014: {
+          place: "1st place NL Central",
+          summary: "Captured the division and reached a fourth straight NLCS before falling to San Francisco.",
+        },
+        2013: {
+          place: "1st place NL Central",
+          summary: "Won the pennant behind a deep roster but lost the World Series to Boston.",
+        },
+        2012: {
+          place: "2nd place NL Central",
+          summary: "Wild Card run featured a comeback in Washington before an NLCS defeat to San Francisco.",
+        },
+        2011: {
+          place: "2nd place NL Central",
+          summary: "Epic September surge carried them from Wild Card to a World Series championship.",
+        },
+        2010: {
+          place: "2nd place NL Central",
+          summary: "Hot start unraveled in August, keeping them out of the postseason.",
+        },
+        2009: {
+          place: "1st place NL Central",
+          summary: "Division champs were swept out of the NLDS by the Dodgers.",
+        },
+        2008: {
+          place: "4th place NL Central",
+          summary: "Strong offense couldn't overcome bullpen woes in a crowded division race.",
+        },
+        2007: {
+          place: "3rd place NL Central",
+          summary: "Injuries lingered after the title run, leading to a losing season.",
+        },
+        2006: {
+          place: "1st place NL Central",
+          summary: "An 83-win club got hot in October and captured the World Series.",
+        },
+        2005: {
+          place: "1st place NL Central",
+          summary: "Another 100-win powerhouse that fell to Houston in the NLCS.",
+        },
+        2004: {
+          place: "1st place NL Central",
+          summary: "Dominant season ended with a World Series sweep by the Red Sox.",
+        },
+        2003: {
+          place: "3rd place NL Central",
+          summary: "Potent lineup couldn't cover for pitching issues in a tight division race.",
+        },
+        2002: {
+          place: "1st place NL Central",
+          summary: "Rallied after tragedy to claim the division before an NLCS loss to San Francisco.",
+        },
+        2001: {
+          place: "2nd place NL Central",
+          summary: "Shared the division lead and claimed a Wild Card but fell to Arizona in the NLDS.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -387,12 +507,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -400,7 +537,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");

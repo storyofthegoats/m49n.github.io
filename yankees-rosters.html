@@ -128,7 +128,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -149,6 +149,23 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
       }
 
       .roster-content {
@@ -347,6 +364,108 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Building a contender around Judge and Soto while waiting on pitching health.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "In the hunt with Juan Soto boosting a rejuvenated lineup.",
+        },
+        2023: {
+          place: "4th place AL East",
+          summary: "Injuries and a stagnant offense ended the postseason streak.",
+        },
+        2022: {
+          place: "1st place AL East",
+          summary: "Powered to 99 wins before Houston swept them in the ALCS.",
+        },
+        2021: {
+          place: "3rd place AL East",
+          summary: "Reached the AL Wild Card game but fell short in Boston.",
+        },
+        2020: {
+          place: "2nd place AL East",
+          summary: "Banged-up roster slugged through the shortened season and lost the ALDS to Tampa Bay.",
+        },
+        2019: {
+          place: "1st place AL East",
+          summary: "Won 103 games yet fell to Houston in a six-game ALCS.",
+        },
+        2018: {
+          place: "2nd place AL East",
+          summary: "A 100-win club that was bounced by the rival Red Sox in the ALDS.",
+        },
+        2017: {
+          place: "2nd place AL East",
+          summary: "Baby Bombers nearly reached the World Series before the ALCS Game 7 loss.",
+        },
+        2016: {
+          place: "4th place AL East",
+          summary: "Transition year that ushered in the youth movement after a deadline sell-off.",
+        },
+        2015: {
+          place: "2nd place AL East",
+          summary: "Returned to October via the Wild Card but were shut down by Dallas Keuchel and Houston.",
+        },
+        2014: {
+          place: "2nd place AL East",
+          summary: "Derek Jeter's farewell tour ended with a playoff miss despite an above-.500 finish.",
+        },
+        2013: {
+          place: "3rd place AL East",
+          summary: "Injury-ravaged lineup could not keep pace in the AL East race.",
+        },
+        2012: {
+          place: "1st place AL East",
+          summary: "Won the division and swept Baltimore in the ALDS before being swept by Detroit in the ALCS.",
+        },
+        2011: {
+          place: "1st place AL East",
+          summary: "Claimed the AL East but exited early in a five-game ALDS versus Detroit.",
+        },
+        2010: {
+          place: "2nd place AL East",
+          summary: "Defending champs reached the ALCS before Texas ended the repeat bid.",
+        },
+        2009: {
+          place: "1st place AL East",
+          summary: "Rolled to 103 wins and capped the year with a 27th World Series title.",
+        },
+        2008: {
+          place: "3rd place AL East",
+          summary: "Injuries and uneven pitching snapped the franchise's postseason streak.",
+        },
+        2007: {
+          place: "2nd place AL East",
+          summary: "Stormed into the Wild Card but lost the ALDS to Cleveland.",
+        },
+        2006: {
+          place: "1st place AL East",
+          summary: "Another division crown ended abruptly with a four-game ALDS loss to Detroit.",
+        },
+        2005: {
+          place: "1st place AL East",
+          summary: "Overcame a slow start to take the East before falling to the Angels in the ALDS.",
+        },
+        2004: {
+          place: "1st place AL East",
+          summary: "Historic ALCS collapse erased a 3-0 lead against Boston.",
+        },
+        2003: {
+          place: "1st place AL East",
+          summary: "Won the pennant but were stunned by Florida in the World Series.",
+        },
+        2002: {
+          place: "1st place AL East",
+          summary: "Division champs knocked out by Anaheim in the ALDS.",
+        },
+        2001: {
+          place: "1st place AL East",
+          summary: "Chased a fourth straight title but lost the epic World Series to Arizona.",
+        },
+      };
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -412,12 +531,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +561,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
