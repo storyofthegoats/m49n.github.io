@@ -150,6 +150,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -344,6 +361,109 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Building around Logan Webb and emerging prospects while eyeing another run.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Hoping offseason additions can reignite the offense and playoff hopes.",
+        },
+        2023: {
+          place: "4th place NL West",
+          summary: "Patchwork lineup and pitching injuries led to an uneven season.",
+        },
+        2022: {
+          place: "3rd place NL West",
+          summary: "Couldn’t recapture 2021’s magic but hung in the Wild Card chase.",
+        },
+        2021: {
+          place: "1st place NL West",
+          summary: "Franchise-record 107 wins ended with a classic NLDS duel versus the Dodgers.",
+        },
+        2020: {
+          place: "3rd place NL West",
+          summary: "Late push in the 60-game sprint fell one win shy of a playoff spot.",
+        },
+        2019: {
+          place: "3rd place NL West",
+          summary: "Bruce Bochy’s farewell featured a summer surge before a deadline reset.",
+        },
+        2018: {
+          place: "4th place NL West",
+          summary: "Injuries to stars like Posey and Cueto sank a veteran club.",
+        },
+        2017: {
+          place: "5th place NL West",
+          summary: "Madison Bumgarner’s injury and a cold offense doomed the season early.",
+        },
+        2016: {
+          place: "2nd place NL West",
+          summary: "Even-year hopes ended with bullpen heartbreak in the NLDS.",
+        },
+        2015: {
+          place: "2nd place NL West",
+          summary: "Competitive club ran out of gas with rotation depth issues.",
+        },
+        2014: {
+          place: "2nd place NL West",
+          summary: "Wild Card run turned into a third championship in five seasons.",
+        },
+        2013: {
+          place: "3rd place NL West",
+          summary: "Injury hangover year following the 2012 title run.",
+        },
+        2012: {
+          place: "1st place NL West",
+          summary: "NL West champs rode Buster Posey’s MVP season to another World Series crown.",
+        },
+        2011: {
+          place: "2nd place NL West",
+          summary: "Elite pitching stayed strong but the offense sputtered after Posey’s injury.",
+        },
+        2010: {
+          place: "1st place NL West",
+          summary: "Torture-ball Giants surged to the franchise’s first San Francisco title.",
+        },
+        2009: {
+          place: "3rd place NL West",
+          summary: "Lincecum and Cain powered a big step forward that fell short of October.",
+        },
+        2008: {
+          place: "4th place NL West",
+          summary: "Early rebuild centered on a young Tim Lincecum’s electric arm.",
+        },
+        2007: {
+          place: "5th place NL West",
+          summary: "Barry Bonds’ farewell season ended with a cellar finish.",
+        },
+        2006: {
+          place: "3rd place NL West",
+          summary: "Veteran roster hovered around .500 in a tight division race.",
+        },
+        2005: {
+          place: "3rd place NL West",
+          summary: "Injuries to Bonds and the rotation spoiled division hopes.",
+        },
+        2004: {
+          place: "2nd place NL West",
+          summary: "Barry Bonds led a contender that fell just short of the West crown.",
+        },
+        2003: {
+          place: "1st place NL West",
+          summary: "Defending NL champs won the division before an NLDS upset by Florida.",
+        },
+        2002: {
+          place: "2nd place NL West",
+          summary: "Wild Card club surged to the World Series before falling in seven games.",
+        },
+        2001: {
+          place: "2nd place NL West",
+          summary: "Powerful offense chased Arizona but settled for a runner-up finish.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -409,12 +529,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -422,7 +559,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");

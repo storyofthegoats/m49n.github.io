@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -346,6 +363,109 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Trying to regroup into a contender with the core still in its prime.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Looking for a rebound season after a frustrating 2023 finish.",
+        },
+        2023: {
+          place: "3rd place NL West",
+          summary: "Star-laden roster underachieved and missed October despite sky-high expectations.",
+        },
+        2022: {
+          place: "2nd place NL West",
+          summary: "Upset the Dodgers and reached the NLCS on the strength of a deep rotation.",
+        },
+        2021: {
+          place: "3rd place NL West",
+          summary: "Fast start faded into a second-half collapse and a missed playoff bid.",
+        },
+        2020: {
+          place: "2nd place NL West",
+          summary: "Slam Diego arrived with a Wild Card sweep before falling in the NLDS.",
+        },
+        2019: {
+          place: "5th place NL West",
+          summary: "Fernando Tatis Jr. energized the club but injuries and youth showed late.",
+        },
+        2018: {
+          place: "5th place NL West",
+          summary: "Prospect-heavy roster took its lumps during a patient rebuild.",
+        },
+        2017: {
+          place: "4th place NL West",
+          summary: "Rebuilding year focused on evaluating young pieces under Andy Green.",
+        },
+        2016: {
+          place: "5th place NL West",
+          summary: "Post-teardown season that leaned on call-ups after trading veterans.",
+        },
+        2015: {
+          place: "4th place NL West",
+          summary: "Big-name offseason bets fizzled as the club finished under .500.",
+        },
+        2014: {
+          place: "3rd place NL West",
+          summary: "Elite bullpen and Petco Park couldn't offset an anemic offense.",
+        },
+        2013: {
+          place: "3rd place NL West",
+          summary: "Mid-pack finish with glimpses from Chase Headley and the young staff.",
+        },
+        2012: {
+          place: "4th place NL West",
+          summary: "Second-half surge wasn't enough to overcome an early hole.",
+        },
+        2011: {
+          place: "5th place NL West",
+          summary: "Offense regressed after the near-miss of 2010.",
+        },
+        2010: {
+          place: "2nd place NL West",
+          summary: "Surprise 90-win team fell just short of the division on the final weekend.",
+        },
+        2009: {
+          place: "4th place NL West",
+          summary: "Rebuilding squad leaned heavily on Adrian Gonzalez's bat.",
+        },
+        2008: {
+          place: "5th place NL West",
+          summary: "Injury-plagued season led to a last-place finish.",
+        },
+        2007: {
+          place: "2nd place NL West",
+          summary: "Tiebreaker heartbreak in Colorado kept them out of the playoffs.",
+        },
+        2006: {
+          place: "1st place NL West",
+          summary: "Won the West behind Jake Peavy, Trevor Hoffman, and a balanced roster.",
+        },
+        2005: {
+          place: "1st place NL West",
+          summary: "Took the division despite a modest record before falling in the NLDS.",
+        },
+        2004: {
+          place: "3rd place NL West",
+          summary: "Opened Petco Park with an 87-win club that chased the Wild Card.",
+        },
+        2003: {
+          place: "5th place NL West",
+          summary: "Basement finish closed out the Qualcomm Stadium era.",
+        },
+        2002: {
+          place: "5th place NL West",
+          summary: "Rebuilding year centered on Phil Nevin and young pitching.",
+        },
+        2001: {
+          place: "4th place NL West",
+          summary: "Injury-hit club hovered below .500 in Qualcomm's final seasons.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -411,12 +531,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -424,7 +561,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
