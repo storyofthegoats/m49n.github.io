@@ -127,7 +127,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -148,6 +148,23 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
       }
 
       .roster-content {
@@ -331,6 +348,109 @@
       const currentYear = new Date().getFullYear();
       const years = Array.from({ length: 25 }, (_, index) => currentYear - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Hoping the young core takes a leap alongside a budding rotation.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Watching top prospects arrive as the rebuild moves forward.",
+        },
+        2023: {
+          place: "4th place NL Central",
+          summary: "Early surge faded while the club continued sorting its foundation pieces.",
+        },
+        2022: {
+          place: "4th place NL Central",
+          summary: "Flashes from rookies like Oneil Cruz weren't enough to avoid another 100-loss slide.",
+        },
+        2021: {
+          place: "5th place NL Central",
+          summary: "Development-first year with Ke'Bryan Hayes sidelined and the losses mounting.",
+        },
+        2020: {
+          place: "5th place NL Central",
+          summary: "Shortened season ended with the league's worst record amid a full-scale rebuild.",
+        },
+        2019: {
+          place: "5th place NL Central",
+          summary: "Clubhouse turmoil and injuries erased a promising first-half push.",
+        },
+        2018: {
+          place: "4th place NL Central",
+          summary: "Midsummer trades sparked a brief run before fading out of the Wild Card chase.",
+        },
+        2017: {
+          place: "4th place NL Central",
+          summary: "Injuries and limited offense kept them under .500 for a second straight year.",
+        },
+        2016: {
+          place: "3rd place NL Central",
+          summary: "Step back from the 98-win team as the rotation regressed.",
+        },
+        2015: {
+          place: "2nd place NL Central",
+          summary: "Won 98 games but were eliminated in the Wild Card showdown with the Cubs.",
+        },
+        2014: {
+          place: "2nd place NL Central",
+          summary: "Earned a second straight Wild Card berth before falling to the Giants.",
+        },
+        2013: {
+          place: "2nd place NL Central",
+          summary: "Ended a 20-year drought and pushed the Cardinals to five games in the NLDS.",
+        },
+        2012: {
+          place: "4th place NL Central",
+          summary: "Promising summer collapsed in August to extend the losing-season streak.",
+        },
+        2011: {
+          place: "4th place NL Central",
+          summary: "Briefly led the division before a post-break skid dropped them out of contention.",
+        },
+        2010: {
+          place: "6th place NL Central",
+          summary: "Youth-heavy roster endured 105 losses during a deep rebuild.",
+        },
+        2009: {
+          place: "6th place NL Central",
+          summary: "Trading veterans for prospects extended the string of losing campaigns.",
+        },
+        2008: {
+          place: "6th place NL Central",
+          summary: "Deadline deals for future pieces preceded another last-place finish.",
+        },
+        2007: {
+          place: "6th place NL Central",
+          summary: "Fifteenth straight losing season arrived despite a few offensive breakouts.",
+        },
+        2006: {
+          place: "6th place NL Central",
+          summary: "Rotation struggles overshadowed a strong bullpen in a 67-win year.",
+        },
+        2005: {
+          place: "6th place NL Central",
+          summary: "Young core showed flashes but never escaped the division cellar.",
+        },
+        2004: {
+          place: "5th place NL Central",
+          summary: "Mid-pack offense couldn't offset thin pitching depth.",
+        },
+        2003: {
+          place: "4th place NL Central",
+          summary: "Transition season after trading stars left the club short on depth.",
+        },
+        2002: {
+          place: "4th place NL Central",
+          summary: "Second year at PNC Park ended with another sub-.500 finish.",
+        },
+        2001: {
+          place: "6th place NL Central",
+          summary: "Inaugural PNC Park campaign brought 100 losses during a deep rebuild.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -396,12 +516,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -409,7 +546,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
