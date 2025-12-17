@@ -151,6 +151,23 @@
         font-size: 0.9rem;
       }
 
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -347,6 +364,109 @@
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Building around Abrams, Gore, and a growing young core in the next phase of the rebuild.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Youth movement looks to take a step forward after a rebuilding 2023.",
+        },
+        2023: {
+          place: "5th place NL East",
+          summary: "Focused on developing prospects after the mid-2021 teardown.",
+        },
+        2022: {
+          place: "5th place NL East",
+          summary: "Juan Soto trade headlined another tough rebuilding season.",
+        },
+        2021: {
+          place: "5th place NL East",
+          summary: "Fire-sale summer reset the roster following a slow start.",
+        },
+        2020: {
+          place: "5th place NL East",
+          summary: "Championship hangover and injuries defined the shortened follow-up year.",
+        },
+        2019: {
+          place: "2nd place NL East",
+          summary: "Turned a 19-31 start into a Wild Card surge and the franchise’s first World Series crown.",
+        },
+        2018: {
+          place: "2nd place NL East",
+          summary: "Underachieved amid injuries and inconsistency in Bryce Harper’s final D.C. season.",
+        },
+        2017: {
+          place: "1st place NL East",
+          summary: "Ran away with the East before another NLDS heartbreak.",
+        },
+        2016: {
+          place: "1st place NL East",
+          summary: "Max Scherzer and a deep lineup returned the club to October.",
+        },
+        2015: {
+          place: "2nd place NL East",
+          summary: "Preseason favorites faltered with injuries and bullpen woes.",
+        },
+        2014: {
+          place: "1st place NL East",
+          summary: "Dominant rotation powered a 96-win season and division flag.",
+        },
+        2013: {
+          place: "2nd place NL East",
+          summary: "Late surge wasn’t enough to follow up 2012’s breakout.",
+        },
+        2012: {
+          place: "1st place NL East",
+          summary: "Franchise-best 98 wins announced their arrival as contenders.",
+        },
+        2011: {
+          place: "3rd place NL East",
+          summary: "Progress year highlighted by Michael Morse’s bat and young pitching strides.",
+        },
+        2010: {
+          place: "5th place NL East",
+          summary: "Stephen Strasburg’s electric debut headlined an otherwise tough season.",
+        },
+        2009: {
+          place: "5th place NL East",
+          summary: "Ryan Zimmerman’s breakout couldn’t lift the club from the cellar.",
+        },
+        2008: {
+          place: "5th place NL East",
+          summary: "Injury-riddled year ended with the league’s worst record.",
+        },
+        2007: {
+          place: "4th place NL East",
+          summary: "Patchwork roster surprised with 73 wins in the second D.C. season.",
+        },
+        2006: {
+          place: "5th place NL East",
+          summary: "Early struggles set the stage for ownership change and future rebuilds.",
+        },
+        2005: {
+          place: "5th place NL East",
+          summary: "First Nationals squad started hot before fading to a .500 finish.",
+        },
+        2004: {
+          place: "4th place NL East",
+          summary: "Final Expos season played out amid relocation uncertainty.",
+        },
+        2003: {
+          place: "4th place NL East",
+          summary: "Montreal stayed competitive despite an uncertain future.",
+        },
+        2002: {
+          place: "2nd place NL East",
+          summary: "Strong 83-win club chased the Braves while contraction rumors swirled.",
+        },
+        2001: {
+          place: "5th place NL East",
+          summary: "Injury-marred year left the Expos at the bottom of the division.",
+        },
+      };
+
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
@@ -412,12 +532,29 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        description.textContent =
+          seasonData?.summary || "Season summary not available.";
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +562,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
