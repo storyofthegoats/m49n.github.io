@@ -842,11 +842,11 @@
         const description = document.createElement("div");
         description.className = "season-note";
 
-        const recordLine = document.createElement("span");
+        const recordLine = document.createElement("div");
         recordLine.className = "season-record-line";
         recordLine.textContent = "record loading...";
 
-        const descriptionText = document.createElement("span");
+        const descriptionText = document.createElement("div");
         descriptionText.textContent =
           seasonData?.summary || "Season summary not available.";
 
@@ -857,13 +857,10 @@
         permanentRecordLink.rel = "noopener noreferrer";
         permanentRecordLink.textContent = "season statistics";
 
-        description.append(
-          recordLine,
-          document.createTextNode(" · "),
-          descriptionText,
-          document.createTextNode(" "),
-          permanentRecordLink
-        );
+        const statsLinkRow = document.createElement("div");
+        statsLinkRow.appendChild(permanentRecordLink);
+
+        description.append(recordLine, descriptionText, statsLinkRow);
         summaryText.appendChild(description);
 
         summary.appendChild(summaryText);
