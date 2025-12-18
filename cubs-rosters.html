@@ -43,17 +43,19 @@
       }
 
       .page-layout {
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: 260px 1fr;
-        gap: 28px;
+        gap: 24px;
         align-items: start;
       }
 
       main {
         max-width: 960px;
         width: 100%;
+        margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -125,7 +127,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -163,6 +165,19 @@
       .season-note {
         font-size: 0.85rem;
         color: #888;
+      }
+
+      .season-record-line {
+        color: #cfcfcf;
+        font-weight: 600;
+      }
+
+      .permanent-record-link {
+        color: #7af48c;
+      }
+
+      .permanent-record-link:hover {
+        color: #9bf7a6;
       }
 
       .roster-content {
@@ -232,6 +247,81 @@
         box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
       }
 
+      .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .view-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .view-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .view-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        padding: 5px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+      }
+
+      .view-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+        background: #0c0c0c;
+      }
+
+      body[data-view="compact"] .player:not(.key) {
+        display: none;
+      }
+
+      .search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .search-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 7px 10px;
+        border-radius: 10px;
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        font-family: inherit;
+        font-size: 0.9rem;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+      }
+
       .footer {
         font-size: 0.75rem;
         color: #666;
@@ -254,23 +344,47 @@
         opacity: 0.9;
       }
 
-      aside {
-        width: 100%;
+      .banner-column {
+        display: flex;
+        justify-content: flex-start;
+        grid-column: 1;
+        grid-row: 1;
       }
 
-      .side-banner {
-        border: 1px solid #0f0f0f;
-        background: #080808;
-        border-radius: 14px;
-        overflow: hidden;
-        position: sticky;
-        top: 24px;
+      .banner-card {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: #0a0a0a;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       }
 
-      .side-banner img {
+      .banner-image {
         display: block;
         width: 100%;
         height: auto;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 960px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .banner-column {
+          justify-content: center;
+        }
+
+        .banner-card {
+          max-width: 360px;
+          width: 100%;
+        }
       }
 
       @media (max-width: 600px) {
@@ -281,27 +395,12 @@
         .year-summary {
           font-size: 0.95rem;
         }
-
-        .page-layout {
-          grid-template-columns: 1fr;
-        }
-
-        .side-banner {
-          position: relative;
-          top: auto;
-        }
       }
     </style>
   </head>
 
-  <body>
+  <body data-view="full">
     <div class="page-layout">
-      <aside aria-label="Sammy Sosa celebratory banner">
-        <div class="side-banner">
-          <img src="images/banners/sosa.jpg" alt="Sammy Sosa celebrating" />
-        </div>
-      </aside>
-
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
@@ -310,7 +409,9 @@
           <div class="subtitle">
             every Chicago Cub on the roster, listed year by year from the 2025
             season back to 1904. Expand a season to load the names, numbers, and
-            positions directly from MLB's public stats API.
+            positions directly from MLB's public stats API. Search for players
+            across seasons, switch between compact and full views, and click any
+            player name for a quick eBay card search.
           </div>
           <div class="ebay-toggle" aria-label="eBay search toggle">
             <span class="ebay-toggle-label">Ebay Search Toggle</span>
@@ -321,17 +422,58 @@
 
         <section>
           <div class="section-label">rosters by year</div>
+          <div class="view-toggle" aria-label="Roster view toggle">
+            <span class="view-toggle-label">View</span>
+            <div id="view-toggle-options" class="view-toggle-options">
+              <button
+                type="button"
+                class="view-toggle-button"
+                data-view="compact"
+              >
+                Compact
+              </button>
+              <button
+                type="button"
+                class="view-toggle-button is-active"
+                data-view="full"
+              >
+                Full
+              </button>
+            </div>
+          </div>
+          <div class="search-row" aria-label="Player search">
+            <span class="search-label">Search</span>
+            <input
+              id="player-search"
+              class="search-input"
+              type="search"
+              placeholder="Search for a player"
+            />
+          </div>
           <div id="roster-list" class="roster-list"></div>
         </section>
 
         <div class="footer">m49n · cubs rosters</div>
         <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
       </main>
+
+      <aside class="banner-column" aria-label="Sammy Sosa celebratory banner">
+        <div class="banner-card">
+          <img
+            class="banner-image"
+            src="images/banners/sosa.jpg"
+            alt="Sammy Sosa celebrating"
+            loading="lazy"
+          />
+        </div>
+      </aside>
     </div>
 
     <script>
       const rosterList = document.getElementById("roster-list");
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const searchInput = document.getElementById("player-search");
+      const viewToggleOptions = document.getElementById("view-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = [
         "All",
@@ -342,63 +484,252 @@
         "Auto",
         "RC",
       ];
-      const seasonNotes = {
-        2025: "Season in progress under Craig Counsell, aiming for a return to October baseball.",
-        2024: "Counsell's first Cubs season, battling for positioning in the NL Central race.",
-        2023: "In the Wild Card mix until a tough September slide knocked them out.",
-        2022: "Rebuilding year with a strong post-All-Star break push but no playoff berth.",
-        2021: "After midseason trades of the championship core and a reset of the roster.",
-        2020: "Won a shortened-season NL Central before falling in the Wild Card Series.",
-        2019: "Out of the postseason after a late collapse kept them in third place.",
-        2018: "Lost the division tiebreaker and the NL Wild Card Game to end the year early.",
-        2017: "Repeated as NL Central champs and reached the NLCS before losing to the Dodgers.",
-        2016: "World Series title, the club's first championship since 1908.",
-        2015: "Wild Card run that surged to the NLCS before falling to the Mets.",
-        2014: "Final rebuilding year before the young core arrived in force.",
-        2013: "Firmly in rebuild mode with a last-place finish in the NL Central.",
-        2012: "First season of the Epstein era and a full-scale roster teardown.",
-        2011: "Season under Mike Quade with a fifth-place divisional finish.",
-        2010: "Campaign that ended in fifth place as the roster's window closed.",
-        2009: "Second place in the Central but short of a third straight postseason trip.",
-        2008: "Best NL record and a division title before a swift NLDS sweep by the Dodgers.",
-        2007: "NL Central champs swept out of the NLDS by Arizona.",
-        2006: "Season derailed by injuries and a last-place finish.",
-        2005: "Playoff hopes fading in a fourth-place Central showing.",
-        2004: "A late stumble left them out of the Wild Card despite high expectations.",
-        2003: "NL Central champs who reached Game 7 of the NLCS before falling to Florida.",
-        2002: "In the division cellar for much of the year.",
-        2001: "Led early before fading to third place and missing October.",
-        2000: "Pitching woes sent them to sixth place in the Central.",
-        1999: "Season marked by injuries and a fifth-place finish.",
-        1998: "Wild Card club behind Sammy Sosa's homer binge, swept by Atlanta in the NLDS.",
-        1997: "Slow start that anchored them in fifth place.",
-        1996: "Well off the pace in the NL Central race.",
-        1995: "Shortened season ended third in the division.",
-        1994: "Strike-shortened year that left them in last place in the NL Central.",
-        1993: "Over .500 but fourth in a crowded NL East.",
-        1992: "Fourth-place finish and no postseason push.",
-        1991: "Stuck in the middle of the division pack.",
-        1990: "Sliding to fourth a year after winning the East.",
-        1989: "NL East champions who fell to the Giants in the NLCS.",
-        1988: "Fourth place despite Ryne Sandberg's steady play.",
-        1987: "Campaign that ended sixth in the NL East.",
-        1986: "Season marred by injuries and a fifth-place finish.",
-        1985: "Unable to follow up the 1984 breakthrough and finishing fourth.",
-        1984: "NL East champs who lost a dramatic NLCS to San Diego.",
-        1983: "Rebuilding year that ended fifth in the division.",
-        1982: "Stayed in the NL East basement most of the season.",
-        1981: "Split season left them last place in both halves.",
-        1980: "Stuck in the cellar of the NL East."
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary:
+            "Season in progress under Craig Counsell, aiming for a return to October baseball.",
+        },
+        2024: {
+          place: "season in progress",
+          summary:
+            "Counsell's first Cubs season, battling for positioning in the NL Central race.",
+        },
+        2023: {
+          place: "2nd place NL Central",
+          summary:
+            "In the Wild Card mix until a tough September slide knocked them out.",
+        },
+        2022: {
+          place: "3rd place NL Central",
+          summary:
+            "Rebuilding year with a strong post-All-Star break push but no playoff berth.",
+        },
+        2021: {
+          place: "4th place NL Central",
+          summary:
+            "After midseason trades of the championship core and a reset of the roster.",
+        },
+        2020: {
+          place: "1st place NL Central",
+          summary:
+            "Won a shortened-season NL Central before falling in the Wild Card Series.",
+        },
+        2019: {
+          place: "3rd place NL Central",
+          summary:
+            "Out of the postseason after a late collapse kept them in third place.",
+        },
+        2018: {
+          place: "2nd place NL Central",
+          summary:
+            "Lost the division tiebreaker and the NL Wild Card Game to end the year early.",
+        },
+        2017: {
+          place: "1st place NL Central",
+          summary:
+            "Repeated as NL Central champs and reached the NLCS before losing to the Dodgers.",
+        },
+        2016: {
+          place: "1st place NL Central",
+          summary: "World Series title, the club's first championship since 1908.",
+        },
+        2015: {
+          place: "3rd place NL Central",
+          summary:
+            "Wild Card run that surged to the NLCS before falling to the Mets.",
+        },
+        2014: {
+          place: "5th place NL Central",
+          summary: "Final rebuilding year before the young core arrived in force.",
+        },
+        2013: {
+          place: "5th place NL Central",
+          summary: "Firmly in rebuild mode with a last-place finish in the NL Central.",
+        },
+        2012: {
+          place: "5th place NL Central",
+          summary:
+            "First season of the Epstein era and a full-scale roster teardown.",
+        },
+        2011: {
+          place: "5th place NL Central",
+          summary: "Season under Mike Quade with a fifth-place divisional finish.",
+        },
+        2010: {
+          place: "5th place NL Central",
+          summary: "Campaign that ended in fifth place as the roster's window closed.",
+        },
+        2009: {
+          place: "2nd place NL Central",
+          summary:
+            "Second place in the Central but short of a third straight postseason trip.",
+        },
+        2008: {
+          place: "1st place NL Central",
+          summary:
+            "Best NL record and a division title before a swift NLDS sweep by the Dodgers.",
+        },
+        2007: {
+          place: "1st place NL Central",
+          summary: "NL Central champs swept out of the NLDS by Arizona.",
+        },
+        2006: {
+          place: "6th place NL Central",
+          summary: "Season derailed by injuries and a last-place finish.",
+        },
+        2005: {
+          place: "4th place NL Central",
+          summary: "Playoff hopes fading in a fourth-place Central showing.",
+        },
+        2004: {
+          place: "3rd place NL Central",
+          summary:
+            "A late stumble left them out of the Wild Card despite high expectations.",
+        },
+        2003: {
+          place: "1st place NL Central",
+          summary:
+            "NL Central champs who reached Game 7 of the NLCS before falling to Florida.",
+        },
+        2002: {
+          place: "5th place NL Central",
+          summary: "In the division cellar for much of the year.",
+        },
+        2001: {
+          place: "3rd place NL Central",
+          summary: "Led early before fading to third place and missing October.",
+        },
+        2000: {
+          place: "6th place NL Central",
+          summary: "Pitching woes sent them to sixth place in the Central.",
+        },
+        1999: {
+          place: "5th place NL Central",
+          summary: "Season marked by injuries and a fifth-place finish.",
+        },
+        1998: {
+          place: "2nd place NL Central",
+          summary:
+            "Wild Card club behind Sammy Sosa's homer binge, swept by Atlanta in the NLDS.",
+        },
+        1997: {
+          place: "5th place NL Central",
+          summary: "Slow start that anchored them in fifth place.",
+        },
+        1996: {
+          place: "4th place NL Central",
+          summary: "Well off the pace in the NL Central race.",
+        },
+        1995: {
+          place: "3rd place NL Central",
+          summary: "Shortened season ended third in the division.",
+        },
+        1994: {
+          place: "4th place NL Central",
+          summary: "Strike-shortened year that left them in last place in the NL Central.",
+        },
+        1993: {
+          place: "4th place NL East",
+          summary: "Over .500 but fourth in a crowded NL East.",
+        },
+        1992: {
+          place: "4th place NL East",
+          summary: "Fourth-place finish and no postseason push.",
+        },
+        1991: {
+          place: "4th place NL East",
+          summary: "Stuck in the middle of the division pack.",
+        },
+        1990: {
+          place: "4th place NL East",
+          summary: "Sliding to fourth a year after winning the East.",
+        },
+        1989: {
+          place: "1st place NL East",
+          summary: "NL East champions who fell to the Giants in the NLCS.",
+        },
+        1988: {
+          place: "4th place NL East",
+          summary: "Fourth place despite Ryne Sandberg's steady play.",
+        },
+        1987: {
+          place: "6th place NL East",
+          summary: "Campaign that ended sixth in the NL East.",
+        },
+        1986: {
+          place: "5th place NL East",
+          summary: "Season marred by injuries and a fifth-place finish.",
+        },
+        1985: {
+          place: "4th place NL East",
+          summary: "Unable to follow up the 1984 breakthrough and finishing fourth.",
+        },
+        1984: {
+          place: "1st place NL East",
+          summary: "NL East champs who lost a dramatic NLCS to San Diego.",
+        },
+        1983: {
+          place: "5th place NL East",
+          summary: "Rebuilding year that ended fifth in the division.",
+        },
+        1982: {
+          place: "6th place NL East",
+          summary: "Stayed in the NL East basement most of the season.",
+        },
+        1981: {
+          place: "6th place NL East",
+          summary: "Split season left them last place in both halves.",
+        },
+        1980: {
+          place: "6th place NL East",
+          summary: "Stuck in the cellar of the NL East.",
+        },
       };
       const years = Array.from(
         { length: 2025 - 1904 + 1 },
         (_, index) => 2025 - index
       );
 
+      const ROSTER_VIEW_PREF_KEY = "rosterViewPreference";
+      const VIEW_OPTIONS = ["full", "compact"];
+      const KEY_PLAYER_MIN_COUNT = 12;
+      const KEY_PLAYER_MAX_COUNT = 16;
+
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
         : "All";
+      const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
+      let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
+        ? savedViewPreference
+        : "full";
+
+      function setRosterView(view) {
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "full";
+        currentRosterView = nextView;
+        document.body.dataset.view = currentRosterView;
+        localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
+
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.view === currentRosterView
+            );
+          });
+      }
+
+      function bindRosterViewToggle() {
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              setRosterView(button.dataset.view);
+            });
+          });
+      }
 
       function setEbayAddon(addon) {
         currentEbayAddon = addon;
@@ -432,7 +763,39 @@
         setEbayAddon(currentEbayAddon);
       }
 
+      function applyPlayerFilter() {
+        const term = searchInput.value.trim().toLowerCase();
+
+        document.querySelectorAll(".year-panel").forEach((panel) => {
+          const rosterItems = panel.querySelectorAll(".roster-item.player");
+
+          if (!rosterItems.length) {
+            panel.style.display = "";
+            return;
+          }
+
+          let matchCount = 0;
+
+          rosterItems.forEach((item) => {
+            const nameText =
+              item.querySelector(".roster-name")?.textContent?.toLowerCase() || "";
+            const isMatch = !term || nameText.includes(term);
+            item.style.display = isMatch ? "" : "none";
+
+            if (isMatch) {
+              matchCount += 1;
+            }
+          });
+
+          panel.style.display = term && matchCount === 0 ? "none" : "";
+        });
+      }
+
+      setRosterView(currentRosterView);
+      bindRosterViewToggle();
       renderEbayToggle();
+
+      searchInput.addEventListener("input", applyPlayerFilter);
 
       rosterList.addEventListener("click", (event) => {
         const link = event.target.closest(".roster-name a");
@@ -456,6 +819,9 @@
 
         const summary = document.createElement("summary");
         summary.className = "year-summary";
+
+        const seasonData = seasonSummaries[year];
+
         const summaryText = document.createElement("div");
         summaryText.className = "summary-text";
 
@@ -467,26 +833,50 @@
 
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
-
-        const description = document.createElement("div");
-        description.className = "season-note";
-        description.textContent =
-          seasonNotes[year] || "Season summary not available.";
+        record.textContent = seasonData?.place || "loading place...";
 
         headerRow.appendChild(yearLabel);
         headerRow.appendChild(record);
         summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+
+        const recordLine = document.createElement("span");
+        recordLine.className = "season-record-line";
+        recordLine.textContent = "record loading...";
+
+        const descriptionText = document.createElement("span");
+        descriptionText.textContent =
+          seasonData?.summary || "Season summary not available.";
+
+        const permanentRecordLink = document.createElement("a");
+        permanentRecordLink.className = "permanent-record-link";
+        permanentRecordLink.href = `https://www.baseball-reference.com/teams/CHC/${year}.shtml`;
+        permanentRecordLink.target = "_blank";
+        permanentRecordLink.rel = "noopener noreferrer";
+        permanentRecordLink.textContent = "season statistics";
+
+        description.append(
+          recordLine,
+          document.createTextNode(" · "),
+          descriptionText,
+          document.createTextNode(" "),
+          permanentRecordLink
+        );
         summaryText.appendChild(description);
+
         summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
-          .then((recordText) => {
-            record.textContent = recordText;
+          .then(({ recordText, placeText }) => {
+            record.textContent = placeText || seasonData?.place || recordText;
+            recordLine.textContent = recordText || "record unavailable";
           })
           .catch(() => {
-            record.textContent = "place unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
+            recordLine.textContent = "record unavailable";
           });
 
         const content = document.createElement("div");
@@ -519,6 +909,18 @@
         if (remainderTen === 2 && remainderHundred !== 12) return `${number}nd`;
         if (remainderTen === 3 && remainderHundred !== 13) return `${number}rd`;
         return `${number}th`;
+      }
+
+      function calculateKeyCount(totalPlayers) {
+        if (!Number.isFinite(totalPlayers) || totalPlayers <= 0) {
+          return KEY_PLAYER_MIN_COUNT;
+        }
+
+        const candidate = Math.round(totalPlayers * 0.35);
+        return Math.min(
+          KEY_PLAYER_MAX_COUNT,
+          Math.max(KEY_PLAYER_MIN_COUNT, candidate)
+        );
       }
 
       function formatAccolades(record) {
@@ -589,15 +991,11 @@
         if (typeof wins === "number" && typeof losses === "number") {
           let display = `${wins} - ${losses}`;
 
-          if (placeText) {
-            display += `, ${placeText}`;
-          }
-
           if (accolades.length) {
             display += ` (${accolades.join("; ")})`;
           }
 
-          return display;
+          return { recordText: display, placeText };
         }
 
         throw new Error("No record data found");
@@ -652,9 +1050,15 @@
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
-          orderedRoster.forEach((player) => {
+          const keyCount = calculateKeyCount(orderedRoster.length);
+
+          orderedRoster.forEach((player, index) => {
             const card = document.createElement("div");
-            card.className = "roster-item";
+            card.className = "roster-item player";
+
+            if (index < keyCount) {
+              card.classList.add("key");
+            }
 
             const name = document.createElement("div");
             name.className = "roster-name";
@@ -684,6 +1088,7 @@
 
           target.innerHTML = "";
           target.appendChild(grid);
+          applyPlayerFilter();
         } catch (error) {
           target.textContent = `Could not load roster for ${year}.`;
         }
