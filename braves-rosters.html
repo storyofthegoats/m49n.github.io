@@ -271,6 +271,49 @@
         box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
       }
 
+      .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .view-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .view-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .view-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        padding: 5px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+      }
+
+      .view-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+        background: #0c0c0c;
+      }
+
+      body[data-view="compact"] .player:not(.key) {
+        display: none;
+      }
+
       .banner-image {
         display: block;
         width: 100%;
@@ -311,7 +354,7 @@
     </style>
   </head>
 
-  <body>
+  <body data-view="full">
     <div class="page-layout">
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
@@ -332,6 +375,25 @@
 
         <section>
           <div class="section-label">rosters by year</div>
+          <div class="view-toggle" aria-label="Roster view toggle">
+            <span class="view-toggle-label">View</span>
+            <div id="view-toggle-options" class="view-toggle-options">
+              <button
+                type="button"
+                class="view-toggle-button is-active"
+                data-view="full"
+              >
+                Full
+              </button>
+              <button
+                type="button"
+                class="view-toggle-button"
+                data-view="compact"
+              >
+                Compact
+              </button>
+            </div>
+          </div>
           <div id="roster-list" class="roster-list"></div>
         </section>
 
@@ -355,8 +417,13 @@
       const rosterList = document.getElementById("roster-list");
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const viewToggleOptions = document.getElementById("view-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
+      const ROSTER_VIEW_PREF_KEY = "rosterViewPreference";
+      const VIEW_OPTIONS = ["full", "compact"];
+      const KEY_PLAYER_MIN_COUNT = 12;
+      const KEY_PLAYER_MAX_COUNT = 16;
 
       const seasonSummaries = {
         2025: {
@@ -465,6 +532,36 @@
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
         : "All";
+      const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
+      let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
+        ? savedViewPreference
+        : "full";
+
+      function setRosterView(view) {
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "full";
+        currentRosterView = nextView;
+        document.body.dataset.view = currentRosterView;
+        localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
+
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.view === currentRosterView
+            );
+          });
+      }
+
+      function bindRosterViewToggle() {
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              setRosterView(button.dataset.view);
+            });
+          });
+      }
 
       function setEbayAddon(addon) {
         currentEbayAddon = addon;
@@ -497,6 +594,9 @@
 
         setEbayAddon(currentEbayAddon);
       }
+
+      setRosterView(currentRosterView);
+      bindRosterViewToggle();
 
       renderEbayToggle();
 
@@ -588,6 +688,18 @@
         if (remainderTen === 2 && remainderHundred !== 12) return `${number}nd`;
         if (remainderTen === 3 && remainderHundred !== 13) return `${number}rd`;
         return `${number}th`;
+      }
+
+      function calculateKeyCount(totalPlayers) {
+        if (!Number.isFinite(totalPlayers) || totalPlayers <= 0) {
+          return KEY_PLAYER_MIN_COUNT;
+        }
+
+        const candidate = Math.round(totalPlayers * 0.35);
+        return Math.min(
+          KEY_PLAYER_MAX_COUNT,
+          Math.max(KEY_PLAYER_MIN_COUNT, candidate)
+        );
       }
 
       function formatAccolades(record) {
@@ -721,9 +833,15 @@
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
-          orderedRoster.forEach((player) => {
+          const keyCount = calculateKeyCount(orderedRoster.length);
+
+          orderedRoster.forEach((player, index) => {
             const card = document.createElement("div");
-            card.className = "roster-item";
+            card.className = "roster-item player";
+
+            if (index < keyCount) {
+              card.classList.add("key");
+            }
 
             const name = document.createElement("div");
             name.className = "roster-name";
