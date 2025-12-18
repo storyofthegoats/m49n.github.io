@@ -354,7 +354,7 @@
     </style>
   </head>
 
-  <body data-view="full">
+  <body data-view="compact">
     <div class="page-layout">
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
@@ -381,16 +381,16 @@
               <button
                 type="button"
                 class="view-toggle-button is-active"
-                data-view="full"
+                data-view="compact"
               >
-                Full
+                Compact
               </button>
               <button
                 type="button"
                 class="view-toggle-button"
-                data-view="compact"
+                data-view="full"
               >
-                Compact
+                Full
               </button>
             </div>
           </div>
@@ -535,10 +535,10 @@
       const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
       let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
         ? savedViewPreference
-        : "full";
+        : "compact";
 
       function setRosterView(view) {
-        const nextView = VIEW_OPTIONS.includes(view) ? view : "full";
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "compact";
         currentRosterView = nextView;
         document.body.dataset.view = currentRosterView;
         localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
