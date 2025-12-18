@@ -128,7 +128,7 @@
         cursor: pointer;
         list-style: none;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -149,6 +149,31 @@
       .record-badge {
         color: #4af626;
         font-size: 0.9rem;
+      }
+
+      .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .year-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .season-note {
+        font-size: 0.85rem;
+        color: #888;
+      }
+
+      .permanent-record-link {
+        color: #7af48c;
+      }
+
+      .permanent-record-link:hover {
+        color: #9bf7a6;
       }
 
       .roster-content {
@@ -240,6 +265,49 @@
         opacity: 0.9;
       }
 
+      .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .view-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .view-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .view-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        padding: 5px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+      }
+
+      .view-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+        background: #0c0c0c;
+      }
+
+      body[data-view="compact"] .player:not(.key) {
+        display: none;
+      }
+
 
       .banner-column {
         display: flex;
@@ -296,30 +364,48 @@
     </style>
   </head>
 
-  <body>
+  <body data-view="compact">
     <div class="page-layout">
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
-  
+
         <header>
           <div class="title">guardians rosters</div>
           <div class="subtitle">
-            every Cleveland Guardians player on the roster, listed year by year
-            from the 2025 season back through the past 25 seasons. Expand a season
-            to load the names, numbers, and positions directly from MLB's public
-            stats API.
+            Expand a season to view every player from that season, sorted by
+            starters (compact) vs full team, directly sourced from MLB's public
+            stats API. Click any player name for a quick eBay card search, and
+            use the eBay toggle to modify the search by card type. Play ball!
           </div>
-          
-            <div class="ebay-toggle" aria-label="eBay search toggle">
-              <span class="ebay-toggle-label">Ebay Search Toggle</span>
-              <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
-            </div>
-            <hr class="divider" />
-  
+          <div class="ebay-toggle" aria-label="eBay search toggle">
+            <span class="ebay-toggle-label">Ebay Search Toggle</span>
+            <div id="ebay-toggle-options" class="ebay-toggle-options"></div>
+          </div>
+          <hr class="divider" />
+
         </header>
-  
+
         <section>
           <div class="section-label">rosters by year</div>
+          <div class="view-toggle" aria-label="Roster view toggle">
+            <span class="view-toggle-label">View</span>
+            <div id="view-toggle-options" class="view-toggle-options">
+              <button
+                type="button"
+                class="view-toggle-button is-active"
+                data-view="compact"
+              >
+                Compact
+              </button>
+              <button
+                type="button"
+                class="view-toggle-button"
+                data-view="full"
+              >
+                Full
+              </button>
+            </div>
+          </div>
           <div id="roster-list" class="roster-list"></div>
         </section>
   
@@ -341,17 +427,154 @@
 
     <script>
       const rosterList = document.getElementById("roster-list");
-
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const viewToggleOptions = document.getElementById("view-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
+      const ROSTER_VIEW_PREF_KEY = "rosterViewPreference";
+      const VIEW_OPTIONS = ["full", "compact"];
+      const KEY_PLAYER_MIN_COUNT = 12;
+      const KEY_PLAYER_MAX_COUNT = 16;
 
+      const seasonSummaries = {
+        2025: {
+          place: "season in progress",
+          summary: "Patrolling the AL Central with a young core and elite pitching foundation.",
+        },
+        2024: {
+          place: "season in progress",
+          summary: "Chasing the division behind a pitching-first approach and rising bats.",
+        },
+        2023: {
+          place: "3rd place AL Central",
+          summary: "Inconsistent offense halted a repeat bid after a breakout 2022.",
+        },
+        2022: {
+          place: "1st place AL Central",
+          summary: "Contact-heavy lineup and lights-out pitching powered an ALDS run.",
+        },
+        2021: {
+          place: "2nd place AL Central",
+          summary: "Transition year during the switch from Indians to Guardians branding.",
+        },
+        2020: {
+          place: "2nd place AL Central",
+          summary: "Shortened season led by dominant starters before a Wild Card exit.",
+        },
+        2019: {
+          place: "2nd place AL Central",
+          summary: "Narrowly missed October despite a strong rotation and bullpen.",
+        },
+        2018: {
+          place: "1st place AL Central",
+          summary: "Ran away with the division before falling in the ALDS.",
+        },
+        2017: {
+          place: "1st place AL Central",
+          summary: "Historic win streak fueled another division crown and postseason return.",
+        },
+        2016: {
+          place: "1st place AL Central",
+          summary: "Staff carried the club to an AL pennant and a seven-game World Series.",
+        },
+        2015: {
+          place: "3rd place AL Central",
+          summary: "Slow start overshadowed a second-half push under Terry Francona.",
+        },
+        2014: {
+          place: "3rd place AL Central",
+          summary: "Core stayed competitive but fell short of a repeat postseason trip.",
+        },
+        2013: {
+          place: "2nd place AL Central",
+          summary: "Wild Card berth capped a 92-win debut season for Francona.",
+        },
+        2012: {
+          place: "4th place AL Central",
+          summary: "Late-season slide spurred an offseason shakeup and new leadership.",
+        },
+        2011: {
+          place: "2nd place AL Central",
+          summary: "Hot start faded but showcased a budding core of position talent.",
+        },
+        2010: {
+          place: "4th place AL Central",
+          summary: "Youth movement took center stage during a rebuild season.",
+        },
+        2009: {
+          place: "4th place AL Central",
+          summary: "Roster turnover set the stage for a new competitive window.",
+        },
+        2008: {
+          place: "3rd place AL Central",
+          summary: "Injuries derailed hopes of a quick return to contention.",
+        },
+        2007: {
+          place: "1st place AL Central",
+          summary: "ALCS run highlighted by a deep rotation and clutch bats.",
+        },
+        2006: {
+          place: "4th place AL Central",
+          summary: "Close losses piled up in a season of what-ifs.",
+        },
+        2005: {
+          place: "2nd place AL Central",
+          summary: "Late surge fell one game shy of the postseason.",
+        },
+        2004: {
+          place: "3rd place AL Central",
+          summary: "Offense flashed potential during an up-and-down campaign.",
+        },
+        2003: {
+          place: "3rd place AL Central",
+          summary: "Rebuild continued with young talent gaining reps.",
+        },
+        2002: {
+          place: "3rd place AL Central",
+          summary: "Transition year after trading away longtime stars.",
+        },
+        2001: {
+          place: "1st place AL Central",
+          summary: "Powerful lineup returned to October and pushed Seattle in the ALDS.",
+        },
+      };
 
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
         : "All";
+
+      const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
+      let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
+        ? savedViewPreference
+        : "compact";
+
+      function setRosterView(view) {
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "compact";
+        currentRosterView = nextView;
+        document.body.dataset.view = currentRosterView;
+        localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
+
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.view === currentRosterView
+            );
+          });
+      }
+
+      function bindRosterViewToggle() {
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              setRosterView(button.dataset.view);
+            });
+          });
+      }
 
       function setEbayAddon(addon) {
         currentEbayAddon = addon;
@@ -385,6 +608,8 @@
         setEbayAddon(currentEbayAddon);
       }
 
+      setRosterView(currentRosterView);
+      bindRosterViewToggle();
       renderEbayToggle();
 
       rosterList.addEventListener("click", (event) => {
@@ -412,12 +637,43 @@
         const yearLabel = document.createElement("span");
         yearLabel.textContent = year;
 
+        const seasonData = seasonSummaries[year];
+
+        const summaryText = document.createElement("div");
+        summaryText.className = "summary-text";
+
+        const headerRow = document.createElement("div");
+        headerRow.className = "year-header";
+
         const record = document.createElement("span");
         record.className = "record-badge";
-        record.textContent = "loading record...";
+        record.textContent = seasonData?.place || "loading record...";
 
-        summary.appendChild(yearLabel);
-        summary.appendChild(record);
+        headerRow.appendChild(yearLabel);
+        headerRow.appendChild(record);
+        summaryText.appendChild(headerRow);
+
+        const description = document.createElement("div");
+        description.className = "season-note";
+        const descriptionText = document.createElement("span");
+        descriptionText.textContent =
+          seasonData?.summary || "Season summary not available.";
+
+        const permanentRecordLink = document.createElement("a");
+        permanentRecordLink.className = "permanent-record-link";
+        permanentRecordLink.href = `https://www.baseball-reference.com/teams/CLE/${year}.shtml`;
+        permanentRecordLink.target = "_blank";
+        permanentRecordLink.rel = "noopener noreferrer";
+        permanentRecordLink.textContent = "season statistics";
+
+        description.append(
+          descriptionText,
+          document.createTextNode(" "),
+          permanentRecordLink
+        );
+        summaryText.appendChild(description);
+
+        summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
@@ -425,7 +681,7 @@
             record.textContent = recordText;
           })
           .catch(() => {
-            record.textContent = "record unavailable";
+            record.textContent = seasonData?.place || "record unavailable";
           });
 
         const content = document.createElement("div");
@@ -478,6 +734,18 @@
           accolades.push("World Series champions");
         }
         return accolades;
+      }
+
+      function calculateKeyCount(totalPlayers) {
+        if (!Number.isFinite(totalPlayers) || totalPlayers <= 0) {
+          return KEY_PLAYER_MIN_COUNT;
+        }
+
+        const candidate = Math.round(totalPlayers * 0.35);
+        return Math.min(
+          KEY_PLAYER_MAX_COUNT,
+          Math.max(KEY_PLAYER_MIN_COUNT, candidate)
+        );
       }
 
 
@@ -587,13 +855,19 @@
           pitchers.sort(sortByPositionThenName);
 
           const orderedRoster = [...positionPlayers, ...pitchers];
-          
+
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
-          orderedRoster.forEach((player) => {
+          const keyCount = calculateKeyCount(orderedRoster.length);
+
+          orderedRoster.forEach((player, index) => {
             const card = document.createElement("div");
-            card.className = "roster-item";
+            card.className = "roster-item player";
+
+            if (index < keyCount) {
+              card.classList.add("key");
+            }
 
             const name = document.createElement("div");
             name.className = "roster-name";
