@@ -167,6 +167,14 @@
         color: #888;
       }
 
+      .permanent-record-link {
+        color: #666;
+      }
+
+      .permanent-record-link:hover {
+        color: #8a8a8a;
+      }
+
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -643,8 +651,22 @@
 
         const description = document.createElement("div");
         description.className = "season-note";
-        description.textContent =
+        const descriptionText = document.createElement("span");
+        descriptionText.textContent =
           seasonData?.summary || "Season summary not available.";
+
+        const permanentRecordLink = document.createElement("a");
+        permanentRecordLink.className = "permanent-record-link";
+        permanentRecordLink.href = `https://www.baseball-reference.com/teams/ATL/${year}.shtml`;
+        permanentRecordLink.target = "_blank";
+        permanentRecordLink.rel = "noopener noreferrer";
+        permanentRecordLink.textContent = "permanent record";
+
+        description.append(
+          descriptionText,
+          document.createTextNode(" · "),
+          permanentRecordLink
+        );
         summaryText.appendChild(description);
 
         summary.appendChild(summaryText);
