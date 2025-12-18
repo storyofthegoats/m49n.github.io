@@ -44,18 +44,19 @@
 
 
       .page-layout {
-        max-width: 1120px;
+        max-width: 1240px;
         margin: 0 auto;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 260px 1fr;
         gap: 24px;
-        align-items: stretch;
+        align-items: start;
       }
 
       main {
         max-width: 960px;
         width: 100%;
         margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -257,9 +258,11 @@
       }
 
 
-      .banner-top {
+      .banner-column {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        grid-column: 1;
+        grid-row: 1;
       }
 
       .banner-card {
@@ -268,8 +271,6 @@
         background: #0a0a0a;
         padding: 10px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-        max-width: 960px;
-        width: 100%;
       }
 
       .banner-image {
@@ -280,8 +281,23 @@
       }
 
       @media (max-width: 960px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .banner-column {
+          justify-content: center;
+        }
+
         .banner-card {
-          max-width: 720px;
+          max-width: 360px;
+          width: 100%;
         }
       }
 
@@ -299,17 +315,6 @@
 
   <body>
     <div class="page-layout">
-      <div class="banner-top" aria-label="Pirates banner">
-        <div class="banner-card">
-          <img
-            class="banner-image"
-            src="images/banners/pirates.jpg"
-            alt="Pittsburgh Pirates banner"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
@@ -337,6 +342,17 @@
         <div class="footer">m49n · pirates rosters</div>
         <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
       </main>
+
+      <aside class="banner-column" aria-label="Pirates banner">
+        <div class="banner-card">
+          <img
+            class="banner-image"
+            src="images/banners/pirates.jpg"
+            alt="Pittsburgh Pirates banner"
+            loading="lazy"
+          />
+        </div>
+      </aside>
     </div>
 
     <script>
