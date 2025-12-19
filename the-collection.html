@@ -518,6 +518,12 @@
         errorEl.classList.add("hidden");
         contentEl.classList.add("hidden");
 
+        const parseNumber = (value) => {
+          const cleaned = String(value || "").replace(/[^0-9.-]/g, "");
+          const parsed = parseFloat(cleaned);
+          return Number.isNaN(parsed) ? 0 : parsed;
+        };
+
         try {
           const res = await fetch(CSV_URL, { cache: "no-store" });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -537,10 +543,10 @@
               const itemId = get("item id").trim();
               const listingTitle = get("listing title").trim();
               const itemType = get("item type").trim().toLowerCase();
-              const price = parseFloat(get("price")) || 0;
+              const price = parseNumber(get("price"));
               const quantity = parseInt(get("quantity"), 10) || 0;
-              const shipping = parseFloat(get("shipping")) || 0;
-              const totalPrice = parseFloat(get("total price")) || 0;
+              const shipping = parseNumber(get("shipping"));
+              const totalPrice = parseNumber(get("total price"));
               const currency = get("currency").trim() || "USD";
               const sellerName = get("seller name").trim();
               return {
