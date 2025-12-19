@@ -535,6 +535,14 @@
             map[h.trim().toLowerCase()] = idx;
           });
 
+          const getField = (cells, names) => {
+            for (const name of names) {
+              const idx = map[name];
+              if (idx !== undefined) return cells[idx] ?? "";
+            }
+            return "";
+          };
+
           state.data = rows
             .map((cells) => {
               const get = (name) =>
@@ -542,7 +550,10 @@
               const purchaseDate = toDate(get("purchase date"));
               const itemId = get("item id").trim();
               const listingTitle = get("listing title").trim();
-              const itemType = get("item type").trim().toLowerCase();
+              const itemTypeRaw = getField(cells, ["item type", "type"]).trim();
+              const itemType = itemTypeRaw
+                ? itemTypeRaw.toLowerCase()
+                : "non";
               const price = parseNumber(get("price"));
               const quantity = parseInt(get("quantity"), 10) || 0;
               const shipping = parseNumber(get("shipping"));
@@ -555,6 +566,7 @@
                 itemId,
                 listingTitle,
                 itemType,
+                itemTypeRaw,
                 price,
                 quantity,
                 shipping,
@@ -711,7 +723,7 @@
             (row, idx) => `
             <tr class="row" data-row="${start + idx}">
               <td>${row.purchaseDate.toLocaleDateString()}</td>
-              <td><span class="pill">${row.itemType || "—"}</span></td>
+              <td><span class="pill">${row.itemTypeRaw || "—"}</span></td>
               <td>${formatCurrency(row.totalPrice, currency)}</td>
               <td>${formatCurrency(row.shipping, currency)}</td>
               <td>${row.quantity}</td>
@@ -758,7 +770,7 @@
                       </div>
                       <div>
                         <div class="detail-label">Type</div>
-                        <div class="pill">${row.itemType || "—"}</div>
+                        <div class="pill">${row.itemTypeRaw || "—"}</div>
                       </div>
                     </div>
                   </td>
