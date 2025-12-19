@@ -172,14 +172,6 @@
         font-weight: 600;
       }
 
-      .permanent-record-link {
-        color: #7af48c;
-      }
-
-      .permanent-record-link:hover {
-        color: #9bf7a6;
-      }
-
       .roster-content {
         padding: 0 14px 14px 14px;
         font-size: 0.9rem;
@@ -850,17 +842,7 @@
         descriptionText.textContent =
           seasonData?.summary || "Season summary not available.";
 
-        const permanentRecordLink = document.createElement("a");
-        permanentRecordLink.className = "permanent-record-link";
-        permanentRecordLink.href = `https://www.baseball-reference.com/teams/CHC/${year}.shtml`;
-        permanentRecordLink.target = "_blank";
-        permanentRecordLink.rel = "noopener noreferrer";
-        permanentRecordLink.textContent = "season statistics";
-
-        const statsLinkRow = document.createElement("div");
-        statsLinkRow.appendChild(permanentRecordLink);
-
-        description.append(recordLine, descriptionText, statsLinkRow);
+        description.append(recordLine, descriptionText);
         summaryText.appendChild(description);
 
         summary.appendChild(summaryText);
