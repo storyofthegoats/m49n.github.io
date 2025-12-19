@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Collection · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px 18px 60px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.4rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 22px;
+      }
+
+      .panel {
+        border: 1px solid #151515;
+        border-radius: 12px;
+        padding: 14px;
+        background: radial-gradient(circle at top left, #111 0, #060606 60%);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .control-block {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .control-label {
+        font-size: 0.75rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        border: 1px solid #1e1e1e;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4af626;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        border-radius: 20px;
+        border: 1px solid #222;
+        background: #0a0a0a;
+        color: #dcdcdc;
+        cursor: pointer;
+        transition: border 0.15s ease, color 0.15s ease, background 0.15s ease;
+      }
+
+      .chip:hover {
+        border-color: #444;
+      }
+
+      .chip.active {
+        border-color: #4af626;
+        color: #4af626;
+        background: #0f0f0f;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .summary-card {
+        border: 1px solid #151515;
+        background: #0a0a0a;
+        border-radius: 12px;
+        padding: 12px 12px 10px;
+        min-height: 96px;
+      }
+
+      .summary-label {
+        font-size: 0.72rem;
+        color: #888;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .summary-value {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+      }
+
+      .summary-meta {
+        font-size: 0.8rem;
+        color: #777;
+      }
+
+      .section-heading {
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #aaa;
+        margin: 22px 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .chart-area {
+        border: 1px solid #151515;
+        background: #0a0a0a;
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      canvas {
+        width: 100%;
+        height: 260px;
+      }
+
+      .table-wrapper {
+        border: 1px solid #151515;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0a0a0a;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+
+      thead {
+        background: #0f0f0f;
+        border-bottom: 1px solid #131313;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        text-align: left;
+      }
+
+      th {
+        font-size: 0.78rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      th.sortable:hover {
+        color: #dcdcdc;
+      }
+
+      tr + tr {
+        border-top: 1px solid #111;
+      }
+
+      tr.row:hover {
+        background: #0f0f0f;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        border: 1px solid #222;
+        color: #c8c8c8;
+        text-transform: capitalize;
+      }
+
+      .detail-row td {
+        background: #0c0c0c;
+        border-top: 1px solid #111;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px 14px;
+        font-size: 0.9rem;
+      }
+
+      .detail-label {
+        color: #888;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        font-size: 0.88rem;
+        border-top: 1px solid #111;
+      }
+
+      .pagination button {
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #222;
+        background: #0f0f0f;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .pagination button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .loading,
+      .error {
+        border: 1px solid #151515;
+        background: #0a0a0a;
+        padding: 16px;
+        border-radius: 12px;
+        margin-top: 10px;
+        color: #ddd;
+      }
+
+      .error button {
+        margin-top: 10px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #333;
+        background: #111;
+        color: #e5e5e5;
+        cursor: pointer;
+      }
+
+      .badge-group {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+
+      .badge {
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #222;
+        font-size: 0.8rem;
+        background: #0f0f0f;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 22px 14px 50px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2),
+        th:nth-child(5),
+        td:nth-child(5) {
+          display: none;
+        }
+
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="/index.html" class="top-link">← back to index</a>
+      <div class="title">The Collection</div>
+      <div class="subtitle">
+        A running history of what I’ve bought, when I bought it, and what I seem
+        to care about.
+      </div>
+
+      <div class="controls panel">
+        <div class="control-block">
+          <div class="control-label">Search</div>
+          <input
+            id="search-input"
+            type="search"
+            class="search-input"
+            placeholder="Listing title, seller, item id..."
+          />
+        </div>
+        <div class="control-block">
+          <div class="control-label">Item Type</div>
+          <div class="chip-row" id="type-filters">
+            <button class="chip active" data-type="all">All</button>
+            <button class="chip" data-type="baseball">Baseball</button>
+            <button class="chip" data-type="pokemon">Pokémon</button>
+            <button class="chip" data-type="non">Non</button>
+          </div>
+        </div>
+        <div class="control-block">
+          <div class="control-label">Date Range</div>
+          <div class="chip-row" id="date-filters">
+            <button class="chip" data-range="30">Last 30 days</button>
+            <button class="chip" data-range="90">Last 90 days</button>
+            <button class="chip" data-range="ytd">Year to date</button>
+            <button class="chip active" data-range="all">All time</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="loading" class="loading">Loading collection…</div>
+      <div id="error" class="error hidden">
+        <div>Couldn’t load the collection. Please retry.</div>
+        <button id="retry">Retry</button>
+      </div>
+
+      <div id="content" class="hidden">
+        <div class="summary-grid" id="summary-grid"></div>
+
+        <div class="section-heading">
+          <span>Trends</span>
+          <span id="trend-note" class="summary-meta"></span>
+        </div>
+        <div class="chart-area">
+          <canvas id="spend-chart" width="900" height="280"></canvas>
+        </div>
+
+        <div class="section-heading">
+          <span>Purchases</span>
+          <span id="table-count" class="summary-meta"></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th class="sortable" data-sort="purchaseDate">Purchase Date</th>
+                <th>Item Type</th>
+                <th class="sortable" data-sort="totalPrice">Total Price</th>
+                <th class="sortable" data-sort="shipping">Shipping</th>
+                <th class="sortable" data-sort="quantity">Qty</th>
+                <th>Listing Title</th>
+                <th>Seller</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+          <div class="pagination">
+            <button id="prev-page">Previous</button>
+            <div id="page-info"></div>
+            <button id="next-page">Next</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const CSV_URL =
+        "https://docs.google.com/spreadsheets/d/1VHvbiHIBOMSW1rZw8dgMiG9UhNC_OlKDF4TSx318WyA/export?format=csv";
+      const state = {
+        data: [],
+        filtered: [],
+        sortKey: "purchaseDate",
+        sortDir: "desc",
+        search: "",
+        itemType: "all",
+        dateRange: "all",
+        expanded: new Set(),
+        page: 1,
+        pageSize: 25,
+      };
+
+      const el = (id) => document.getElementById(id);
+
+      const loadingEl = el("loading");
+      const errorEl = el("error");
+      const contentEl = el("content");
+      const tableBody = el("table-body");
+      const summaryGrid = el("summary-grid");
+      const pageInfo = el("page-info");
+      const tableCount = el("table-count");
+      const trendNote = el("trend-note");
+
+      const formatCurrency = (value, currency = "USD") =>
+        isNaN(value)
+          ? "-"
+          : value.toLocaleString("en-US", {
+              style: "currency",
+              currency,
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+
+      const parseCSV = (text) => {
+        const rows = [];
+        let current = "";
+        let inQuotes = false;
+        let row = [];
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"' && inQuotes && next === '"') {
+            current += '"';
+            i++;
+            continue;
+          }
+
+          if (char === '"') {
+            inQuotes = !inQuotes;
+            continue;
+          }
+
+          if (char === "," && !inQuotes) {
+            row.push(current);
+            current = "";
+            continue;
+          }
+
+          if ((char === "\n" || char === "\r") && !inQuotes) {
+            if (current.length || row.length) {
+              row.push(current);
+              rows.push(row);
+              row = [];
+              current = "";
+            }
+            continue;
+          }
+
+          current += char;
+        }
+
+        if (current.length || row.length) {
+          row.push(current);
+          rows.push(row);
+        }
+
+        return rows.filter((r) => r.some((c) => c.trim() !== ""));
+      };
+
+      const toDate = (value) => {
+        if (!value) return null;
+        const parsed = new Date(value);
+        if (!isNaN(parsed)) return parsed;
+        const [month, day, year] = value.split("/").map((v) => Number(v));
+        if (month && day && year) return new Date(year, month - 1, day);
+        return null;
+      };
+
+      const loadData = async () => {
+        loadingEl.classList.remove("hidden");
+        errorEl.classList.add("hidden");
+        contentEl.classList.add("hidden");
+
+        try {
+          const res = await fetch(CSV_URL, { cache: "no-store" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const text = await res.text();
+          const parsed = parseCSV(text);
+          const [header, ...rows] = parsed;
+          const map = {};
+          header.forEach((h, idx) => {
+            map[h.trim().toLowerCase()] = idx;
+          });
+
+          state.data = rows
+            .map((cells) => {
+              const get = (name) =>
+                cells[map[name]] !== undefined ? cells[map[name]] : "";
+              const purchaseDate = toDate(get("purchase date"));
+              const itemId = get("item id").trim();
+              const listingTitle = get("listing title").trim();
+              const itemType = get("item type").trim().toLowerCase();
+              const price = parseFloat(get("price")) || 0;
+              const quantity = parseInt(get("quantity"), 10) || 0;
+              const shipping = parseFloat(get("shipping")) || 0;
+              const totalPrice = parseFloat(get("total price")) || 0;
+              const currency = get("currency").trim() || "USD";
+              const sellerName = get("seller name").trim();
+              return {
+                purchaseDate,
+                purchaseDateRaw: get("purchase date"),
+                itemId,
+                listingTitle,
+                itemType,
+                price,
+                quantity,
+                shipping,
+                totalPrice,
+                currency,
+                sellerName,
+              };
+            })
+            .filter((row) => row.purchaseDate);
+
+          applyFilters();
+          loadingEl.classList.add("hidden");
+          contentEl.classList.remove("hidden");
+        } catch (err) {
+          console.error("Fetch or parse error", err);
+          loadingEl.classList.add("hidden");
+          errorEl.classList.remove("hidden");
+        }
+      };
+
+      const applyFilters = () => {
+        const search = state.search.toLowerCase();
+        const { itemType, dateRange } = state;
+        let startDate = null;
+        const now = new Date();
+
+        if (dateRange === "30") {
+          startDate = new Date(now);
+          startDate.setDate(now.getDate() - 30);
+        } else if (dateRange === "90") {
+          startDate = new Date(now);
+          startDate.setDate(now.getDate() - 90);
+        } else if (dateRange === "ytd") {
+          startDate = new Date(now.getFullYear(), 0, 1);
+        }
+
+        state.filtered = state.data.filter((row) => {
+          if (startDate && row.purchaseDate < startDate) return false;
+          if (
+            search &&
+            !(
+              row.listingTitle.toLowerCase().includes(search) ||
+              row.sellerName.toLowerCase().includes(search) ||
+              row.itemId.toLowerCase().includes(search)
+            )
+          ) {
+            return false;
+          }
+          if (itemType !== "all" && row.itemType !== itemType) return false;
+          return true;
+        });
+
+        sortData();
+        state.page = 1;
+        render();
+      };
+
+      const sortData = () => {
+        const dir = state.sortDir === "asc" ? 1 : -1;
+        const key = state.sortKey;
+        const numeric = ["totalPrice", "shipping", "quantity"];
+        state.filtered.sort((a, b) => {
+          if (key === "purchaseDate") {
+            return (a.purchaseDate - b.purchaseDate) * dir;
+          }
+          if (numeric.includes(key)) {
+            return (a[key] - b[key]) * dir;
+          }
+          return String(a[key]).localeCompare(String(b[key])) * dir;
+        });
+      };
+
+      const renderSummary = () => {
+        const totalSpend = state.filtered.reduce(
+          (sum, row) => sum + row.totalPrice,
+          0
+        );
+        const totalShipping = state.filtered.reduce(
+          (sum, row) => sum + row.shipping,
+          0
+        );
+        const totalCount = state.filtered.length;
+        const avgPurchase = totalCount ? totalSpend / totalCount : 0;
+        const shippingPct = totalSpend
+          ? ((totalShipping / totalSpend) * 100).toFixed(1)
+          : "0.0";
+
+        const typeCounts = state.filtered.reduce(
+          (acc, row) => {
+            const t = row.itemType || "non";
+            acc[t] = (acc[t] || 0) + 1;
+            return acc;
+          },
+          { baseball: 0, pokemon: 0, non: 0 }
+        );
+
+        const currency = state.filtered[0]?.currency || "USD";
+
+        const cards = [
+          {
+            label: "Total Spend",
+            value: formatCurrency(totalSpend, currency),
+            meta: `Across ${totalCount} purchases`,
+          },
+          {
+            label: "Total Shipping",
+            value: formatCurrency(totalShipping, currency),
+            meta: `${shippingPct}% of total spend`,
+          },
+          {
+            label: "Average Purchase",
+            value: formatCurrency(avgPurchase, currency),
+            meta: totalCount ? "Mean of totals" : "—",
+          },
+          {
+            label: "Purchases by Type",
+            value: totalCount ? `${totalCount} total` : "0",
+            meta: "",
+            custom: `
+              <div class="badge-group">
+                <span class="badge">Baseball: ${typeCounts.baseball || 0}</span>
+                <span class="badge">Pokémon: ${typeCounts.pokemon || 0}</span>
+                <span class="badge">Non: ${typeCounts.non || 0}</span>
+              </div>
+            `,
+          },
+        ];
+
+        summaryGrid.innerHTML = cards
+          .map(
+            (card) => `
+          <div class="summary-card">
+            <div class="summary-label">${card.label}</div>
+            <div class="summary-value">${card.value}</div>
+            ${
+              card.custom
+                ? card.custom
+                : `<div class="summary-meta">${card.meta}</div>`
+            }
+          </div>
+        `
+          )
+          .join("");
+      };
+
+      const renderTable = () => {
+        const start = (state.page - 1) * state.pageSize;
+        const end = start + state.pageSize;
+        const slice = state.filtered.slice(start, end);
+        const currency = slice[0]?.currency || "USD";
+
+        tableBody.innerHTML = slice
+          .map(
+            (row, idx) => `
+            <tr class="row" data-row="${start + idx}">
+              <td>${row.purchaseDate.toLocaleDateString()}</td>
+              <td><span class="pill">${row.itemType || "—"}</span></td>
+              <td>${formatCurrency(row.totalPrice, currency)}</td>
+              <td>${formatCurrency(row.shipping, currency)}</td>
+              <td>${row.quantity}</td>
+              <td>${row.listingTitle}</td>
+              <td>${row.sellerName || "—"}</td>
+            </tr>
+            ${
+              state.expanded.has(start + idx)
+                ? `<tr class="detail-row">
+                  <td colspan="7">
+                    <div class="detail-grid">
+                      <div>
+                        <div class="detail-label">Listing</div>
+                        <div>${row.listingTitle}</div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Item ID</div>
+                        <div><a href="https://www.ebay.com/itm/${row.itemId}" target="_blank" rel="noopener noreferrer">${row.itemId}</a></div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Seller</div>
+                        <div><a href="https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(
+                          row.sellerName
+                        )}" target="_blank" rel="noopener noreferrer">${row.sellerName ||
+                        "—"}</a></div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Price</div>
+                        <div>${formatCurrency(row.price, currency)}</div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Quantity</div>
+                        <div>${row.quantity}</div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Shipping</div>
+                        <div>${formatCurrency(row.shipping, currency)}</div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Total</div>
+                        <div>${formatCurrency(row.totalPrice, currency)} (${
+                    row.currency || "USD"
+                  })</div>
+                      </div>
+                      <div>
+                        <div class="detail-label">Type</div>
+                        <div class="pill">${row.itemType || "—"}</div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>`
+                : ""
+            }
+          `
+          )
+          .join("");
+
+        pageInfo.textContent = `Page ${state.page} of ${Math.max(
+          1,
+          Math.ceil(state.filtered.length / state.pageSize)
+        )}`;
+        tableCount.textContent = `${state.filtered.length} purchases`;
+        el("prev-page").disabled = state.page === 1;
+        el("next-page").disabled =
+          state.page >= Math.ceil(state.filtered.length / state.pageSize);
+      };
+
+      const renderChart = () => {
+        const canvas = el("spend-chart");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0a0a0a";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const buckets = {};
+        state.filtered.forEach((row) => {
+          const key = `${row.purchaseDate.getFullYear()}-${String(
+            row.purchaseDate.getMonth() + 1
+          ).padStart(2, "0")}`;
+          buckets[key] = (buckets[key] || 0) + row.totalPrice;
+        });
+
+        const entries = Object.entries(buckets).sort(([a], [b]) =>
+          a.localeCompare(b)
+        );
+
+        const padding = { top: 20, right: 20, bottom: 40, left: 60 };
+        const width = canvas.width - padding.left - padding.right;
+        const height = canvas.height - padding.top - padding.bottom;
+        const maxVal = Math.max(
+          1,
+          ...entries.map(([, v]) => v),
+          0
+        );
+
+        ctx.strokeStyle = "#222";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, padding.top);
+        ctx.lineTo(padding.left, padding.top + height);
+        ctx.lineTo(padding.left + width, padding.top + height);
+        ctx.stroke();
+
+        const barWidth = entries.length ? width / entries.length - 8 : 0;
+
+        entries.forEach(([month, value], idx) => {
+          const x =
+            padding.left + idx * (barWidth + 8) + 4 + (entries.length === 1 ? width / 2 - barWidth / 2 - 4 : 0);
+          const h = (value / maxVal) * height;
+          const y = padding.top + height - h;
+          ctx.fillStyle = "#4af626";
+          ctx.fillRect(x, y, barWidth, h);
+          ctx.fillStyle = "#888";
+          ctx.font = "12px JetBrains Mono, monospace";
+          ctx.fillText(
+            month,
+            x,
+            padding.top + height + 16
+          );
+          ctx.fillText(
+            formatCurrency(value),
+            x,
+            y - 6
+          );
+        });
+
+        trendNote.textContent = entries.length
+          ? "Spend by month (filtered)"
+          : "No data in this range";
+      };
+
+      const render = () => {
+        renderSummary();
+        renderChart();
+        renderTable();
+      };
+
+      const setChipActive = (containerId, value) => {
+        const chips = Array.from(
+          document.querySelectorAll(`#${containerId} .chip`)
+        );
+        chips.forEach((chip) =>
+          chip.classList.toggle("active", chip.dataset.range === value || chip.dataset.type === value)
+        );
+      };
+
+      document
+        .getElementById("search-input")
+        .addEventListener("input", (event) => {
+          state.search = event.target.value.trim();
+          applyFilters();
+        });
+
+      document.getElementById("type-filters").addEventListener("click", (e) => {
+        if (e.target.classList.contains("chip")) {
+          state.itemType = e.target.dataset.type;
+          setChipActive("type-filters", state.itemType);
+          applyFilters();
+        }
+      });
+
+      document.getElementById("date-filters").addEventListener("click", (e) => {
+        if (e.target.classList.contains("chip")) {
+          state.dateRange = e.target.dataset.range;
+          setChipActive("date-filters", state.dateRange);
+          applyFilters();
+        }
+      });
+
+      document.querySelectorAll("th.sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+          const key = th.dataset.sort;
+          if (state.sortKey === key) {
+            state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+          } else {
+            state.sortKey = key;
+            state.sortDir = key === "purchaseDate" ? "desc" : "asc";
+          }
+          sortData();
+          renderTable();
+        });
+      });
+
+      tableBody.addEventListener("click", (e) => {
+        const row = e.target.closest("tr.row");
+        if (!row) return;
+        const idx = Number(row.dataset.row);
+        if (state.expanded.has(idx)) {
+          state.expanded.delete(idx);
+        } else {
+          state.expanded.add(idx);
+        }
+        renderTable();
+      });
+
+      el("prev-page").addEventListener("click", () => {
+        if (state.page > 1) {
+          state.page -= 1;
+          renderTable();
+        }
+      });
+
+      el("next-page").addEventListener("click", () => {
+        if (state.page < Math.ceil(state.filtered.length / state.pageSize)) {
+          state.page += 1;
+          renderTable();
+        }
+      });
+
+      el("retry").addEventListener("click", loadData);
+
+      loadData();
+    </script>
+  </body>
+</html>
