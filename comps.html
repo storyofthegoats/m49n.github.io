@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>comps · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 8px;
+      }
+
+      .content-block {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #101010 0, #050505 65%);
+        border-radius: 10px;
+        padding: 16px 14px;
+        line-height: 1.55;
+        margin-bottom: 18px;
+      }
+
+      .block-title {
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 10px;
+        color: #cfcfcf;
+      }
+
+      .block-note {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 14px;
+      }
+
+      .block-body p {
+        margin-top: 0;
+        margin-bottom: 14px;
+      }
+
+      .idea-list {
+        padding-left: 18px;
+        margin: 0;
+        color: #d9d9d9;
+      }
+
+      .idea-list li {
+        margin-bottom: 10px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      .back-footer {
+        display: block;
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: #4af626;
+        color: #050505;
+        text-align: center;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+
+      .back-footer:hover {
+        text-decoration: none;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 28px 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="index.html">← m49n</a>
+
+      <header>
+        <div class="title">comps</div>
+        <div class="subtitle">
+          sketching a sandbox for tracking sold prices and chasing sneaky ebay data.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <section>
+        <div class="section-label">starting point</div>
+        <div class="content-block">
+          <div class="block-title">jump to ebay</div>
+          <div class="block-note">sold listings, ready for crawling later.</div>
+          <div class="block-body">
+            <p>
+              <a href="https://www.ebay.com/sch/i.html?_nkw=psa+10+baseball+card&_sop=13&LH_Sold=1&LH_Complete=1" target="_blank" rel="noopener noreferrer">
+                ebay search · sold & completed</a
+              >
+            </p>
+            <p>
+              Manual clicks for now; soon, we'll quietly harvest the data instead of
+              scrolling forever.
+            </p>
+          </div>
+        </div>
+
+        <div class="section-label">intent</div>
+        <div class="content-block">
+          <div class="block-title">card comps lab</div>
+          <div class="block-note">a test bed for turning messy listings into clean signals.</div>
+          <div class="block-body">
+            <p>
+              Goal: build a lightweight comps tool that ingests sold auction results,
+              normalizes player/grade/variant, and surfaces the believable median faster
+              than a weekend spreadsheet binge.
+            </p>
+            <p>
+              This page will eventually host the ingest and display layers; for now it's a
+              mood board with a live link out to the source.
+            </p>
+          </div>
+        </div>
+
+        <div class="section-label">future shape</div>
+        <div class="content-block">
+          <div class="block-title">sketches & possible modules</div>
+          <div class="block-body">
+            <ul class="idea-list">
+              <li>
+                Query rail: quick search by player, set, grade, and parallel with saved
+                shortcuts for personal chases.
+              </li>
+              <li>
+                Price lane: rolling medians, floor/ceiling bands, and a "trust score" that
+                filters out suspicious anomalies.
+              </li>
+              <li>
+                Lot disassembler: split multi-card lots into per-card estimates, tagging
+                unusual freebies.
+              </li>
+              <li>
+                Heatmap view: week-over-week deltas plus alerts when velocity spikes for a
+                watched card.
+              </li>
+              <li>
+                Export hatch: CSV/JSON buttons for pushing comps into buying checklists or
+                liquidation planning.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">m49n © 2025</div>
+      <a class="back-footer" href="index.html">← back to index</a>
+    </main>
+  </body>
+</html>
