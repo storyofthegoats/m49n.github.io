@@ -43,17 +43,19 @@
       }
 
       .page-layout {
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: 260px 1fr;
-        gap: 28px;
+        gap: 24px;
         align-items: start;
       }
 
       main {
         max-width: 960px;
+        width: 100%;
         margin: 0 auto;
+        grid-column: 2;
       }
 
       a {
@@ -163,6 +165,9 @@
       .season-note {
         font-size: 0.85rem;
         color: #888;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
       }
 
       .roster-content {
@@ -232,6 +237,81 @@
         box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
       }
 
+      .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .view-toggle-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .view-toggle-options {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .view-toggle-button {
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        padding: 5px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+      }
+
+      .view-toggle-button.is-active {
+        border-color: #4af626;
+        color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+        background: #0c0c0c;
+      }
+
+      body[data-view="compact"] .player:not(.key) {
+        display: none;
+      }
+
+      .search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .search-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 7px 10px;
+        border-radius: 10px;
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        font-family: inherit;
+        font-size: 0.9rem;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+      }
+
       .footer {
         font-size: 0.75rem;
         color: #666;
@@ -254,23 +334,47 @@
         opacity: 0.9;
       }
 
-      aside {
-        width: 100%;
+      .banner-column {
+        display: flex;
+        justify-content: flex-start;
+        grid-column: 1;
+        grid-row: 1;
       }
 
-      .side-banner {
-        border: 1px solid #0f0f0f;
-        background: #080808;
-        border-radius: 14px;
-        overflow: hidden;
-        position: sticky;
-        top: 24px;
+      .banner-card {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: #0a0a0a;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       }
 
-      .side-banner img {
+      .banner-image {
         display: block;
         width: 100%;
         height: auto;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 960px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        main,
+        .banner-column {
+          grid-column: auto;
+          grid-row: auto;
+        }
+
+        .banner-column {
+          justify-content: center;
+        }
+
+        .banner-card {
+          max-width: 360px;
+          width: 100%;
+        }
       }
 
       @media (max-width: 600px) {
@@ -281,36 +385,20 @@
         .year-summary {
           font-size: 0.95rem;
         }
-
-        .page-layout {
-          grid-template-columns: 1fr;
-        }
-
-        .side-banner {
-          position: relative;
-          top: auto;
-        }
       }
     </style>
   </head>
 
-  <body>
+  <body data-view="full">
     <div class="page-layout">
-      <aside aria-label="Mets banner">
-        <div class="side-banner">
-          <img src="images/banners/mets.jpg" alt="A crappy AI anime drawing of Juan Soto (supposedly)" />
-        </div>
-      </aside>
-
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
 
         <header>
           <div class="title">mets rosters</div>
           <div class="subtitle">
-            every New York Met on the roster across the past 25 seasons.
-            expand a season to load the names, numbers, and positions directly
-            from MLB's public stats API. Fuck the Mets
+            Expand a season to view every player from that season, sorted by starters (compact) vs full team, directly sourced from MLB's public stats API.
+            Click any player name for a quick eBay card search, and use the eBay toggle to modify the search by card type. Play ball!
           </div>
 
           <div class="ebay-toggle" aria-label="eBay search toggle">
@@ -322,22 +410,66 @@
 
         <section>
           <div class="section-label">rosters by year</div>
+          <div class="view-toggle" aria-label="Roster view toggle">
+            <span class="view-toggle-label">View</span>
+            <div id="view-toggle-options" class="view-toggle-options">
+              <button
+                type="button"
+                class="view-toggle-button"
+                data-view="compact"
+              >
+                Compact
+              </button>
+              <button
+                type="button"
+                class="view-toggle-button is-active"
+                data-view="full"
+              >
+                Full
+              </button>
+            </div>
+          </div>
+          <div class="search-row" aria-label="Player search">
+            <span class="search-label">Search</span>
+            <input
+              id="player-search"
+              class="search-input"
+              type="search"
+              placeholder="Search for a player"
+            />
+          </div>
           <div id="roster-list" class="roster-list"></div>
         </section>
 
         <div class="footer">m49n · mets rosters</div>
         <a class="back-footer" href="mlb-rosters.html">← back to mlb rosters</a>
       </main>
+
+      <aside class="banner-column" aria-label="Mets banner">
+        <div class="banner-card">
+          <img
+            class="banner-image"
+            src="images/banners/mets.jpg"
+            alt="Mets banner"
+            loading="lazy"
+          />
+        </div>
+      </aside>
     </div>
 
     <script>
       const rosterList = document.getElementById("roster-list");
-
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const searchInput = document.getElementById("player-search");
+      const viewToggleOptions = document.getElementById("view-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
       const currentYear = new Date().getFullYear();
       const years = Array.from({ length: 25 }, (_, index) => currentYear - index);
+      const ROSTER_VIEW_PREF_KEY = "rosterViewPreference";
+      const VIEW_OPTIONS = ["full", "compact"];
+      const KEY_PLAYER_MIN_COUNT = 12;
+      const KEY_PLAYER_MAX_COUNT = 16;
 
       const seasonSummaries = {
         2025: {
@@ -446,11 +578,40 @@
         },
       };
 
-
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
         : "All";
+      const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
+      let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
+        ? savedViewPreference
+        : "full";
+
+      function setRosterView(view) {
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "full";
+        currentRosterView = nextView;
+        document.body.dataset.view = currentRosterView;
+        localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
+
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              button.dataset.view === currentRosterView
+            );
+          });
+      }
+
+      function bindRosterViewToggle() {
+        viewToggleOptions
+          .querySelectorAll(".view-toggle-button")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              setRosterView(button.dataset.view);
+            });
+          });
+      }
 
       function setEbayAddon(addon) {
         currentEbayAddon = addon;
@@ -484,7 +645,39 @@
         setEbayAddon(currentEbayAddon);
       }
 
+      function applyPlayerFilter() {
+        const term = searchInput.value.trim().toLowerCase();
+
+        document.querySelectorAll(".year-panel").forEach((panel) => {
+          const rosterItems = panel.querySelectorAll(".roster-item.player");
+
+          if (!rosterItems.length) {
+            panel.style.display = "";
+            return;
+          }
+
+          let matchCount = 0;
+
+          rosterItems.forEach((item) => {
+            const nameText =
+              item.querySelector(".roster-name")?.textContent?.toLowerCase() || "";
+            const isMatch = !term || nameText.includes(term);
+            item.style.display = isMatch ? "" : "none";
+
+            if (isMatch) {
+              matchCount += 1;
+            }
+          });
+
+          panel.style.display = term && matchCount === 0 ? "none" : "";
+        });
+      }
+
+      setRosterView(currentRosterView);
+      bindRosterViewToggle();
       renderEbayToggle();
+
+      searchInput.addEventListener("input", applyPlayerFilter);
 
       rosterList.addEventListener("click", (event) => {
         const link = event.target.closest(".roster-name a");
@@ -508,42 +701,49 @@
 
         const summary = document.createElement("summary");
         summary.className = "year-summary";
+        const yearLabel = document.createElement("span");
+        yearLabel.textContent = year;
+
+        const seasonData = seasonSummaries[year];
+
         const summaryText = document.createElement("div");
         summaryText.className = "summary-text";
 
         const headerRow = document.createElement("div");
         headerRow.className = "year-header";
 
-        const yearLabel = document.createElement("span");
-        yearLabel.textContent = year;
-
-        const standingLabel = document.createElement("span");
-        standingLabel.className = "record-badge";
-        const seasonData = seasonSummaries[year];
-        standingLabel.textContent = seasonData?.place || "loading record...";
+        const record = document.createElement("span");
+        record.className = "record-badge";
+        record.textContent = seasonData?.place || "loading record...";
 
         headerRow.appendChild(yearLabel);
-        headerRow.appendChild(standingLabel);
+        headerRow.appendChild(record);
         summaryText.appendChild(headerRow);
 
-        const seasonNote = document.createElement("div");
-        seasonNote.className = "season-note";
-        seasonNote.textContent =
+        const description = document.createElement("div");
+        description.className = "season-note";
+
+        const recordLine = document.createElement("div");
+        recordLine.textContent = "record loading...";
+
+        const descriptionText = document.createElement("div");
+        descriptionText.textContent =
           seasonData?.summary || "Season summary not available.";
-        summaryText.appendChild(seasonNote);
+
+        description.append(recordLine, descriptionText);
+        summaryText.appendChild(description);
 
         summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
-          .then((recordText) => {
-            standingLabel.textContent = recordText;
+          .then(({ recordText, placeText }) => {
+            record.textContent = placeText || seasonData?.place || "record unavailable";
+            recordLine.textContent = recordText || "record unavailable";
           })
           .catch(() => {
-            standingLabel.textContent =
-              seasonData?.place || "record unavailable";
-            seasonNote.textContent =
-              seasonData?.summary || "Season summary not available.";
+            record.textContent = seasonData?.place || "record unavailable";
+            recordLine.textContent = "record unavailable";
           });
 
         const content = document.createElement("div");
@@ -578,6 +778,18 @@
         return `${number}th`;
       }
 
+      function calculateKeyCount(totalPlayers) {
+        if (!Number.isFinite(totalPlayers) || totalPlayers <= 0) {
+          return KEY_PLAYER_MIN_COUNT;
+        }
+
+        const candidate = Math.round(totalPlayers * 0.35);
+        return Math.min(
+          KEY_PLAYER_MAX_COUNT,
+          Math.max(KEY_PLAYER_MIN_COUNT, candidate)
+        );
+      }
+
       function formatAccolades(record) {
         if (!record || typeof record !== "object") return [];
 
@@ -597,7 +809,6 @@
         }
         return accolades;
       }
-
 
       function buildEbaySearchUrl(playerName, addon = currentEbayAddon) {
         if (!playerName) return null;
@@ -646,15 +857,11 @@
         if (typeof wins === "number" && typeof losses === "number") {
           let display = `${wins} - ${losses}`;
 
-          if (placeText) {
-            display += `, ${placeText}`;
-          }
-
           if (accolades.length) {
             display += ` (${accolades.join("; ")})`;
           }
 
-          return display;
+          return { recordText: display, placeText };
         }
 
         throw new Error("No record data found");
@@ -705,13 +912,19 @@
           pitchers.sort(sortByPositionThenName);
 
           const orderedRoster = [...positionPlayers, ...pitchers];
-          
+
           const grid = document.createElement("div");
           grid.className = "roster-grid";
 
-          orderedRoster.forEach((player) => {
+          const keyCount = calculateKeyCount(orderedRoster.length);
+
+          orderedRoster.forEach((player, index) => {
             const card = document.createElement("div");
-            card.className = "roster-item";
+            card.className = "roster-item player";
+
+            if (index < keyCount) {
+              card.classList.add("key");
+            }
 
             const name = document.createElement("div");
             name.className = "roster-name";
@@ -738,8 +951,10 @@
             card.appendChild(meta);
             grid.appendChild(card);
           });
+
           target.innerHTML = "";
           target.appendChild(grid);
+          applyPlayerFilter();
         } catch (error) {
           target.textContent = `Could not load roster for ${year}.`;
         }
