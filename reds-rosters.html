@@ -165,14 +165,9 @@
       .season-note {
         font-size: 0.85rem;
         color: #888;
-      }
-
-      .permanent-record-link {
-        color: #7af48c;
-      }
-
-      .permanent-record-link:hover {
-        color: #9bf7a6;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
       }
 
       .roster-content {
@@ -285,6 +280,38 @@
         display: none;
       }
 
+      .search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 4px;
+        font-size: 0.9rem;
+      }
+
+      .search-label {
+        color: #888;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 7px 10px;
+        border-radius: 10px;
+        border: 1px solid #1b1b1b;
+        background: #060606;
+        color: #e5e5e5;
+        font-family: inherit;
+        font-size: 0.9rem;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4af626;
+        box-shadow: 0 0 0 1px rgba(74, 246, 38, 0.35);
+      }
+
       .footer {
         font-size: 0.75rem;
         color: #666;
@@ -362,7 +389,7 @@
     </style>
   </head>
 
-  <body data-view="compact">
+  <body data-view="full">
     <div class="page-layout">
       <main>
         <a class="top-link" href="mlb-rosters.html">← mlb rosters</a>
@@ -370,10 +397,8 @@
         <header>
           <div class="title">reds rosters</div>
           <div class="subtitle">
-            every Cincinnati Red on the roster, listed year by year from the
-            2025 season back through the past 25 seasons. Expand a season to
-            load the names, numbers, and positions directly from MLB's public
-            stats API.
+            Expand a season to view every player from that season, sorted by starters (compact) vs full team, directly sourced from MLB's public stats API.
+            Click any player name for a quick eBay card search, and use the eBay toggle to modify the search by card type. Play ball!
           </div>
 
           <div class="ebay-toggle" aria-label="eBay search toggle">
@@ -390,19 +415,28 @@
             <div id="view-toggle-options" class="view-toggle-options">
               <button
                 type="button"
-                class="view-toggle-button is-active"
+                class="view-toggle-button"
                 data-view="compact"
               >
                 Compact
               </button>
               <button
                 type="button"
-                class="view-toggle-button"
+                class="view-toggle-button is-active"
                 data-view="full"
               >
                 Full
               </button>
             </div>
+          </div>
+          <div class="search-row" aria-label="Player search">
+            <span class="search-label">Search</span>
+            <input
+              id="player-search"
+              class="search-input"
+              type="search"
+              placeholder="Search for a player"
+            />
           </div>
           <div id="roster-list" class="roster-list"></div>
         </section>
@@ -425,8 +459,8 @@
 
     <script>
       const rosterList = document.getElementById("roster-list");
-
       const ebayToggleOptions = document.getElementById("ebay-toggle-options");
+      const searchInput = document.getElementById("player-search");
       const viewToggleOptions = document.getElementById("view-toggle-options");
       const EBAY_ADDON_KEY = "m49n_roster_ebay_addon";
       const EBAY_ADDON_OPTIONS = ["All", "Topps", "Stadium Club", "Panini", "Chrome", "Auto", "RC"];
@@ -540,7 +574,6 @@
 
       const years = Array.from({ length: 25 }, (_, index) => 2025 - index);
 
-
       const savedAddon = localStorage.getItem(EBAY_ADDON_KEY);
       let currentEbayAddon = EBAY_ADDON_OPTIONS.includes(savedAddon)
         ? savedAddon
@@ -548,10 +581,10 @@
       const savedViewPreference = localStorage.getItem(ROSTER_VIEW_PREF_KEY);
       let currentRosterView = VIEW_OPTIONS.includes(savedViewPreference)
         ? savedViewPreference
-        : "compact";
+        : "full";
 
       function setRosterView(view) {
-        const nextView = VIEW_OPTIONS.includes(view) ? view : "compact";
+        const nextView = VIEW_OPTIONS.includes(view) ? view : "full";
         currentRosterView = nextView;
         document.body.dataset.view = currentRosterView;
         localStorage.setItem(ROSTER_VIEW_PREF_KEY, currentRosterView);
@@ -608,10 +641,39 @@
         setEbayAddon(currentEbayAddon);
       }
 
+      function applyPlayerFilter() {
+        const term = searchInput.value.trim().toLowerCase();
+
+        document.querySelectorAll(".year-panel").forEach((panel) => {
+          const rosterItems = panel.querySelectorAll(".roster-item.player");
+
+          if (!rosterItems.length) {
+            panel.style.display = "";
+            return;
+          }
+
+          let matchCount = 0;
+
+          rosterItems.forEach((item) => {
+            const nameText =
+              item.querySelector(".roster-name")?.textContent?.toLowerCase() || "";
+            const isMatch = !term || nameText.includes(term);
+            item.style.display = isMatch ? "" : "none";
+
+            if (isMatch) {
+              matchCount += 1;
+            }
+          });
+
+          panel.style.display = term && matchCount === 0 ? "none" : "";
+        });
+      }
+
       setRosterView(currentRosterView);
       bindRosterViewToggle();
-
       renderEbayToggle();
+
+      searchInput.addEventListener("input", applyPlayerFilter);
 
       rosterList.addEventListener("click", (event) => {
         const link = event.target.closest(".roster-name a");
@@ -656,32 +718,28 @@
 
         const description = document.createElement("div");
         description.className = "season-note";
+
+        const recordLine = document.createElement("div");
+        recordLine.textContent = "record loading...";
+
         const descriptionText = document.createElement("div");
         descriptionText.textContent =
           seasonData?.summary || "Season summary not available.";
 
-        const permanentRecordLink = document.createElement("a");
-        permanentRecordLink.className = "permanent-record-link";
-        permanentRecordLink.href = `https://www.baseball-reference.com/teams/CIN/${year}.shtml`;
-        permanentRecordLink.target = "_blank";
-        permanentRecordLink.rel = "noopener noreferrer";
-        permanentRecordLink.textContent = "season statistics";
-
-        const statsLinkRow = document.createElement("div");
-        statsLinkRow.appendChild(permanentRecordLink);
-
-        description.append(descriptionText, statsLinkRow);
+        description.append(recordLine, descriptionText);
         summaryText.appendChild(description);
 
         summary.appendChild(summaryText);
         details.appendChild(summary);
 
         fetchSeasonRecord(year)
-          .then((recordText) => {
-            record.textContent = recordText;
+          .then(({ recordText, placeText }) => {
+            record.textContent = placeText || seasonData?.place || "record unavailable";
+            recordLine.textContent = recordText || "record unavailable";
           })
           .catch(() => {
             record.textContent = seasonData?.place || "record unavailable";
+            recordLine.textContent = "record unavailable";
           });
 
         const content = document.createElement("div");
@@ -749,7 +807,6 @@
         return accolades;
       }
 
-
       function buildEbaySearchUrl(playerName, addon = currentEbayAddon) {
         if (!playerName) return null;
 
@@ -797,15 +854,11 @@
         if (typeof wins === "number" && typeof losses === "number") {
           let display = `${wins} - ${losses}`;
 
-          if (placeText) {
-            display += `, ${placeText}`;
-          }
-
           if (accolades.length) {
             display += ` (${accolades.join("; ")})`;
           }
 
-          return display;
+          return { recordText: display, placeText };
         }
 
         throw new Error("No record data found");
@@ -895,8 +948,10 @@
             card.appendChild(meta);
             grid.appendChild(card);
           });
+
           target.innerHTML = "";
           target.appendChild(grid);
+          applyPlayerFilter();
         } catch (error) {
           target.textContent = `Could not load roster for ${year}.`;
         }
