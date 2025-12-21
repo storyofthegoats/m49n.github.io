@@ -376,6 +376,10 @@
           <strong>Method</strong>
           <p class="recipe-body" id="recipeMethod">—</p>
         </div>
+        <div class="recipe-section" id="recipeNotesSection">
+          <strong>Family Notes</strong>
+          <p class="recipe-body" id="recipeNotes">—</p>
+        </div>
       </section>
 
       <div class="back-to-top-row">
@@ -400,6 +404,8 @@
       const recipeNameEl = document.getElementById("recipeName");
       const recipeIngredientsEl = document.getElementById("recipeIngredients");
       const recipeMethodEl = document.getElementById("recipeMethod");
+      const recipeNotesSection = document.getElementById("recipeNotesSection");
+      const recipeNotesEl = document.getElementById("recipeNotes");
       const randomButton = document.getElementById("randomButton");
       const clearButton = document.getElementById("clearButton");
       const backToTopButton = document.getElementById("backToTop");
@@ -474,12 +480,13 @@
 
         return rows
           .map((row) => {
-            const [category = "", , name = "", ingredients = "", method = ""] = row;
+            const [category = "", , name = "", ingredients = "", method = "", familyNotes = ""] = row;
             return {
               category: category.trim(),
               name: name.trim(),
               ingredients: ingredients.trim(),
               method: method.trim(),
+              familyNotes: familyNotes.trim(),
             };
           })
           .filter((entry) => entry.name || entry.ingredients || entry.category);
@@ -570,6 +577,18 @@
         recipeNameEl.textContent = recipe.name || "Untitled recipe";
         recipeIngredientsEl.textContent = recipe.ingredients || "No ingredients listed.";
         recipeMethodEl.textContent = recipe.method || "No method provided yet.";
+
+        if (recipeNotesSection && recipeNotesEl) {
+          const hasNotes = recipe.familyNotes?.trim();
+          if (hasNotes) {
+            recipeNotesEl.textContent = recipe.familyNotes;
+            recipeNotesSection.style.display = "block";
+          } else {
+            recipeNotesEl.textContent = "";
+            recipeNotesSection.style.display = "none";
+          }
+        }
+
         if (recipeView) {
           recipeView.scrollIntoView({ behavior: "smooth", block: "start" });
         }
@@ -694,6 +713,10 @@
         backToTopButton.addEventListener("click", () => {
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
+      }
+
+      if (recipeNotesSection) {
+        recipeNotesSection.style.display = "none";
       }
 
       load();
