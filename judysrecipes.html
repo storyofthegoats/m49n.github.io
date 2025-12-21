@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Judy's Recipes · m49n</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .top-link {
+        font-size: 0.8rem;
+        color: #777;
+        margin-bottom: 12px;
+        display: inline-block;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 18px;
+        line-height: 1.5;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid #222;
+        margin: 0 0 24px 0;
+      }
+
+      .section-label {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 10px;
+      }
+
+      .panel {
+        border: 1px solid #151515;
+        background: radial-gradient(circle at top left, #0e0e0e 0, #050505 70%);
+        border-radius: 12px;
+        padding: 16px 14px;
+        margin-bottom: 18px;
+      }
+
+      .panel + .panel {
+        margin-top: 12px;
+      }
+
+      .panel-title {
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin: 0 0 8px 0;
+        color: #cfcfcf;
+      }
+
+      .panel-note {
+        font-size: 0.85rem;
+        color: #888;
+        margin: 0 0 12px 0;
+        line-height: 1.45;
+      }
+
+      .categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .category-pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid #222;
+        background: #0b0b0b;
+        font-size: 0.85rem;
+        color: #b0f4a8;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 240px;
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        border: 1px solid #333;
+        background: #050505;
+        color: #e5e5e5;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4af626;
+      }
+
+      .button {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        border: 1px solid #333;
+        background: #0d0d0d;
+        color: #e5e5e5;
+        cursor: pointer;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+
+      .button:hover {
+        border-color: #4af626;
+        transform: translateY(-1px);
+      }
+
+      .button.secondary {
+        background: #0a0a0a;
+        color: #9ad6ff;
+      }
+
+      .results-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .result-card {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        padding: 12px;
+        background: radial-gradient(circle at top left, #101010 0, #050505 70%);
+        display: grid;
+        gap: 6px;
+      }
+
+      .result-title {
+        font-size: 1rem;
+        color: #e5e5e5;
+        margin: 0;
+      }
+
+      .result-meta {
+        font-size: 0.85rem;
+        color: #8dd7ff;
+      }
+
+      .result-ingredients {
+        font-size: 0.85rem;
+        color: #b8b8b8;
+        line-height: 1.5;
+      }
+
+      .result-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .recipe-view {
+        border: 1px solid #1a1a1a;
+        background: radial-gradient(circle at top left, #0d0d0d 0, #040404 75%);
+        border-radius: 12px;
+        padding: 16px 14px;
+      }
+
+      .recipe-name {
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 0 0 8px 0;
+      }
+
+      .recipe-section {
+        margin: 0 0 12px 0;
+      }
+
+      .recipe-section strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #9ad6ff;
+        letter-spacing: 0.08em;
+        font-size: 0.85rem;
+      }
+
+      .recipe-body {
+        margin: 0;
+        white-space: pre-line;
+        line-height: 1.6;
+      }
+
+      .status-text {
+        font-size: 0.85rem;
+        color: #888;
+        margin: 8px 0 0 0;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 700px) {
+        body {
+          padding: 28px 16px;
+        }
+
+        .search-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-input {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <a class="top-link" href="index.html">← m49n</a>
+
+      <header>
+        <div class="title">Judy's Recipes</div>
+        <div class="subtitle">
+          A lookup corner for Judy's Google Sheet: browse categories, search by name or ingredient,
+          and pull a random "Recipe of the Day" to cook something new.
+        </div>
+        <hr class="divider" />
+      </header>
+
+      <section class="panel">
+        <div class="panel-title">Categories</div>
+        <p class="panel-note">
+          Pulled live from column A of Judy's sheet. Tap any recipe below or filter to hone in on
+          what you're cooking next.
+        </p>
+        <ul class="categories" id="categoryList"></ul>
+        <div class="status-text" id="categoryStatus">Loading categories…</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Search &amp; discover</div>
+        <p class="panel-note">
+          Search by recipe name (column C) or ingredient (column D). Results update as you type.
+        </p>
+        <div class="search-row">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="search"
+            placeholder="Search recipe name or ingredient"
+            aria-label="Search recipe name or ingredient"
+          />
+          <div class="result-actions">
+            <button class="button" id="randomButton" type="button">Recipe of the Day</button>
+            <button class="button secondary" id="clearButton" type="button">Clear search</button>
+          </div>
+        </div>
+        <ul class="results-list" id="results"></ul>
+        <div class="status-text" id="resultsStatus">Waiting for recipes…</div>
+      </section>
+
+      <section class="recipe-view" id="recipeView" aria-live="polite">
+        <div class="recipe-name" id="recipeName">Pick a recipe to view.</div>
+        <div class="recipe-section">
+          <strong>Ingredients</strong>
+          <p class="recipe-body" id="recipeIngredients">—</p>
+        </div>
+        <div class="recipe-section">
+          <strong>Method</strong>
+          <p class="recipe-body" id="recipeMethod">—</p>
+        </div>
+      </section>
+
+      <div class="footer">m49n © 2025</div>
+    </main>
+
+    <script>
+      const sheetUrl =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4v9TckwxuT-7uavMOVXogmFkjfC_Jo-cqmYUXu1re0zJXnuSZZnFiUyW_92U3DDkeE0w8e5P2SHl9/pub?output=csv";
+
+      const categoryList = document.getElementById("categoryList");
+      const categoryStatus = document.getElementById("categoryStatus");
+      const searchInput = document.getElementById("searchInput");
+      const resultsList = document.getElementById("results");
+      const resultsStatus = document.getElementById("resultsStatus");
+      const recipeNameEl = document.getElementById("recipeName");
+      const recipeIngredientsEl = document.getElementById("recipeIngredients");
+      const recipeMethodEl = document.getElementById("recipeMethod");
+      const randomButton = document.getElementById("randomButton");
+      const clearButton = document.getElementById("clearButton");
+
+      let recipes = [];
+
+      function parseCSV(text) {
+        const rows = [];
+        let current = "";
+        let inQuotes = false;
+        let row = [];
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === "\"" && inQuotes && next === "\"") {
+            current += "\"";
+            i++;
+            continue;
+          }
+
+          if (char === "\"") {
+            inQuotes = !inQuotes;
+            continue;
+          }
+
+          if ((char === "\n" || char === "\r") && !inQuotes) {
+            if (current !== "" || row.length) {
+              row.push(current);
+              rows.push(row);
+              row = [];
+              current = "";
+            }
+            continue;
+          }
+
+          if (char === "," && !inQuotes) {
+            row.push(current);
+            current = "";
+            continue;
+          }
+
+          current += char;
+        }
+
+        if (current !== "" || row.length) {
+          row.push(current);
+          rows.push(row);
+        }
+
+        return rows;
+      }
+
+      function normalizeRows(rawRows) {
+        if (!rawRows.length) return [];
+
+        const header = rawRows[0].map((cell) => cell.trim().toLowerCase());
+        const hasHeader = header.includes("category") || header.includes("recipe") || header.includes("ingredients");
+        const rows = hasHeader ? rawRows.slice(1) : rawRows;
+
+        return rows
+          .map((row) => {
+            const [category = "", , name = "", ingredients = "", method = ""] = row;
+            return {
+              category: category.trim(),
+              name: name.trim(),
+              ingredients: ingredients.trim(),
+              method: method.trim(),
+            };
+          })
+          .filter((entry) => entry.name || entry.ingredients || entry.category);
+      }
+
+      function renderCategories(list) {
+        categoryList.innerHTML = "";
+        if (!list.length) {
+          categoryStatus.textContent = "No categories found.";
+          return;
+        }
+
+        list.forEach((cat) => {
+          const li = document.createElement("li");
+          li.className = "category-pill";
+          li.textContent = cat || "Uncategorized";
+          categoryList.appendChild(li);
+        });
+        categoryStatus.textContent = `${list.length} categor${list.length === 1 ? "y" : "ies"} loaded.`;
+      }
+
+      function renderResults(list) {
+        resultsList.innerHTML = "";
+
+        if (!list.length) {
+          resultsStatus.textContent = "No recipes match that search yet.";
+          return;
+        }
+
+        list.forEach((recipe) => {
+          const li = document.createElement("li");
+          li.className = "result-card";
+
+          const title = document.createElement("div");
+          title.className = "result-title";
+          title.textContent = recipe.name || "Untitled recipe";
+
+          const meta = document.createElement("div");
+          meta.className = "result-meta";
+          meta.textContent = recipe.category || "Uncategorized";
+
+          const ing = document.createElement("div");
+          ing.className = "result-ingredients";
+          ing.textContent = recipe.ingredients || "No ingredients listed yet.";
+
+          const actions = document.createElement("div");
+          actions.className = "result-actions";
+
+          const viewBtn = document.createElement("button");
+          viewBtn.type = "button";
+          viewBtn.className = "button";
+          viewBtn.textContent = "View";
+          viewBtn.addEventListener("click", () => showRecipe(recipe));
+
+          actions.appendChild(viewBtn);
+
+          li.appendChild(title);
+          li.appendChild(meta);
+          li.appendChild(ing);
+          li.appendChild(actions);
+          resultsList.appendChild(li);
+        });
+
+        resultsStatus.textContent = `${list.length} recipe${list.length === 1 ? "" : "s"} ready.`;
+      }
+
+      function showRecipe(recipe) {
+        recipeNameEl.textContent = recipe.name || "Untitled recipe";
+        recipeIngredientsEl.textContent = recipe.ingredients || "No ingredients listed.";
+        recipeMethodEl.textContent = recipe.method || "No method provided yet.";
+      }
+
+      function searchRecipes(query) {
+        if (!query) {
+          renderResults(recipes.slice(0, 25));
+          return;
+        }
+
+        const lower = query.toLowerCase();
+        const filtered = recipes.filter((recipe) => {
+          const name = recipe.name.toLowerCase();
+          const ingredients = recipe.ingredients.toLowerCase();
+          return name.includes(lower) || ingredients.includes(lower);
+        });
+        renderResults(filtered.slice(0, 50));
+      }
+
+      async function load() {
+        categoryStatus.textContent = "Loading categories…";
+        resultsStatus.textContent = "Fetching recipes…";
+        try {
+          const response = await fetch(sheetUrl);
+          const text = await response.text();
+          const rows = parseCSV(text);
+          recipes = normalizeRows(rows);
+
+          const categorySet = Array.from(new Set(recipes.map((r) => r.category))).filter(Boolean);
+          renderCategories(categorySet);
+          renderResults(recipes.slice(0, 25));
+          if (recipes.length) {
+            showRecipe(recipes[0]);
+          }
+        } catch (error) {
+          categoryStatus.textContent = "Couldn't load the sheet right now. Try again soon.";
+          resultsStatus.textContent = "Search is paused until the sheet loads.";
+        }
+      }
+
+      searchInput.addEventListener("input", (event) => {
+        searchRecipes(event.target.value.trim());
+      });
+
+      randomButton.addEventListener("click", () => {
+        if (!recipes.length) return;
+        const randomIndex = Math.floor(Math.random() * recipes.length);
+        const recipe = recipes[randomIndex];
+        showRecipe(recipe);
+        resultsStatus.textContent = `Recipe of the Day: ${recipe.name || "Untitled recipe"}`;
+      });
+
+      clearButton.addEventListener("click", () => {
+        searchInput.value = "";
+        resultsStatus.textContent = recipes.length
+          ? "Cleared search. Showing a few starters."
+          : "Waiting for recipes…";
+        renderResults(recipes.slice(0, 25));
+      });
+
+      load();
+    </script>
+  </body>
+</html>
