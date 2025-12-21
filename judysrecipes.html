@@ -237,6 +237,34 @@
         flex-wrap: wrap;
       }
 
+      .back-to-top-row {
+        display: flex;
+        justify-content: flex-end;
+        margin: 18px 0 6px;
+      }
+
+      .back-to-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid #1f1f1f;
+        background: #0a0a0a;
+        color: #9ad6ff;
+        font-size: 0.85rem;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      }
+
+      .back-to-top:hover {
+        border-color: #4af626;
+        color: #c9ffd0;
+        transform: translateY(-1px);
+        background: radial-gradient(circle at top left, #0f2a10 0, #0a0f0a 70%);
+      }
+
       .recipe-view {
         border: 1px solid #1a1a1a;
         background: radial-gradient(circle at top left, #0d0d0d 0, #040404 75%);
@@ -352,6 +380,12 @@
         </div>
       </section>
 
+      <div class="back-to-top-row">
+        <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+          ↑ Back to top
+        </button>
+      </div>
+
       <div class="footer">m49n © 2025</div>
     </main>
 
@@ -370,6 +404,7 @@
       const recipeMethodEl = document.getElementById("recipeMethod");
       const randomButton = document.getElementById("randomButton");
       const clearButton = document.getElementById("clearButton");
+      const backToTopButton = document.getElementById("backToTop");
 
       let recipes = [];
       let selectedCategory = null;
@@ -656,6 +691,12 @@
           : "Waiting for recipes…";
         updateResults();
       });
+
+      if (backToTopButton) {
+        backToTopButton.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
 
       load();
     </script>
