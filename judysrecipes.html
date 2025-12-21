@@ -94,91 +94,69 @@
         line-height: 1.45;
       }
 
-      .categories {
-        display: grid;
-        gap: 10px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .category-entry {
-        border: 1px solid #151515;
-        border-radius: 10px;
-        background: radial-gradient(circle at top left, #0c0c0c 0, #050505 70%);
-        padding: 8px;
-      }
-
-      .category-button {
-        width: 100%;
-        text-align: left;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 10px 12px;
-        background: #0b0b0b;
-        color: #b0f4a8;
-        border-radius: 8px;
-        border: 1px solid #222;
-        cursor: pointer;
-        font-size: 0.9rem;
-        letter-spacing: 0.04em;
-      }
-
-      .category-button:hover {
-        border-color: #4af626;
-      }
-
-      .category-count {
-        font-size: 0.75rem;
-        color: #7bc06f;
-      }
-
-      .category-recipes {
-        display: none;
-        margin-top: 8px;
-        padding: 10px 10px 2px 10px;
-        border-radius: 8px;
-        border: 1px dashed #1f1f1f;
-        background: #0a0a0a;
-      }
-
-      .category-recipes.open {
-        display: grid;
-        gap: 8px;
-      }
-
-      .category-recipe-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 8px;
-      }
-
-      .category-recipe-button {
-        width: 100%;
-        text-align: left;
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: 1px solid #1b1b1b;
-        background: #0f0f0f;
-        color: #e5e5e5;
-        cursor: pointer;
-        font-size: 0.85rem;
-      }
-
-      .category-recipe-button:hover {
-        border-color: #4af626;
-      }
-
       .search-row {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         align-items: center;
         margin-bottom: 12px;
+      }
+
+      .category-pill-row {
+        display: grid;
+        gap: 6px;
+        margin: 8px 0 14px 0;
+      }
+
+      .pill-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .category-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .category-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid #1f1f1f;
+        background: #0a0a0a;
+        color: #9ad6ff;
+        cursor: pointer;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      }
+
+      .category-pill:hover {
+        border-color: #4af626;
+        transform: translateY(-1px);
+      }
+
+      .category-pill.active {
+        border-color: #4af626;
+        background: radial-gradient(circle at top left, #0f2a10 0, #0a0f0a 70%);
+        color: #c9ffd0;
+      }
+
+      .category-count {
+        font-size: 0.75rem;
+        color: #7bc06f;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid #1f1f1f;
+        background: #0f0f0f;
       }
 
       .search-input {
@@ -350,17 +328,15 @@
             <button class="button secondary" id="clearButton" type="button">Clear search</button>
           </div>
         </div>
+        <div class="category-pill-row">
+          <div class="pill-header">
+            <div class="section-label">Categories</div>
+            <div class="status-text" id="categoryStatus">Loading categories…</div>
+          </div>
+          <div class="category-pills" id="categoryList" role="list"></div>
+        </div>
         <ul class="results-list" id="results"></ul>
         <div class="status-text" id="resultsStatus">Waiting for recipes…</div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-title">Categories</div>
-        <p class="panel-note">
-          Pulled live from column A of Judy's sheet. Expand a category to see every recipe inside.
-        </p>
-        <ul class="categories" id="categoryList"></ul>
-        <div class="status-text" id="categoryStatus">Loading categories…</div>
       </section>
 
       <section class="recipe-view" id="recipeView" aria-live="polite">
@@ -394,6 +370,7 @@
       const clearButton = document.getElementById("clearButton");
 
       let recipes = [];
+      let selectedCategory = null;
 
       function parseCSV(text) {
         const rows = [];
@@ -472,65 +449,37 @@
 
         list.forEach((entry) => {
           const { label, items } = entry;
-          const li = document.createElement("li");
-          li.className = "category-entry";
-
           const button = document.createElement("button");
           button.type = "button";
-          button.className = "category-button";
-          button.textContent = label || "Uncategorized";
+          button.className = "category-pill";
+          button.setAttribute("data-label", label || "Uncategorized");
 
-          const recipeContainer = document.createElement("div");
-          recipeContainer.className = "category-recipes";
-
-          const recipeList = document.createElement("ul");
-          recipeList.className = "category-recipe-list";
-
-          if (!items.length) {
-            const empty = document.createElement("div");
-            empty.className = "status-text";
-            empty.textContent = "No recipes in this category yet.";
-            recipeContainer.appendChild(empty);
-          } else {
-            items.forEach((recipe) => {
-              const recipeItem = document.createElement("li");
-
-              const recipeButton = document.createElement("button");
-              recipeButton.type = "button";
-              recipeButton.className = "category-recipe-button";
-              recipeButton.textContent = recipe.name || "Untitled recipe";
-              recipeButton.addEventListener("click", () => showRecipe(recipe));
-
-              recipeItem.appendChild(recipeButton);
-              recipeList.appendChild(recipeItem);
-            });
-
-            recipeContainer.appendChild(recipeList);
-          }
+          const text = document.createElement("span");
+          text.textContent = label || "Uncategorized";
 
           const count = document.createElement("span");
           count.className = "category-count";
-          count.textContent = `${items.length} recipe${items.length === 1 ? "" : "s"}`;
+          count.textContent = `${items.length}`;
+
+          button.appendChild(text);
           button.appendChild(count);
 
           button.addEventListener("click", () => {
-            const isOpen = recipeContainer.classList.toggle("open");
-            button.setAttribute("aria-expanded", isOpen);
+            toggleCategory(label || "Uncategorized");
           });
 
-          li.appendChild(button);
-          li.appendChild(recipeContainer);
-          categoryList.appendChild(li);
+          categoryList.appendChild(button);
         });
 
-        categoryStatus.textContent = `${list.length} categor${list.length === 1 ? "y" : "ies"} loaded.`;
+        categoryStatus.textContent = "Tap a pill to filter recipes.";
+        updateCategorySelectionUI();
       }
 
       function renderResults(list) {
         resultsList.innerHTML = "";
 
         if (!list.length) {
-          resultsStatus.textContent = "No recipes match that search yet.";
+          resultsStatus.textContent = "No recipes match those filters yet.";
           return;
         }
 
@@ -577,19 +526,63 @@
         recipeMethodEl.textContent = recipe.method || "No method provided yet.";
       }
 
-      function searchRecipes(query) {
-        if (!query) {
-          renderResults(recipes.slice(0, 25));
+      function getCategoryLabel(recipe) {
+        return recipe.category?.trim() || "Uncategorized";
+      }
+
+      function toggleCategory(label) {
+        selectedCategory = selectedCategory === label ? null : label;
+        updateCategorySelectionUI();
+        updateResults();
+      }
+
+      function updateCategorySelectionUI() {
+        const buttons = categoryList.querySelectorAll(".category-pill");
+        buttons.forEach((button) => {
+          const label = button.getAttribute("data-label");
+          if (label === selectedCategory) {
+            button.classList.add("active");
+          } else {
+            button.classList.remove("active");
+          }
+        });
+
+        categoryStatus.textContent = selectedCategory
+          ? `Showing ${selectedCategory} recipes.`
+          : "Select a category pill to show recipes.";
+      }
+
+      function getFilteredRecipes() {
+        const query = searchInput.value.trim().toLowerCase();
+        let filtered = recipes;
+
+        if (selectedCategory) {
+          filtered = filtered.filter((recipe) => getCategoryLabel(recipe) === selectedCategory);
+        }
+
+        if (query) {
+          filtered = filtered.filter((recipe) => {
+            const name = recipe.name.toLowerCase();
+            const ingredients = recipe.ingredients.toLowerCase();
+            return name.includes(query) || ingredients.includes(query);
+          });
+        }
+
+        return filtered;
+      }
+
+      function updateResults() {
+        const query = searchInput.value.trim();
+        if (!query && !selectedCategory) {
+          resultsList.innerHTML = "";
+          resultsStatus.textContent = recipes.length
+            ? "Select a category pill or search to see recipes."
+            : "Waiting for recipes…";
           return;
         }
 
-        const lower = query.toLowerCase();
-        const filtered = recipes.filter((recipe) => {
-          const name = recipe.name.toLowerCase();
-          const ingredients = recipe.ingredients.toLowerCase();
-          return name.includes(lower) || ingredients.includes(lower);
-        });
-        renderResults(filtered.slice(0, 50));
+        const filtered = getFilteredRecipes().slice(0, 50);
+        renderResults(filtered);
       }
 
       async function load() {
@@ -603,7 +596,7 @@
 
           const categoryMap = new Map();
           recipes.forEach((recipe) => {
-            const label = recipe.category?.trim() || "Uncategorized";
+            const label = getCategoryLabel(recipe);
             if (!categoryMap.has(label)) {
               categoryMap.set(label, []);
             }
@@ -615,24 +608,23 @@
             .sort((a, b) => a.label.localeCompare(b.label));
 
           renderCategories(categoryEntries);
-          renderResults(recipes.slice(0, 25));
-          if (recipes.length) {
-            showRecipe(recipes[0]);
-          }
+          updateResults();
         } catch (error) {
           categoryStatus.textContent = "Couldn't load the sheet right now. Try again soon.";
           resultsStatus.textContent = "Search is paused until the sheet loads.";
         }
       }
 
-      searchInput.addEventListener("input", (event) => {
-        searchRecipes(event.target.value.trim());
+      searchInput.addEventListener("input", () => {
+        updateResults();
       });
 
       randomButton.addEventListener("click", () => {
-        if (!recipes.length) return;
-        const randomIndex = Math.floor(Math.random() * recipes.length);
-        const recipe = recipes[randomIndex];
+        const filtered = getFilteredRecipes();
+        const pool = filtered.length ? filtered : recipes;
+        if (!pool.length) return;
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        const recipe = pool[randomIndex];
         showRecipe(recipe);
         resultsStatus.textContent = `Recipe of the Day: ${recipe.name || "Untitled recipe"}`;
       });
@@ -640,9 +632,9 @@
       clearButton.addEventListener("click", () => {
         searchInput.value = "";
         resultsStatus.textContent = recipes.length
-          ? "Cleared search. Showing a few starters."
+          ? "Cleared search. Pick a category pill or start typing to browse."
           : "Waiting for recipes…";
-        renderResults(recipes.slice(0, 25));
+        updateResults();
       });
 
       load();
