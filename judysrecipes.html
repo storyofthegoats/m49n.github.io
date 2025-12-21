@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Judy Maupin A to Z Recipes</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050505;
+        --panel: #0f0f0f;
+        --border: #1e1e1e;
+        --muted: #9aa3ad;
+        --accent: #4af626;
+        --text: #e5e5e5;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px 18px 60px;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+          "Courier New", monospace;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        letter-spacing: 0.08em;
+        margin: 0 0 8px;
+        font-size: 1.6rem;
+      }
+
+      p.lede {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        align-items: flex-end;
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+        color: var(--muted);
+      }
+
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #111;
+        color: var(--text);
+        font-family: inherit;
+      }
+
+      .inline-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      button,
+      .link-btn {
+        background: #111;
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      button:hover,
+      .link-btn:hover {
+        border-color: #2a2a2a;
+      }
+
+      .link-btn {
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .categories {
+        margin: 10px 0 6px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 8px 12px;
+      }
+
+      .cat-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+      }
+
+      .status {
+        margin: 10px 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin: 6px 0 12px;
+        color: var(--muted);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 180px;
+        box-shadow: var(--shadow);
+      }
+
+      .card:hover {
+        border-color: #2a2a2a;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #fff;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #111;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .snippet {
+        color: var(--muted);
+        line-height: 1.4;
+        flex: 1;
+        white-space: pre-wrap;
+      }
+
+      .card .view-btn {
+        align-self: flex-start;
+        margin-top: auto;
+      }
+
+      .empty-state,
+      .error-state {
+        padding: 18px;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* Modal */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        z-index: 100;
+      }
+
+      .modal-backdrop.active {
+        display: flex;
+      }
+
+      .modal {
+        background: #0b0b0b;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        max-width: 760px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: auto;
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .modal header {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: baseline;
+      }
+
+      .modal-title {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .modal-meta {
+        margin: 4px 0 10px;
+        color: var(--muted);
+      }
+
+      .section-title {
+        margin: 12px 0 6px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .preformatted {
+        background: #0f0f0f;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
+
+      .modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #0f0f0f;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 22px 14px 40px;
+        }
+
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Judy Maupin A to Z Recipes</h1>
+        <p class="lede">Search, filter, and browse the recipes as they were originally written.</p>
+      </header>
+
+      <section class="panel" aria-live="polite">
+        <div class="controls">
+          <div>
+            <label for="search">Keyword search</label>
+            <input type="text" id="search" placeholder="Search title, ingredients, method, or ID" />
+          </div>
+          <div>
+            <label for="sort">Sort</label>
+            <select id="sort">
+              <option value="title-asc">Title (A → Z)</option>
+              <option value="title-desc">Title (Z → A)</option>
+              <option value="category-asc">Category (A → Z)</option>
+              <option value="category-desc">Category (Z → A)</option>
+            </select>
+          </div>
+          <div class="inline-actions">
+            <button type="button" id="retry" style="display: none">Retry</button>
+            <button type="button" id="refresh">Refresh data</button>
+            <span class="pill" id="cache-status" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <div>
+          <label>Categories</label>
+          <div class="categories" id="category-list"></div>
+        </div>
+
+        <div class="status" id="status"></div>
+      </section>
+
+      <div class="results-header">
+        <div id="result-count">Loading recipes…</div>
+        <div class="muted" id="active-state"></div>
+      </div>
+
+      <div id="results"></div>
+    </main>
+
+    <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal">
+        <header>
+          <h2 class="modal-title" id="modal-title"></h2>
+          <span class="badge" id="modal-category"></span>
+        </header>
+        <div class="modal-meta" id="modal-id"></div>
+        <div>
+          <div class="section-title">Ingredients</div>
+          <div class="preformatted" id="modal-ingredients"></div>
+        </div>
+        <div>
+          <div class="section-title">Method</div>
+          <div class="preformatted" id="modal-method"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="copy-ingredients">Copy Ingredients</button>
+          <button type="button" id="copy-full">Copy Full Recipe</button>
+          <button type="button" id="close-modal">Close</button>
+          <span class="muted" id="copy-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4v9TckwxuT-7uavMOVXogmFkjfC_Jo-cqmYUXu1re0zJXnuSZZnFiUyW_92U3DDkeE0w8e5P2SHl9/pub?output=csv";
+      const CACHE_KEY = "judy-recipes-cache-v1";
+      const CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours
+      const BASE_CATEGORIES = [
+        "Appetizers",
+        "Beverages",
+        "Breads and Grains",
+        "Cakes",
+        "Candy",
+        "Casseroles",
+        "Cookies",
+        "Meat",
+        "Pies and Pastries",
+        "Poultry",
+        "Salads",
+        "Sandwiches",
+        "Soups and Sauces",
+        "Vegetables",
+      ];
+
+      const searchInput = document.getElementById("search");
+      const sortSelect = document.getElementById("sort");
+      const categoryList = document.getElementById("category-list");
+      const resultsContainer = document.getElementById("results");
+      const statusEl = document.getElementById("status");
+      const retryBtn = document.getElementById("retry");
+      const refreshBtn = document.getElementById("refresh");
+      const cacheStatus = document.getElementById("cache-status");
+      const resultCount = document.getElementById("result-count");
+      const activeState = document.getElementById("active-state");
+
+      const modalBackdrop = document.getElementById("modal-backdrop");
+      const modalTitle = document.getElementById("modal-title");
+      const modalCategory = document.getElementById("modal-category");
+      const modalIngredients = document.getElementById("modal-ingredients");
+      const modalMethod = document.getElementById("modal-method");
+      const modalId = document.getElementById("modal-id");
+      const copyIngredientsBtn = document.getElementById("copy-ingredients");
+      const copyFullBtn = document.getElementById("copy-full");
+      const closeModalBtn = document.getElementById("close-modal");
+      const copyStatus = document.getElementById("copy-status");
+
+      let recipes = [];
+      let filteredRecipes = [];
+      let selectedCategories = new Set();
+      let searchTerm = "";
+      let sortKey = "title-asc";
+      let otherCategoryExists = false;
+      let debounceTimer;
+
+      function normalizeKey(value = "") {
+        return value.replace(/[^a-z0-9]/gi, "").toLowerCase();
+      }
+
+      function normalizeCategory(value = "") {
+        return value.trim().toLowerCase();
+      }
+
+      function getCache() {
+        try {
+          const raw = localStorage.getItem(CACHE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          if (!parsed.timestamp || !parsed.data) return null;
+          const age = Date.now() - parsed.timestamp;
+          if (age > CACHE_TTL) return null;
+          cacheStatus.textContent = `Cached ${(age / (60 * 60 * 1000)).toFixed(1)}h ago`;
+          return parsed.data;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function setCache(data) {
+        try {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ timestamp: Date.now(), data })
+          );
+          cacheStatus.textContent = "Cached just now";
+        } catch (e) {
+          cacheStatus.textContent = "Cache unavailable";
+        }
+      }
+
+      function clearCache() {
+        try {
+          localStorage.removeItem(CACHE_KEY);
+          cacheStatus.textContent = "Cache cleared";
+        } catch (e) {
+          cacheStatus.textContent = "Cache unavailable";
+        }
+      }
+
+      function parseCSV(text) {
+        const rows = [];
+        let field = "";
+        let row = [];
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"') {
+            if (inQuotes && next === '"') {
+              field += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (char === "," && !inQuotes) {
+            row.push(field);
+            field = "";
+          } else if ((char === "\n" || char === "\r") && !inQuotes) {
+            if (char === "\r" && next === "\n") {
+              i++;
+            }
+            row.push(field);
+            rows.push(row);
+            row = [];
+            field = "";
+          } else {
+            field += char;
+          }
+        }
+        row.push(field);
+        if (row.length > 1 || row[0] !== "") rows.push(row);
+        return rows;
+      }
+
+      function mapRowsToRecipes(rows) {
+        if (!rows.length) throw new Error("CSV has no data");
+        const headers = rows[0].map((h) => normalizeKey(h));
+        const expected = {
+          id: ["recipeid", "id"],
+          category: ["category"],
+          title: ["recipetitle", "title"],
+          ingredients: ["ingredients"],
+          method: ["method", "directions"],
+        };
+
+        const indices = {};
+        for (const key of Object.keys(expected)) {
+          const match = headers.findIndex((h) =>
+            expected[key].includes(h)
+          );
+          indices[key] = match;
+        }
+
+        if (indices.id === -1 || indices.title === -1) {
+          throw new Error("Missing required columns (Recipe_ID or Recipe_Title)");
+        }
+
+        return rows.slice(1).map((row) => {
+          const getVal = (idx) =>
+            idx >= 0 && idx < row.length ? row[idx].replace(/\r/g, "") : "";
+          return {
+            id: getVal(indices.id).trim(),
+            category: getVal(indices.category).trim(),
+            title: getVal(indices.title).trim(),
+            ingredients: getVal(indices.ingredients),
+            method: getVal(indices.method),
+          };
+        }).filter((r) => r.id || r.title);
+      }
+
+      async function fetchData() {
+        statusEl.textContent = "Loading recipes…";
+        retryBtn.style.display = "none";
+        try {
+          const cached = getCache();
+          if (cached) {
+            statusEl.textContent = "Loaded from cache";
+            return cached;
+          }
+
+          const response = await fetch(CSV_URL);
+          if (!response.ok) throw new Error("Network response was not ok");
+          const text = await response.text();
+          const rows = parseCSV(text);
+          const mapped = mapRowsToRecipes(rows);
+          setCache(mapped);
+          statusEl.textContent = "Loaded fresh data";
+          return mapped;
+        } catch (error) {
+          statusEl.textContent = "Unable to load recipes. Please retry.";
+          retryBtn.style.display = "inline-block";
+          throw error;
+        }
+      }
+
+      function updateCategories(recipesData) {
+        categoryList.innerHTML = "";
+        const normalizedBase = new Set(BASE_CATEGORIES.map(normalizeCategory));
+        const otherCats = new Set();
+
+        recipesData.forEach((r) => {
+          const norm = normalizeCategory(r.category);
+          if (!normalizedBase.has(norm) && r.category) {
+            otherCats.add(r.category.trim());
+          }
+        });
+
+        otherCategoryExists = otherCats.size > 0;
+
+        const toRender = [...BASE_CATEGORIES];
+        if (otherCategoryExists) toRender.push("Other");
+
+        toRender.forEach((cat) => {
+          const id = `cat-${normalizeKey(cat)}`;
+          const wrapper = document.createElement("label");
+          wrapper.className = "cat-item";
+          wrapper.innerHTML = `
+            <input type="checkbox" id="${id}" value="${cat}" />
+            <span>${cat}</span>
+          `;
+          const input = wrapper.querySelector("input");
+          input.checked = selectedCategories.has(cat);
+          input.addEventListener("change", () => {
+            if (input.checked) {
+              selectedCategories.add(cat);
+            } else {
+              selectedCategories.delete(cat);
+            }
+            updateQueryParams();
+            applyFilters();
+          });
+          categoryList.appendChild(wrapper);
+        });
+      }
+
+      function applyFilters() {
+        const normalizedBase = new Set(BASE_CATEGORIES.map(normalizeCategory));
+        const selected = new Set(selectedCategories);
+        const hasOther = selected.has("Other");
+        const baseSelected = new Set(
+          [...selected].filter((c) => c !== "Other").map(normalizeCategory)
+        );
+
+        filteredRecipes = recipes.filter((r) => {
+          const composite = [r.title, r.ingredients, r.method, r.category, r.id]
+            .join("\n")
+            .toLowerCase();
+          if (searchTerm && !composite.includes(searchTerm)) return false;
+
+          if (selected.size === 0) return true;
+          const normCat = normalizeCategory(r.category);
+          const isBase = normalizedBase.has(normCat);
+          if (baseSelected.size > 0 && baseSelected.has(normCat)) return true;
+          if (hasOther && !isBase) return true;
+          return false;
+        });
+
+        sortRecipes();
+        renderResults();
+        updateActiveState();
+        updateQueryParams();
+      }
+
+      function sortRecipes() {
+        const collator = new Intl.Collator("en", { sensitivity: "base" });
+        filteredRecipes.sort((a, b) => {
+          switch (sortKey) {
+            case "title-desc":
+              return collator.compare(b.title || "", a.title || "");
+            case "category-asc":
+              return collator.compare(a.category || "", b.category || "") || collator.compare(a.title || "", b.title || "");
+            case "category-desc":
+              return collator.compare(b.category || "", a.category || "") || collator.compare(a.title || "", b.title || "");
+            case "title-asc":
+            default:
+              return collator.compare(a.title || "", b.title || "");
+          }
+        });
+      }
+
+      function renderResults() {
+        resultCount.textContent = `${filteredRecipes.length} recipe${filteredRecipes.length === 1 ? "" : "s"}`;
+        if (!filteredRecipes.length) {
+          resultsContainer.innerHTML = '<div class="empty-state">No recipes match your filters.</div>';
+          return;
+        }
+
+        const cards = filteredRecipes
+          .map((recipe) => {
+            const snippetSource = recipe.ingredients || recipe.method || "";
+            const snippet = snippetSource
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 140);
+            const displaySnippet = snippetSource.length > 140 ? `${snippet}…` : snippet;
+            return `
+              <article class="card" data-id="${encodeURIComponent(recipe.id)}">
+                <h3>${recipe.title || "Untitled"}</h3>
+                <span class="badge">${recipe.category || "Uncategorized"}</span>
+                <div class="snippet">${displaySnippet || ""}</div>
+                <button class="view-btn" type="button">View</button>
+              </article>
+            `;
+          })
+          .join("");
+
+        resultsContainer.innerHTML = `<div class="cards">${cards}</div>`;
+        resultsContainer.querySelectorAll(".card").forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (e.target.closest("button")) {
+              // Button click handled by same event
+            }
+            const id = decodeURIComponent(card.getAttribute("data-id"));
+            const recipe = filteredRecipes.find((r) => r.id === id);
+            if (recipe) openModal(recipe);
+          });
+        });
+        resultsContainer.querySelectorAll(".view-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const card = e.target.closest(".card");
+            if (!card) return;
+            const id = decodeURIComponent(card.getAttribute("data-id"));
+            const recipe = filteredRecipes.find((r) => r.id === id);
+            if (recipe) openModal(recipe);
+          });
+        });
+      }
+
+      function openModal(recipe) {
+        modalTitle.textContent = recipe.title || "Untitled";
+        modalCategory.textContent = recipe.category || "Uncategorized";
+        modalIngredients.textContent = recipe.ingredients || "";
+        modalMethod.textContent = recipe.method || "";
+        modalId.textContent = recipe.id ? `Recipe ID: ${recipe.id}` : "";
+        modalBackdrop.classList.add("active");
+        modalBackdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function closeModal() {
+        modalBackdrop.classList.remove("active");
+        modalBackdrop.setAttribute("aria-hidden", "true");
+        copyStatus.textContent = "";
+      }
+
+      function copyText(text) {
+        if (!navigator.clipboard) {
+          copyStatus.textContent = "Clipboard unavailable";
+          return;
+        }
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            copyStatus.textContent = "Copied!";
+            setTimeout(() => (copyStatus.textContent = ""), 1200);
+          })
+          .catch(() => {
+            copyStatus.textContent = "Copy failed";
+          });
+      }
+
+      function debounce(fn, delay = 200) {
+        return (...args) => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => fn.apply(null, args), delay);
+        };
+      }
+
+      function updateQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        if (searchTerm) {
+          params.set("q", searchTerm);
+        } else {
+          params.delete("q");
+        }
+
+        if (selectedCategories.size > 0) {
+          params.set("cat", [...selectedCategories].join(","));
+        } else {
+          params.delete("cat");
+        }
+
+        if (sortKey) {
+          params.set("sort", sortKey);
+        } else {
+          params.delete("sort");
+        }
+
+        const query = params.toString();
+        const newUrl = query
+          ? `${window.location.pathname}?${query}`
+          : window.location.pathname;
+        window.history.replaceState({}, "", newUrl);
+      }
+
+      function applyQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get("q") || "";
+        const catParam = params.get("cat") || "";
+        const sortParam = params.get("sort") || "title-asc";
+
+        searchTerm = q.toLowerCase();
+        searchInput.value = q;
+        sortKey = sortParam;
+        sortSelect.value = sortParam;
+
+        selectedCategories = new Set();
+        if (catParam) {
+          catParam
+            .split(",")
+            .map((c) => c.trim())
+            .filter(Boolean)
+            .forEach((c) => selectedCategories.add(c));
+        }
+      }
+
+      function updateActiveState() {
+        const parts = [];
+        if (searchTerm) parts.push(`search: "${searchInput.value}"`);
+        if (selectedCategories.size)
+          parts.push(`categories: ${[...selectedCategories].join(", ")}`);
+        parts.push(`sort: ${sortSelect.options[sortSelect.selectedIndex].text}`);
+        activeState.textContent = parts.join(" | ");
+      }
+
+      function attachEventListeners() {
+        searchInput.addEventListener(
+          "input",
+          debounce((e) => {
+            searchTerm = e.target.value.toLowerCase();
+            applyFilters();
+          }, 200)
+        );
+
+        sortSelect.addEventListener("change", (e) => {
+          sortKey = e.target.value;
+          applyFilters();
+        });
+
+        retryBtn.addEventListener("click", () => {
+          load();
+        });
+
+        refreshBtn.addEventListener("click", () => {
+          clearCache();
+          load();
+        });
+
+        modalBackdrop.addEventListener("click", (e) => {
+          if (e.target === modalBackdrop) closeModal();
+        });
+        closeModalBtn.addEventListener("click", closeModal);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modalBackdrop.classList.contains("active")) {
+            closeModal();
+          }
+        });
+
+        copyIngredientsBtn.addEventListener("click", () => {
+          const text = modalIngredients.textContent;
+          copyText(text);
+        });
+        copyFullBtn.addEventListener("click", () => {
+          const text = [
+            modalTitle.textContent,
+            modalCategory.textContent,
+            modalId.textContent,
+            "Ingredients:",
+            modalIngredients.textContent,
+            "",
+            "Method:",
+            modalMethod.textContent,
+          ]
+            .filter(Boolean)
+            .join("\n");
+          copyText(text);
+        });
+      }
+
+      async function load() {
+        statusEl.textContent = "Loading recipes…";
+        try {
+          const data = await fetchData();
+          recipes = data;
+          applyQueryParams();
+          updateCategories(recipes);
+          applyFilters();
+        } catch (error) {
+          resultsContainer.innerHTML = `
+            <div class="error-state">
+              <div>Could not load recipes right now.</div>
+              <button type="button" class="link-btn" id="error-retry">Retry</button>
+            </div>
+          `;
+          const btn = document.getElementById("error-retry");
+          if (btn) btn.addEventListener("click", load);
+        }
+      }
+
+      attachEventListeners();
+      load();
+    </script>
+  </body>
+</html>
