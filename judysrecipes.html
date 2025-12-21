@@ -95,21 +95,82 @@
       }
 
       .categories {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+        display: grid;
+        gap: 10px;
         margin: 0;
         padding: 0;
         list-style: none;
       }
 
-      .category-pill {
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: 1px solid #222;
+      .category-entry {
+        border: 1px solid #151515;
+        border-radius: 10px;
+        background: radial-gradient(circle at top left, #0c0c0c 0, #050505 70%);
+        padding: 8px;
+      }
+
+      .category-button {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 12px;
         background: #0b0b0b;
-        font-size: 0.85rem;
         color: #b0f4a8;
+        border-radius: 8px;
+        border: 1px solid #222;
+        cursor: pointer;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+      }
+
+      .category-button:hover {
+        border-color: #4af626;
+      }
+
+      .category-count {
+        font-size: 0.75rem;
+        color: #7bc06f;
+      }
+
+      .category-recipes {
+        display: none;
+        margin-top: 8px;
+        padding: 10px 10px 2px 10px;
+        border-radius: 8px;
+        border: 1px dashed #1f1f1f;
+        background: #0a0a0a;
+      }
+
+      .category-recipes.open {
+        display: grid;
+        gap: 8px;
+      }
+
+      .category-recipe-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .category-recipe-button {
+        width: 100%;
+        text-align: left;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #1b1b1b;
+        background: #0f0f0f;
+        color: #e5e5e5;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .category-recipe-button:hover {
+        border-color: #4af626;
       }
 
       .search-row {
@@ -272,16 +333,6 @@
       </header>
 
       <section class="panel">
-        <div class="panel-title">Categories</div>
-        <p class="panel-note">
-          Pulled live from column A of Judy's sheet. Tap any recipe below or filter to hone in on
-          what you're cooking next.
-        </p>
-        <ul class="categories" id="categoryList"></ul>
-        <div class="status-text" id="categoryStatus">Loading categories…</div>
-      </section>
-
-      <section class="panel">
         <div class="panel-title">Search &amp; discover</div>
         <p class="panel-note">
           Search by recipe name (column C) or ingredient (column D). Results update as you type.
@@ -301,6 +352,15 @@
         </div>
         <ul class="results-list" id="results"></ul>
         <div class="status-text" id="resultsStatus">Waiting for recipes…</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Categories</div>
+        <p class="panel-note">
+          Pulled live from column A of Judy's sheet. Expand a category to see every recipe inside.
+        </p>
+        <ul class="categories" id="categoryList"></ul>
+        <div class="status-text" id="categoryStatus">Loading categories…</div>
       </section>
 
       <section class="recipe-view" id="recipeView" aria-live="polite">
@@ -410,12 +470,59 @@
           return;
         }
 
-        list.forEach((cat) => {
+        list.forEach((entry) => {
+          const { label, items } = entry;
           const li = document.createElement("li");
-          li.className = "category-pill";
-          li.textContent = cat || "Uncategorized";
+          li.className = "category-entry";
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "category-button";
+          button.textContent = label || "Uncategorized";
+
+          const recipeContainer = document.createElement("div");
+          recipeContainer.className = "category-recipes";
+
+          const recipeList = document.createElement("ul");
+          recipeList.className = "category-recipe-list";
+
+          if (!items.length) {
+            const empty = document.createElement("div");
+            empty.className = "status-text";
+            empty.textContent = "No recipes in this category yet.";
+            recipeContainer.appendChild(empty);
+          } else {
+            items.forEach((recipe) => {
+              const recipeItem = document.createElement("li");
+
+              const recipeButton = document.createElement("button");
+              recipeButton.type = "button";
+              recipeButton.className = "category-recipe-button";
+              recipeButton.textContent = recipe.name || "Untitled recipe";
+              recipeButton.addEventListener("click", () => showRecipe(recipe));
+
+              recipeItem.appendChild(recipeButton);
+              recipeList.appendChild(recipeItem);
+            });
+
+            recipeContainer.appendChild(recipeList);
+          }
+
+          const count = document.createElement("span");
+          count.className = "category-count";
+          count.textContent = `${items.length} recipe${items.length === 1 ? "" : "s"}`;
+          button.appendChild(count);
+
+          button.addEventListener("click", () => {
+            const isOpen = recipeContainer.classList.toggle("open");
+            button.setAttribute("aria-expanded", isOpen);
+          });
+
+          li.appendChild(button);
+          li.appendChild(recipeContainer);
           categoryList.appendChild(li);
         });
+
         categoryStatus.textContent = `${list.length} categor${list.length === 1 ? "y" : "ies"} loaded.`;
       }
 
@@ -494,8 +601,20 @@
           const rows = parseCSV(text);
           recipes = normalizeRows(rows);
 
-          const categorySet = Array.from(new Set(recipes.map((r) => r.category))).filter(Boolean);
-          renderCategories(categorySet);
+          const categoryMap = new Map();
+          recipes.forEach((recipe) => {
+            const label = recipe.category?.trim() || "Uncategorized";
+            if (!categoryMap.has(label)) {
+              categoryMap.set(label, []);
+            }
+            categoryMap.get(label).push(recipe);
+          });
+
+          const categoryEntries = Array.from(categoryMap.entries())
+            .map(([label, items]) => ({ label, items }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+
+          renderCategories(categoryEntries);
           renderResults(recipes.slice(0, 25));
           if (recipes.length) {
             showRecipe(recipes[0]);
