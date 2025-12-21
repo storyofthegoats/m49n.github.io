@@ -364,6 +364,7 @@
       const searchInput = document.getElementById("searchInput");
       const resultsList = document.getElementById("results");
       const resultsStatus = document.getElementById("resultsStatus");
+      const recipeView = document.getElementById("recipeView");
       const recipeNameEl = document.getElementById("recipeName");
       const recipeIngredientsEl = document.getElementById("recipeIngredients");
       const recipeMethodEl = document.getElementById("recipeMethod");
@@ -525,6 +526,9 @@
         recipeNameEl.textContent = recipe.name || "Untitled recipe";
         recipeIngredientsEl.textContent = recipe.ingredients || "No ingredients listed.";
         recipeMethodEl.textContent = recipe.method || "No method provided yet.";
+        if (recipeView) {
+          recipeView.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
 
       function getCategoryLabel(recipe) {
