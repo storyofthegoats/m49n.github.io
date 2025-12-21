@@ -135,6 +135,7 @@
         color: #9ad6ff;
         cursor: pointer;
         font-size: 0.85rem;
+        font-family: inherit;
         letter-spacing: 0.05em;
         transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
       }
@@ -556,7 +557,7 @@
         const query = searchInput.value.trim().toLowerCase();
         let filtered = recipes;
 
-        if (selectedCategory) {
+        if (selectedCategory && selectedCategory !== "All") {
           filtered = filtered.filter((recipe) => getCategoryLabel(recipe) === selectedCategory);
         }
 
@@ -606,6 +607,10 @@
           const categoryEntries = Array.from(categoryMap.entries())
             .map(([label, items]) => ({ label, items }))
             .sort((a, b) => a.label.localeCompare(b.label));
+
+          categoryEntries.unshift({ label: "All", items: recipes });
+
+          selectedCategory = "All";
 
           renderCategories(categoryEntries);
           updateResults();
