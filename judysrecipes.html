@@ -269,17 +269,6 @@
         line-height: 1.6;
       }
 
-      .recipe-actions {
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .recipe-actions .note {
-        color: #777;
-      }
-
       .status-text {
         font-size: 0.85rem;
         color: #888;
@@ -361,10 +350,6 @@
           <strong>Method</strong>
           <p class="recipe-body" id="recipeMethod">—</p>
         </div>
-        <div class="recipe-actions" id="recipeActions" hidden>
-          <button class="button" type="button" id="openRecipeButton">Open this recipe in a new window</button>
-          <div class="status-text note">Creates a new tab with this recipe only.</div>
-        </div>
       </section>
 
       <div class="footer">m49n © 2025</div>
@@ -383,8 +368,6 @@
       const recipeNameEl = document.getElementById("recipeName");
       const recipeIngredientsEl = document.getElementById("recipeIngredients");
       const recipeMethodEl = document.getElementById("recipeMethod");
-      const recipeActions = document.getElementById("recipeActions");
-      const openRecipeButton = document.getElementById("openRecipeButton");
       const randomButton = document.getElementById("randomButton");
       const clearButton = document.getElementById("clearButton");
 
@@ -554,7 +537,6 @@
         recipeNameEl.textContent = recipe.name || "Untitled recipe";
         recipeIngredientsEl.textContent = recipe.ingredients || "No ingredients listed.";
         recipeMethodEl.textContent = recipe.method || "No method provided yet.";
-        recipeActions.hidden = !currentRecipe;
         if (recipeView) {
           recipeView.scrollIntoView({ behavior: "smooth", block: "start" });
         }
@@ -673,56 +655,6 @@
           ? "Cleared search. Pick a category pill or start typing to browse."
           : "Waiting for recipes…";
         updateResults();
-      });
-
-      openRecipeButton.addEventListener("click", () => {
-        if (!currentRecipe) return;
-        const popup = window.open("", "_blank", "noopener,noreferrer");
-        if (!popup) {
-          resultsStatus.textContent = "Pop-ups are blocked. Allow them to open the recipe in a new window.";
-          return;
-        }
-
-        const { name, ingredients, method, category } = currentRecipe;
-        const safeName = escapeHTML(name || "Untitled recipe");
-        const safeIngredients = escapeHTML(ingredients || "No ingredients listed.");
-        const safeMethod = escapeHTML(method || "No method provided yet.");
-        const safeCategory = escapeHTML(category || "Uncategorized");
-
-        popup.document.write(`
-          <!doctype html>
-          <html lang="en">
-            <head>
-              <meta charset="utf-8" />
-              <title>${safeName}</title>
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <style>
-                body { font-family: "JetBrains Mono", ui-monospace, monospace; background: #0a0a0a; color: #e5e5e5; padding: 24px; }
-                main { max-width: 720px; margin: 0 auto; }
-                h1 { font-size: 1.4rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px; }
-                .meta { color: #9ad6ff; margin-bottom: 10px; }
-                .section { margin: 0 0 14px; }
-                .section strong { display: block; margin-bottom: 6px; color: #9ad6ff; letter-spacing: 0.08em; font-size: 0.9rem; }
-                .content { white-space: pre-line; line-height: 1.6; margin: 0; }
-              </style>
-            </head>
-            <body>
-              <main>
-                <h1>${safeName}</h1>
-                <div class="meta">${safeCategory}</div>
-                <div class="section">
-                  <strong>Ingredients</strong>
-                  <p class="content">${safeIngredients}</p>
-                </div>
-                <div class="section">
-                  <strong>Method</strong>
-                  <p class="content">${safeMethod}</p>
-                </div>
-              </main>
-            </body>
-          </html>
-        `);
-        popup.document.close();
       });
 
       load();
