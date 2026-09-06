@@ -17,3 +17,12 @@ header{display:flex;justify-content:space-between;align-items:center;gap:28px;pa
 .set-story p{margin:0 0 14px;max-width:90ch}.set-story p:last-child{margin-bottom:0}
 .set-story .story-detail{color:#38526b}.set-story strong{color:var(--ink)}
 @media(max-width:680px){.set-story{padding:18px}}
+
+
+/* Independent checklist filters and quiet chase-character artwork. */
+.controls{flex-wrap:wrap}.controls .search{flex:1 1 240px}.controls select{max-width:100%;width:100%}
+.set-story{position:relative;isolation:isolate;overflow:hidden}
+.set-story .story-pokemon{position:absolute;z-index:0;right:8px;top:50%;transform:translateY(-50%);width:280px;height:100%;max-width:60%;object-fit:contain;opacity:.13;pointer-events:none;user-select:none}
+.set-story p{position:relative;z-index:1}
+@media(max-width:680px){.controls>div:not(.search){flex:1 1 140px}.set-story .story-pokemon{right:-20px;max-width:80%;opacity:.09}}
+@media print{.story-pokemon{display:none}}
