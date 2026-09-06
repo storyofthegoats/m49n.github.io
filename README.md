@@ -331,3 +331,6 @@ The checklists use Japanese releases and printed numbering. Original/Neo Pokémo
 
 When updating a checklist, verify the Japanese card list and foil status, preserve source links, reconcile the total, and update visible filter choices and header counts. The full static tables remain readable without JavaScript. This adds reference pages only; it does not implement purchase, sales, or collection tracking.
 
+
+
+Checklist controls combine card-name/number search with separate finish, rarity/class, and card-type filters. Choices are derived from each table's actual values; Reset clears every filter. Each set introduction includes decorative, transparent chase-character artwork from the PokéAPI sprites repository, stored under `images/` and faded behind the text by the shared stylesheet. These are character illustrations, not card or printing-variant images.
