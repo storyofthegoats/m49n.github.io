@@ -334,3 +334,7 @@ When updating a checklist, verify the Japanese card list and foil status, preser
 
 
 Checklist pages retain a simple card-name/number search. Finish, rarity/class, and card-type dropdowns and decorative chase-character artwork have been removed.
+
+## Tyranitar tribute
+
+`tyranitar.html` is a standalone manga-inspired fan tribute linked from Shining Tyranitar in the Darkness, and to Light chase list. Its isolated `tyranitar.css` and `tyranitar.js` provide the collage layout, slow neon pulses, scrolling text, and Pause motion control, with reduced-motion support. Original generated fan art is stored at `images/tyranitar-manga.webp`; character cutouts reuse `images/tyranitar.png`. No checklist theme or functionality is changed.
