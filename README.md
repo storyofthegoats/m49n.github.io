@@ -329,8 +329,8 @@ It is the master document that keeps the project consistent across time.
 
 The checklists use Japanese releases and printed numbering. Original/Neo Pokémon show Pokédex numbers, not English collector numbers. Unnumbered Trainers and Energy remain unnumbered. Expansion Pack includes the six companion Starter Pack basic Energy cards in its conventional 102-card reference. Distinct numbered holo/non-holo cards and numbered secret cards have separate rows; edition and printing variants do not. Cards include source references, finish/classification labels, and URL-encoded eBay searches targeting Japanese cards. Photos on set headers reuse the reference page's external images.
 
-When updating a checklist, verify the Japanese card list and foil status, preserve source links, reconcile the total, and update visible filter choices and header counts. The full static tables remain readable without JavaScript. This adds reference pages only; it does not implement purchase, sales, or collection tracking.
+When updating a checklist, verify the Japanese card list and foil status, preserve source links, reconcile the total, and update header counts. The full static tables remain readable without JavaScript. This adds reference pages only; it does not implement purchase, sales, or collection tracking.
 
 
 
-Checklist controls combine card-name/number search with separate finish, rarity/class, and card-type filters. Choices are derived from each table's actual values; Reset clears every filter. Each set introduction includes decorative, transparent chase-character artwork from the PokéAPI sprites repository, stored under `images/` and faded behind the text by the shared stylesheet. These are character illustrations, not card or printing-variant images.
+Checklist pages retain a simple card-name/number search. Finish, rarity/class, and card-type dropdowns and decorative chase-character artwork have been removed.
