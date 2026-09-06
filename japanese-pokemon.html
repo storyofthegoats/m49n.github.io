@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A quick reference for vintage Japanese Pokémon set names, Japanese release years, and corresponding English sets.">
+<title>Japanese Pokémon · m49n</title>
+<style>
+:root{color-scheme:dark;--bg:#050505;--ink:#e5e5e5;--muted:#aaa;--line:#303030;--green:#4af626}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+main{max-width:1120px;margin:auto;padding:36px 24px}
+a{color:var(--green);text-underline-offset:4px}
+nav{font-size:14px;margin-bottom:32px}
+header{border-top:3px solid var(--green);padding-top:24px}
+.kicker{color:var(--green);font-size:14px;letter-spacing:.1em;text-transform:uppercase}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.2;letter-spacing:-.03em;margin:12px 0}
+.intro{max-width:760px;color:var(--muted);margin:16px 0 28px}
+.controls{display:flex;gap:16px;align-items:end;margin:24px 0}
+label{display:block;font-size:14px;margin-bottom:6px}
+.search{flex:1}
+input,select,button{font:inherit;color:inherit;background:#111;border:1px solid #555;border-radius:4px;padding:11px 12px;min-height:48px}
+input{width:100%}button{cursor:pointer}button:hover{border-color:var(--green)}
+:focus-visible{outline:2px solid var(--green);outline-offset:4px}
+.count{color:var(--muted);font-size:14px;margin:20px 0 10px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;text-align:left}
+caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+th{color:var(--muted);font-size:14px;font-weight:400;background:#141414}
+th,td{padding:18px 20px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#101710}
+.jp{display:block;color:var(--muted);font:14px/1.8 system-ui,sans-serif;margin-top:4px}
+.era{font-size:14px;color:var(--muted)}
+.featured td:first-child{border-left:3px solid var(--green)}
+.note{padding:20px;border-left:3px solid var(--green);background:#101410;margin:24px 0;color:#ccc;font-size:14px}
+footer{margin:28px 0;color:var(--muted);font-size:14px}
+#empty{padding:24px;border:1px solid var(--line)}
+[hidden]{display:none!important}
+@media(max-width:640px){main{padding:24px 16px}.controls{flex-wrap:wrap}.search{flex-basis:100%}select{flex:1}th,td{padding:14px 12px}table{min-width:620px}}
+@media print{.controls,nav{display:none}body{background:white;color:black}th,.note{background:white;color:black}.jp,.era,footer{color:#444}}
+</style>
+</head>
+<body><main>
+<nav><a href="cards.html">← cards</a> / set reference</nav>
+<header><div class="kicker">Japanese Pokémon / reference 01</div>
+<h1>Know the set.<br>Find the card.</h1>
+<p class="intro">Japanese names, release years, and English counterparts in one place. A starting selection of 11 sets from 1996–2004.</p></header>
+<div class="controls" id="controls" hidden>
+<div class="search"><label for="query">Find a set</label><input id="query" type="search" placeholder="Try Clash, Aquapolis, Rocket, or 2002" autocomplete="off"></div>
+<div><label for="era">Japanese era</label><select id="era"><option value="">All eras</option>Original</option><option>Neo</option><option>e-Card</option><option>PCG</option></select></div>
+<button id="reset" type="button">Reset</button>
+</div>
+<p id="count" class="count" role="status">11 sets · chronological order</p>
+<div class="table-wrap"><table><caption>Vintage Japanese Pokémon sample set reference</caption>
+<thead><tr><th scope="col">JP year</th><th scope="col">Japanese set / translated name</th><th scope="col">English counterpart</th><th scope="col">JP era</th></tr></thead>
+<tbody><tr><td>1996</td><td><strong>Expansion Pack</strong><span class="jp" lang="ja">拡張パック</span></td><td>Base Set</td><td class="era">Original</td></tr>
+<tr><td>1997</td><td><strong>Pokémon Jungle</strong><span class="jp" lang="ja">ポケモンジャングル</span></td><td>Jungle</td><td class="era">Original</td></tr>
+<tr><td>1997</td><td><strong>Mystery of the Fossils</strong><span class="jp" lang="ja">化石の秘密</span></td><td>Fossil</td><td class="era">Original</td></tr>
+<tr><td>1997</td><td><strong>Rocket Gang</strong><span class="jp" lang="ja">ロケット団</span></td><td>Team Rocket</td><td class="era">Original</td></tr>
+<tr><td>2000</td><td><strong>Gold, Silver, to a New World...</strong><span class="jp" lang="ja">金、銀、新世界へ...</span></td><td>Neo Genesis</td><td class="era">Neo</td></tr>
+<tr><td>2001</td><td><strong>Darkness, and to Light...</strong><span class="jp" lang="ja">闇、そして光へ...</span></td><td>Neo Destiny</td><td class="era">Neo</td></tr>
+<tr><td>2002</td><td><strong>The Town on No Map</strong><span class="jp" lang="ja">地図にない町</span></td><td>Aquapolis</td><td class="era">e-Card</td></tr>
+<tr><td>2002</td><td><strong>Wind from the Sea</strong><span class="jp" lang="ja">海からの風</span></td><td>Aquapolis</td><td class="era">e-Card</td></tr>
+<tr><td>2002</td><td><strong>Split Earth</strong><span class="jp" lang="ja">裂けた大地</span></td><td>Skyridge</td><td class="era">e-Card</td></tr>
+<tr><td>2002</td><td><strong>Mysterious Mountains</strong><span class="jp" lang="ja">神秘なる山</span></td><td>Skyridge</td><td class="era">e-Card</td></tr>
+<tr class="featured"><td>2004</td><td><strong>Clash of the Blue Sky</strong><span class="jp" lang="ja">蒼空の激突</span></td><td>EX Deoxys</td><td class="era">PCG</td></tr></tbody></table></div>
+<p id="empty" hidden>No matching sets. Try another name or reset the filters.</p>
+<aside class="note"><strong>Read these as counterparts, not identical checklists.</strong> Years refer to the Japanese release. English sets can combine Japanese releases: the two Aquapolis rows and two Skyridge rows show why the Japanese name matters when searching.</aside>
+<footer>Sample selection, not a complete vintage checklist.<br>Names, years, and mappings checked September 6, 2026 against <a href="https://bulbapedia.bulbagarden.net/wiki/List_of_Japanese_Pok%C3%A9mon_Trading_Card_Game_expansions">Bulbapedia’s Japanese expansion index</a>.</footer>
+</main>
+<script>
+"use strict";
+const query=document.getElementById("query");
+const era=document.getElementById("era");
+const rows=Array.from(document.querySelectorAll("tbody tr"));
+function filter(){
+const terms=query.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+let shown=0;
+for(const row of rows){
+const match=terms.every(term=>row.textContent.toLocaleLowerCase().includes(term))&&(!era.value||row.lastElementChild.textContent===era.value);
+row.hidden=!match;if(match)shown++;
+}
+document.getElementById("count").textContent=shown+" of "+rows.length+" sets · chronological order";
+document.getElementById("empty").hidden=shown!==0;
+}
+query.addEventListener("input",filter);era.addEventListener("change",filter);
+document.getElementById("reset").addEventListener("click",()=>{query.value="";era.value="";filter();query.focus();});
+document.getElementById("controls").hidden=false;
+</script></body></html>
