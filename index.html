@@ -89,6 +89,22 @@
         color: #4af626;
       }
 
+      /* ===== Landing mascot ===== */
+      .mascot {
+        margin: 36px 0 0;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .mascot img {
+        display: block;
+        width: min(260px, 70vw);
+        max-width: 100%;
+        height: auto;
+        opacity: 0.88;
+        filter: brightness(0.82) saturate(0.8);
+      }
+
       /* ===== Quote / Footer ===== */
 
       .quote {
@@ -135,6 +151,7 @@
   </head>
   <body>
     <main>
+      <header>
       <div class="title">m49n<span class="cursor">▍</span></div>
         <div class="subtitle">
          A collection of experimental sports card utilities.
@@ -149,6 +166,13 @@
               <a href="cards.html">cardboard</a>
             </span>
             <span class="nav-tag">sports cards</span>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-label">
+              <a href="japanese-pokemon.html">pokémon</a>
+            </span>
+            <span class="nav-tag">vintage japanese set reference</span>
           </li>
 
           <li class="nav-item">
@@ -187,6 +211,10 @@
         </p>
         <div class="footer">m49n © 2025</div>
       </section>
+
+      <div class="mascot">
+        <img src="images/tyranitar.png" alt="Tyranitar" width="475" height="475" loading="lazy" decoding="async" />
+      </div>
 
       <!--
         future note for us:
