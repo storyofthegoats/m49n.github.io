@@ -321,3 +321,13 @@ new sections are added
 public/private architecture is implemented
 
 It is the master document that keeps the project consistent across time.
+
+
+## Japanese Pokémon set reference
+
+`japanese-pokemon.html` links to eleven Japanese set checklists under `pokemon-sets/`. Each set has a standalone HTML page; `checklist.css` and `checklist.js` provide the shared light theme and local filtering. No build, database, account, or saved ownership state is required.
+
+The checklists use Japanese releases and printed numbering. Original/Neo Pokémon show Pokédex numbers, not English collector numbers. Unnumbered Trainers and Energy remain unnumbered. Expansion Pack includes the six companion Starter Pack basic Energy cards in its conventional 102-card reference. Distinct numbered holo/non-holo cards and numbered secret cards have separate rows; edition and printing variants do not. Cards include source references, finish/classification labels, and URL-encoded eBay searches targeting Japanese cards. Photos on set headers reuse the reference page's external images.
+
+When updating a checklist, verify the Japanese card list and foil status, preserve source links, reconcile the total, and update visible filter choices and header counts. The full static tables remain readable without JavaScript. This adds reference pages only; it does not implement purchase, sales, or collection tracking.
+
