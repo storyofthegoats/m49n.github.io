@@ -2,215 +2,132 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>We're bringing back webpages</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>m49n</title>
     <style>
-      /* ===== Base ===== */
-
       * {
         box-sizing: border-box;
       }
 
- body {
-  margin: 0;
-  padding: 40px 20px;
-  font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
-    "Courier New", monospace;
-  background: #050505;
-  color: #e5e5e5;
-}
-
-
-
-      main {
-        max-width: 720px;
-        margin: 0 auto;
+      html {
+        background: #050505;
       }
 
-      a {
-        color: inherit;
+      body {
+        min-height: 100vh;
+        min-height: 100svh;
+        margin: 0;
+        display: grid;
+        place-items: start center;
+        overflow-x: hidden;
+        background: #050505;
+      }
+
+      .artwork-map {
+        position: relative;
+        width: min(100vw, calc(100svh * 2 / 3));
+        aspect-ratio: 2 / 3;
+        flex: none;
+      }
+
+      .artwork-map > img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .hotspot {
+        position: absolute;
+        display: block;
+        z-index: 1;
+        color: transparent;
+        background: transparent;
+        border: 0;
         text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
       }
 
-      a:hover {
-        text-decoration: underline;
+      .hotspot:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 3px;
       }
 
-      /* ===== Header ===== */
-
-      .title {
-        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        font-size: 1.4rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 6px;
+      .hotspot-japanese-pokemon {
+        left: 15%;
+        top: 5%;
+        width: 69%;
+        height: 18%;
       }
 
-      .subtitle {
-        font-size: 0.9rem;
-        color: #888;
-        margin-bottom: 18px;
+      .hotspot-tyranitar {
+        left: 42%;
+        top: 24%;
+        width: 39%;
+        height: 23%;
       }
 
-      .divider {
-        border: none;
-        border-top: 1px solid #222;
-        margin: 0 0 24px 0;
+      .hotspot-cardboard {
+        left: 17%;
+        top: 51%;
+        width: 44%;
+        height: 20%;
       }
 
-      /* ===== Nav / Sections ===== */
-
-      .nav-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 40px 0;
+      .hotspot-mlb-rosters {
+        left: 52%;
+        top: 76%;
+        width: 42%;
+        height: 21%;
       }
 
-      .nav-item {
-        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        font-size: 0.95rem;
-        text-transform: lowercase;
-        padding: 6px 0;
-        display: flex;
-        gap: 8px;
-        align-items: baseline;
-      }
-
-      .nav-label {
-        min-width: 120px;
-      }
-
-      .nav-tag {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: #4af626;
-      }
-
-      /* ===== Landing mascot ===== */
-      .mascot {
-        margin: 36px 0 0;
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      .mascot a {
-        display: block;
-        line-height: 0;
-      }
-
-      .mascot img {
-        display: block;
-        width: min(260px, 70vw);
-        max-width: 100%;
-        height: auto;
-        opacity: 0.88;
-        filter: brightness(0.82) saturate(0.8);
-        transition: transform .18s ease, filter .18s ease, opacity .18s ease;
-      }
-
-      .mascot a:hover img,
-      .mascot a:focus-visible img {
-        transform: translateY(-3px) scale(1.015);
-        filter: brightness(1) saturate(1);
-        opacity: 1;
-      }
-
-      /* ===== Quote / Footer ===== */
-
-      .quote {
-        font-size: 0.95rem;
-        margin: 24px 0 10px 0;
-      }
-
-      .quote span {
-        opacity: 0.95;
-      }
-
-      .footer {
-        font-size: 0.75rem;
-        color: #666;
-        margin-top: 10px;
-      }
-
-      @media (max-width: 600px) {
+      @media (min-aspect-ratio: 2 / 3) {
         body {
-          padding: 28px 16px;
-        }
-
-        .nav-item {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .nav-label {
-          min-width: auto;
+          place-items: center;
         }
       }
 
-      .cursor {
-  color: #4af626;
-  animation: blink 1s steps(1, start) infinite;
-  margin-left: 4px;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
+      @media (forced-colors: active) {
+        .hotspot:focus-visible {
+          outline-color: LinkText;
+        }
+      }
     </style>
   </head>
   <body>
-    <main>
-      <header>
-      <div class="title">I'll just leave this here.<span class="cursor">▍</span></div>
-        <div class="subtitle">
-         Things I was working on in my 40's
-        </div>
-        <hr class="divider" />
-      </header>
+    <main class="artwork-map">
+      <img
+        src="images/Corocoro1.webp"
+        alt="Japanese manga-style Pokémon collage centered on Tyranitar"
+        width="1024"
+        height="1536"
+        decoding="async"
+        fetchpriority="high"
+      />
 
-      <nav>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <span class="nav-label">
-              <a href="cards.html">cardboard</a>
-            </span>
-            <span class="nav-tag">lists of sports cards</span>
-          </li>
-
-          <li class="nav-item">
-            <span class="nav-label">
-              <a href="japanese-pokemon.html">japanese pokémon</a>
-            </span>
-            <span class="nav-tag">vintage japanese pokemon set guides</span>
-          </li>
-
-          <li class="nav-item">
-            <span class="nav-label">
-              <a href="mlb-rosters.html">mlb rosters</a>
-            </span>
-            <span class="nav-tag">lists of mlb team by year through 2025</span>
-          </li>
-
-        </ul>
+      <nav aria-label="Site destinations">
+        <a
+          class="hotspot hotspot-japanese-pokemon"
+          href="japanese-pokemon.html"
+          aria-label="Vintage Japanese Pokémon set guides"
+        ></a>
+        <a
+          class="hotspot hotspot-tyranitar"
+          href="tyranitar.html"
+          aria-label="Tyranitar tribute"
+        ></a>
+        <a
+          class="hotspot hotspot-cardboard"
+          href="cards.html"
+          aria-label="Sports card collection lists"
+        ></a>
+        <a
+          class="hotspot hotspot-mlb-rosters"
+          href="mlb-rosters.html"
+          aria-label="MLB team rosters by year"
+        ></a>
       </nav>
-
-      <section>
-        <p class="quote">
-          <span>and in his pain he knew he was not dead</span>
-        </p>
-        <div class="footer">m49n © 2025</div>
-      </section>
-
-      <div class="mascot">
-        <a href="tyranitar.html" aria-label="Open Tyranitar candy advertisement">
-          <img src="images/tyranitar.png" alt="Tyranitar" width="475" height="475" loading="lazy" decoding="async" />
-        </a>
-      </div>
-
     </main>
   </body>
 </html>
