@@ -1,0 +1,1066 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>1959 Topps · Setbuild v1.5</title><style>
+:root{--ink:#21382f;--muted:#626d65;--paper:#f5f4ee;--line:#dce0d6;--green:#20543c;--gold:#c89944}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button,a{touch-action:manipulation}
+button{cursor:pointer}
+a{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b37c22;outline-offset:3px}
+[hidden]{display:none!important}
+.sidebar{width:216px;position:fixed;inset:0 auto 0 0;background:#203b30;color:#eff3e9;display:flex;flex-direction:column;padding:30px 18px;z-index:5;overflow:auto}
+.brand{display:flex;align-items:center;gap:12px;margin:0 8px 38px}
+.brand-mark{border:1px solid #819784;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font:bold 24px Georgia,serif;color:#edcf88}
+.brand strong{font-size:17px;letter-spacing:-.4px}
+.brand small{display:block;font-size:10px;letter-spacing:2px;color:#b0c3b6}
+.nav-label{font-size:10px;letter-spacing:1.8px;color:#b0c3b6;padding:0 12px;margin:20px 0 9px}
+nav{display:grid;gap:5px}
+nav button,nav a{border:0;background:none;color:inherit;display:flex;align-items:center;text-align:left;gap:12px;padding:11px 12px;border-radius:5px;text-decoration:none}
+nav button[aria-current]{background:#385746;color:#fff}
+nav button:hover:not(:disabled),nav a:hover{background:#314e3f}
+nav button:disabled{cursor:default;color:#b0c3b6}
+nav .symbol{width:18px;text-align:center;font-size:17px}
+nav small{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
+.sidebar-bottom{margin-top:auto;padding-top:36px}
+.sidebar-bottom a{display:block;text-decoration:none;color:#cad7cc;padding:6px 12px;font-size:12px}
+.edition{padding:22px 12px 0;font-size:10px;color:#b0c3b6;letter-spacing:1px}
+main{margin-left:216px;padding:20px 40px 20px;max-width:1600px}
+.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px;gap:12px}
+h1{font-size:22px;letter-spacing:-.6px;margin:3px 0 0}
+h2{font-size:18px;letter-spacing:-.4px;margin:0}
+p{color:var(--muted)}
+.version{font-size:11px;border:1px solid var(--line);padding:5px 9px;border-radius:4px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin:14px 0 10px;gap:14px}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.collection-name{font:24px Georgia,serif;letter-spacing:-.6px;margin:1px 0}
+.quiet{font-size:12px;color:var(--muted)}
+.dashboard{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-radius:7px;background:#fff;overflow:hidden}
+.completion{padding:12px 16px}
+.metric{border:0;border-left:1px solid var(--line);background:none;text-align:left;padding:12px 16px;color:var(--ink)}
+.metric:hover{background:#f0f4ec}
+.metric strong{font-size:27px;font-weight:550;display:block;letter-spacing:-.8px;margin:2px 0 1px}
+.metric .hint{font-size:11px;color:var(--muted)}
+.progress-title{display:flex;align-items:baseline;justify-content:space-between;margin:3px 0 6px}
+.progress-title strong{font-size:27px;font-weight:550;letter-spacing:-.8px}
+.progress-title span{color:var(--muted);font-size:12px}
+progress{width:100%;height:7px;border:0;border-radius:4px;overflow:hidden;background:#e5eade;accent-color:var(--green)}
+progress::-webkit-progress-bar{background:#e5eade}
+progress::-webkit-progress-value{background:var(--green)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:4px;padding:9px 12px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{background:#eaf0e6}
+.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.primary:hover{background:#173e2c}
+.table-section{margin-top:12px}
+.table-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.search-wrap{display:flex;flex:1;min-width:230px;border:1px solid #cbd2c7;border-radius:5px;background:#fff}
+.search-wrap input{padding:10px 12px;border:0;background:none;width:100%;min-width:0;color:var(--ink)}
+.search-wrap button{border:0;background:none;color:var(--muted);padding:0 12px}
+.search-wrap button:disabled{opacity:.35;cursor:default}
+.filters{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:5px;background:#eaece4}
+.filters button{padding:6px 12px;border:0;background:none;color:#506054;border-radius:3px}
+.filters button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px #14271518;color:var(--ink)}
+.sort{display:flex;align-items:center;gap:7px}
+.sort label{font-size:11px;color:var(--muted)}
+select{padding:8px;border:1px solid var(--line);border-radius:4px;color:var(--ink);background:#fff}
+.sort .btn{font-size:12px;padding:9px}
+.table-wrapper{max-height:68vh;overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+th{position:sticky;top:0;z-index:1;background:#edf0e7;color:#52614f;font-weight:500;text-transform:uppercase;letter-spacing:.7px;font-size:10px}
+td,th{text-align:left;padding:8px 14px;border-bottom:1px solid #e8ece3;white-space:nowrap}
+td:first-child{font-variant-numeric:tabular-nums;color:#687663;width:72px}\nth:nth-child(2),td:nth-child(2){width:42%;min-width:240px}\nth:nth-child(3),td:nth-child(3){width:24%}
+tbody tr:hover{background:#f6f8f1}
+.owned-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px}
+.owned-pill--yes{color:#27583c;background:#e8f0e5}
+.ebay-action{color:#8c5423;background:#f7eddb;font-weight:600;white-space:nowrap}
+.row-needed td a{text-decoration:none}
+.row-needed td a:hover .owned-pill{background:#efdbb4}
+.table-footer{display:flex;justify-content:space-between;gap:15px;padding-top:12px;color:var(--muted);font-size:11px}
+.empty{padding:28px;text-align:center}
+.error{background:#fff0e8;color:#863e21;padding:14px;border:1px solid #edc8b2;margin:12px 0;border-radius:5px}
+.mobile-menu{display:none}
+.scrim{position:fixed;inset:58px 0 0;background:#152b2255;z-index:4;border:0;width:100%}
+.mobile-top{display:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(min-width:1500px){main{padding:24px 60px}
+}
+@media(max-width:1100px){main{padding:18px 22px}
+.toolbar{gap:9px}
+.sort{margin-left:auto}
+.metric,.completion{padding:12px 14px}
+}
+@media(max-width:760px){.mobile-top{display:flex;position:sticky;top:0;height:58px;background:var(--paper);z-index:6;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 16px}
+.mobile-menu{display:block}
+.sidebar{top:58px;transform:translateX(-100%);width:230px}
+.sidebar.open{transform:translateX(0)}
+main{margin-left:0;padding:14px 16px}
+.topbar{padding-bottom:10px}
+h1{font-size:21px}
+.heading{margin-top:12px}
+.collection-name{font-size:23px}
+.dashboard{grid-template-columns:1fr 1fr}
+.completion{grid-column:1/-1;border-bottom:1px solid var(--line)}
+.metric{padding:11px 14px}
+.metric:nth-child(2){border-left:0}
+.metric strong{font-size:25px;margin:2px 0}
+.toolbar{align-items:stretch}
+.search-wrap{flex-basis:100%}
+.filters{flex:1}
+.filters button{flex:1;padding:8px}
+.sort{width:100%;margin:0}
+.sort select{flex:1}
+.table-footer{flex-direction:column;gap:5px}
+.table-wrapper{max-height:72vh}
+td,th{padding:8px 10px}
+.table-heading h2{font-size:16px}
+.heading .quiet{max-width:110px;text-align:right}
+}
+
+.cost-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+.cost-stat{background:white;padding:12px 16px;min-width:0}.cost-stat strong{display:block;font-size:24px;font-weight:550;font-variant-numeric:tabular-nums;margin:3px 0}.cost-stat small{display:block;color:var(--muted);font-size:11px}
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.cost-panel{min-width:0}.cost-panel h2{font-size:16px;margin-bottom:8px}.cost-panel .table-wrapper{max-height:none}.cost-table td,.cost-table th{white-space:normal;width:auto;min-width:0}.cost-table td:last-child,.cost-table th:last-child{text-align:right;white-space:nowrap}.cost-note{margin:8px 0;font-size:12px;color:var(--muted)}.cost-note summary{cursor:pointer;text-decoration:underline;text-underline-offset:3px}.cost-concentration{border:1px solid var(--line);border-radius:6px;padding:12px 16px;background:white;margin-top:16px}.cost-concentration p{margin:4px 0 0}.cost-panel .empty{padding:16px}
+@media(max-width:1000px){.cost-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.cost-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.cost-stat{padding:10px}.cost-stat strong{font-size:21px}}
+
+.history-article{max-width:820px;padding:20px 0 48px;font-size:16px;line-height:1.8}
+.history-article h2{font:32px/1.2 Georgia,serif;margin:8px 0 16px}
+.history-article h3{font:24px/1.3 Georgia,serif;margin:32px 0 12px;color:var(--ink)}
+.history-article p,.history-article li{color:var(--ink)}
+.history-article p{margin:0 0 18px}.history-article li{margin:6px 0}
+.history-article a{overflow-wrap:anywhere;text-underline-offset:3px}
+.history-article hr{border:0;border-top:1px solid var(--line);margin:32px 0}
+.history-table{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:5px;background:#fff}
+.history-table th{position:static}.history-table td,.history-table th{width:auto;min-width:0;white-space:normal;padding:10px 12px;font-size:13px}
+.history-table td:first-child{color:var(--ink);min-width:110px}
+.series-analysis{margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+.series-analysis .table-wrapper{max-height:none}.series-table{min-width:1390px;font-variant-numeric:tabular-nums}
+.series-table td,.series-table th{width:auto;min-width:0;white-space:nowrap;padding:9px 12px}
+.series-table td:last-child,.series-table th:last-child{white-space:normal;min-width:210px}
+.series-table tfoot td{font-weight:600;background:#edf0e7}
+.series-bars{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}
+.series-bars h3{font-size:14px;margin:0 0 12px}.series-bar-row{margin:10px 0;font-size:12px}
+.series-bar-label{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.series-track{height:7px;background:#e5eade;border-radius:4px;overflow:hidden}.series-fill{height:100%;background:var(--green)}
+@media(max-width:760px){.history-article{font-size:15px;line-height:1.75}.history-article h2{font-size:28px}.history-article h3{font-size:22px}.series-bars{grid-template-columns:1fr;gap:12px}}
+</style></head>
+<body>
+<div class="mobile-top">
+<strong>1959 / SETBUILD</strong>
+<button id="menu" class="btn mobile-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
+</div>
+<button class="scrim" id="scrim" aria-label="Close navigation" hidden>
+</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<span class="brand-mark">59</span>
+<div>
+<strong>Setbuild</strong>
+<small>THE CARD GOAT</small>
+</div>
+</div>
+<div class="nav-label">COLLECTION</div>
+<nav aria-label="Collection navigation">
+<button data-view="checklist" aria-current="page">
+<span class="symbol" aria-hidden="true">☷</span>Checklist</button>
+<button data-view="need">
+<span class="symbol" aria-hidden="true">○</span>Need List</button>
+<button data-view="cost"><span class="symbol" aria-hidden="true">▤</span>Cost Calculator</button>
+<button data-view="history"><span class="symbol" aria-hidden="true">◷</span>'59 History</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">↗</span>Purchases <small>Planned</small>
+</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">⚑</span>Teams <small>Planned</small>
+</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">☆</span>Key Cards <small>Planned</small>
+</button>
+</nav>
+<div class="nav-label">SOURCE</div>
+<nav aria-label="Data source">
+<a id="raw-sheet" target="_blank" rel="noopener noreferrer">
+<span class="symbol" aria-hidden="true">▦</span>Raw Sheet ↗</a>
+<a id="export">
+<span class="symbol" aria-hidden="true">↓</span>Export source CSV</a>
+</nav>
+<div class="sidebar-bottom">
+<a href="cards.html">← Cardboard</a>
+<a href="index.html">m49n index ↗</a>
+<a href="mlb-rosters.html">MLB rosters ↗</a>
+<div class="edition">1959 TOPPS · V1.4</div>
+</div>
+</aside>
+<main>
+<header class="topbar">
+<div>
+<h1 id="view-title">Checklist</h1>
+</div>
+<span class="version">SETBUILD v1.5</span>
+</header>
+<div class="heading">
+<div>
+<div class="eyebrow">The collection</div>
+<div class="collection-name">1959 Topps Baseball</div>
+</div>
+
+</div>
+<section class="dashboard" aria-label="Collection progress">
+<div class="completion">
+<div class="eyebrow">Set completion</div>
+<div class="progress-title">
+<strong id="completion">—</strong>
+<span>
+<span id="fraction">— / —</span> collected</span>
+</div>
+<progress id="progress" max="100" value="0" aria-label="Set completion">
+</progress>
+<div class="quiet">
+<span id="total">—</span> cards in the checklist</div>
+</div>
+<button class="metric" data-view="checklist" data-filter="owned">
+<span class="eyebrow">Owned</span>
+<strong id="owned-count">—</strong>
+<span class="hint">View collected cards ↗</span>
+</button>
+<button class="metric" data-view="need">
+<span class="eyebrow">Still needed</span>
+<strong id="need-count">—</strong>
+<span class="hint">Find the missing pieces ↗</span>
+</button>
+</section>
+<span class="sr-only" id="owned-badge">
+</span>
+<span class="sr-only" id="needed-badge">
+</span>
+<div class="error" id="error-msg" role="alert" hidden>
+</div>
+<button class="btn" id="retry" hidden>Retry loading</button>
+<section class="table-section" aria-label="Collection checklist">
+<div class="table-heading">
+<h2 id="table-title">The full checklist</h2>
+<span class="quiet">1959 / TOPPS</span>
+</div>
+<div class="toolbar">
+<div class="search-wrap">
+<label for="search" class="sr-only">Search collection</label>
+<input id="search" type="search" placeholder="Search card #, player, or team…" autocomplete="off">
+<button id="clear" aria-label="Clear search" disabled>×</button>
+</div>
+<div class="filters" role="group" aria-label="Ownership filter">
+<button data-filter="all" aria-pressed="true">All Cards</button>
+<button data-filter="owned" aria-pressed="false">Owned</button>
+<button data-filter="needed" aria-pressed="false">Needed</button>
+</div>
+<div class="sort">
+<label for="sort-select">Sort</label>
+<select id="sort-select">
+<option value="number">Card number</option>
+<option value="player">Player / name</option>
+<option value="team">Team</option>
+</select>
+<button id="direction" class="btn">↑ Ascending</button>
+</div>
+</div>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable checklist">
+<table id="cards-table">
+<thead id="cards-thead">
+</thead>
+<tbody id="cards-tbody">
+</tbody>
+</table>
+<div id="empty" class="empty" hidden>No matching cards. Try another search or filter.</div>
+</div>
+<div class="table-footer">
+<span id="results" role="status">Waiting for collection data</span>
+<span>eBay buttons open a card search ↗</span>
+</div>
+</section>
+<section id="cost-view" aria-label="Acquisition cost analysis" hidden>
+<p class="cost-note">Actual acquisition costs from Paid, for cards marked purchased. Missing costs are excluded; estimates and market values are not used.</p>
+<div id="cost-content"><p class="quiet">Waiting for collection data.</p></div>
+</section>
+<section id="history-view" aria-label="1959 Topps history" hidden>
+<article class="history-article">
+<h2>1959 Topps Baseball</h2>
+<p>Long-form history brief for the ’59 History page<br>Researched September 24, 2026</p>
+<h3>A season collected a few cards at a time</h3>
+<p>The 1959 Topps baseball set contained 572 numbered cards, the largest baseball set Topps had issued to that point. It reached collectors in seven series, with the checklist growing as new groups of cards arrived in stores. Mickey Mantle and Willie Mays appeared in the opening series. Bob Gibson’s rookie card waited near the other end of the checklist, in the final series. Collecting the whole set meant following the release through the season. [1, 2, 3]</p>
+<p>Its variety still makes it an unusually satisfying set to browse. Alongside individual players are team photographs, combinations of teammates, promising rookies, career highlights, baseball officials, All-Stars, and a tribute to Roy Campanella. The numbers measure cards, not unique players: a star could appear several times in different roles. [1, 3]</p>
+<p>Today, those cards preserve both the baseball of 1959 and the way children encountered it—through small purchases, exchanges with friends, and information printed on the backs. The set is also a record of the card business itself: retail displays, competing player contracts, changing cardboard stock, and attempts to keep printed biographies current.</p>
+<h3>The set at a glance</h3>
+<div class="history-table" tabindex="0" role="region" aria-label="Historical reference table"><table>
+<thead>
+<tr>
+<th>Detail</th>
+<th>Historical fact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Manufacturer</td>
+<td>Topps Chewing Gum</td>
+</tr>
+<tr>
+<td>Year</td>
+<td>1959</td>
+</tr>
+<tr>
+<td>Standard set</td>
+<td>572 numbered cards</td>
+</tr>
+<tr>
+<td>Card dimensions</td>
+<td>2½ × 3½ inches</td>
+</tr>
+<tr>
+<td>Release structure</td>
+<td>Seven series</td>
+</tr>
+<tr>
+<td>First card</td>
+<td>#1 Ford Frick, Commissioner of Baseball</td>
+</tr>
+<tr>
+<td>Last card</td>
+<td>#572 Billy Pierce, Sporting News All-Star</td>
+</tr>
+<tr>
+<td>High-number series</td>
+<td>#507–572, comprising 66 cards</td>
+</tr>
+<tr>
+<td>Sporting News Rookie Stars</td>
+<td>#116–146, comprising 31 cards</td>
+</tr>
+<tr>
+<td>Baseball Thrills</td>
+<td>#461–470, comprising 10 cards</td>
+</tr>
+<tr>
+<td>Sporting News All-Stars</td>
+<td>#551–572, comprising 22 cards</td>
+</tr>
+<tr>
+<td>Team cards</td>
+<td>16, with checklist information on their backs</td>
+</tr>
+<tr>
+<td>Major rookie highlights</td>
+<td>Bob Gibson #514 and George “Sparky” Anderson #338</td>
+</tr>
+<tr>
+<td>Original small-pack price points</td>
+<td>One cent, five cents, and ten cents, depending on format</td>
+</tr>
+</tbody></table></div>
+<p>The numbered checklist and special-card groups are documented in the set references below. A collection that includes additional versions of the same number can exceed 572 cards without changing the size of the standard set. [1–5]</p>
+<h3>When the cards came out</h3>
+<p>The most reliable way to describe the release is <strong>seven series distributed during the 1959 baseball season</strong>. The surviving references consulted do not establish an exact nationwide on-sale day for each series. Assigning precise monthly launch dates would imply more certainty than the evidence supports.</p>
+<p>There is useful evidence about the production calendar. Research published by The Topps Archives examines third-series proof material prepared in March and seventh-series proof material prepared in May. Its author places the usual arrival of high numbers in the August–September period, while acknowledging the gap between preparation and distribution. A proof’s date establishes that work was underway; it does not establish when a child could buy the finished card. [6]</p>
+<p>The seven groups break down as follows:</p>
+<div class="history-table" tabindex="0" role="region" aria-label="Historical reference table"><table>
+<thead>
+<tr>
+<th>Series</th>
+<th align="right">Card numbers</th>
+<th align="right">Cards</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td align="right">1–110</td>
+<td align="right">110</td>
+</tr>
+<tr>
+<td>2</td>
+<td align="right">111–198</td>
+<td align="right">88</td>
+</tr>
+<tr>
+<td>3</td>
+<td align="right">199–286</td>
+<td align="right">88</td>
+</tr>
+<tr>
+<td>4</td>
+<td align="right">287–374</td>
+<td align="right">88</td>
+</tr>
+<tr>
+<td>5</td>
+<td align="right">375–440</td>
+<td align="right">66</td>
+</tr>
+<tr>
+<td>6</td>
+<td align="right">441–506</td>
+<td align="right">66</td>
+</tr>
+<tr>
+<td>7</td>
+<td align="right">507–572</td>
+<td align="right">66</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td align="right"><strong>1–572</strong></td>
+<td align="right"><strong>572</strong></td>
+</tr>
+</tbody></table></div>
+<p>These are the production-series boundaries supported by specialist research. Checklist ranges printed on cards should not automatically be treated as identical to the production groups. [2, 7]</p>
+<p>For the original collector, that staggered schedule mattered. A pack from an early series could not contain a card that would be issued only in the seventh. Completing the set depended on continued access to new stock, as well as finding people willing to trade earlier cards.</p>
+<h3>Where you could buy them</h3>
+<p>The strongest documented retail setting is the neighborhood candy counter. Surviving Topps advertising material was supplied to grocers and candy-store owners, giving those merchants samples and signs to encourage sales. These were inexpensive products sold alongside everyday treats. [8, 9]</p>
+<p>An original 1959 counter display recorded by Robert Edward Auctions measures 11 by 14 inches. It shows baseball cards, with Nellie Fox visible on top of the illustrated stack, and promotes Bazooka gum. The display makes the connection between cards and confectionery explicit. [8]</p>
+<p>Topps also used salesman sample panels. One surviving eight-card example combines card fronts with central advertising; more familiar sample panels contained three cards. These pieces helped sell the product to merchants before merchants sold individual packs to children. They are related advertising collectibles, separate from the 572-card numbered set. [9]</p>
+<p>A later PSA retrospective places young buyers at Silverman’s Stationery, Candy, and Tobacco store in Livingston, New Jersey, in early April. That account supplies a specific neighborhood setting, though it should not be mistaken for a national release notice. [5]</p>
+<p>There is a Kentucky connection, too. Sports Collectors Daily reported that unopened 1959 fourth-series cello packs survived among old stock from the Droganes family’s candy business in Covington. The family story describes inventory rescued during a 1964 building cleanup and retained for decades. It is a particularly tangible example of how a retail product became a historical artifact: some packs survived because they never sold. [10]</p>
+<h3>What was in a pack</h3>
+<p>Buyers had more than one format to choose from. The best-supported basic configurations are:</p>
+<div class="history-table" tabindex="0" role="region" aria-label="Historical reference table"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th align="right">Original price</th>
+<th>Contents reported by hobby references</th>
+<th align="right">Display-box configuration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Penny pack</td>
+<td align="right">1¢</td>
+<td>One card and gum</td>
+<td align="right">120 packs</td>
+</tr>
+<tr>
+<td>Nickel wax pack</td>
+<td align="right">5¢</td>
+<td>Cards and gum; references disagree between five and six cards</td>
+<td align="right">24 packs</td>
+</tr>
+<tr>
+<td>Cellophane pack</td>
+<td align="right">10¢</td>
+<td>12 cards</td>
+<td align="right">36 packs</td>
+</tr>
+</tbody></table></div>
+<p>BaseballCardPedia lists five cards for the nickel pack, and Sports Collectors Daily says those packs usually held five. Beckett and Radicards describe six-card nickel packs. Without a conclusive contemporaneous specification resolving that disagreement, the safest published wording is “nickel wax packs contained cards and gum,” with the five-versus-six discrepancy retained in a research note. [4, 11, 12, 13]</p>
+<p>The dime cello format offered 12 cards, or about 0.83 cents per card. A full 36-pack display therefore contained 432 cards and represented $3.60 in original retail sales. Those are calculations from the documented configuration, not promises of 432 different cards. Duplicate cards and the series-based release stood between opening a box and completing a collection. [4]</p>
+<p>Surviving unopened material confirms the cello-box format. Heritage cataloged a complete fourth-series box with 36 unopened packs in 2020, describing visible cards of Anderson, Al Kaline, and Robin Roberts. The transparent wrapping let buyers see an outside card while leaving most of the pack’s contents unknown. [14]</p>
+<p>Packs could also carry promotional offers. A PSA history documents a rookie-voting promotion, pennant offers, a Bazooka Joe shirt offer, and a lucky-penny charm promotion associated with the release. These were additional pieces of the buying experience, not extra numbered cards required to finish the standard set. [5]</p>
+<h3>The circular design</h3>
+<p>The ordinary player card is immediately recognizable: a photograph inside a large circular opening, surrounded by a strong field of color and a white outer border. Lowercase lettering places the player’s name at an angle above the portrait. A team logo, team name, position, and printed signature complete the front. The signature is a facsimile reproduced as part of the design. [3]</p>
+<p>The circle can make a portrait feel unusually intimate, particularly when the player’s face nearly fills it. Full-body poses create a different effect, with more space around the figure. Looking through a binder, the changing colors and poses give the repeated layout considerable variety.</p>
+<p>The backs supplied biography, statistics, and a cartoon about the player. For a young fan, they were compact reference material as well as something to trade. The photograph identified the player; the reverse offered reasons to remember him. [3]</p>
+<p>The final series also has a useful identifying feature: cards #507–572 use red and black back printing, in contrast to the red and green used earlier. The card-number box changes from green to black. That gives collectors a visible clue to the high-number group before they even read the number. [13]</p>
+<h3>A different baseball map</h3>
+<p>Major League Baseball still consisted of 16 teams, eight in each league, playing a scheduled 154-game season. The 1959 World Series matched the Los Angeles Dodgers and Chicago White Sox; Los Angeles won in six games. Nellie Fox and Ernie Banks earned the American and National League MVP awards. [15]</p>
+<p>The checklist’s team names locate it in that particular baseball world: the Milwaukee Braves, Kansas City Athletics, and Washington Senators appear alongside the recently relocated California clubs. The identities printed on the cards are part of their historical interest. A familiar franchise can appear under a city name that later generations associate with a different team. [1]</p>
+<p>The cards should nevertheless be read as a product assembled during the year, rather than a complete retrospective of everything that happened in 1959. Photography, text preparation, printing, and distribution all imposed a lag. That helps explain both the appeal and the imperfections of a set issued in stages.</p>
+<h3>The missing Ted Williams and the arrival of a regular Musial card</h3>
+<p>One of baseball’s biggest names is absent. Ted Williams signed with Fleer, which released an 80-card set devoted to his life and career. His absence from Topps therefore reflects competition for player rights, not retirement or a lack of importance. A collector looking for Williams in 1959 had another manufacturer’s product to pursue. [3, 16]</p>
+<p>Stan Musial’s #150 requires a different distinction. It is commonly described as his first regular Topps player card, but it was not his first Topps card of any kind. Musial had already appeared on the 1958 All-Star card, #476. The 1959 issue brought him into the regular player-card design. Calling it his rookie card—or simply his first Topps card—would erase that earlier appearance. [17]</p>
+<p>Together, the two cases show why a checklist is more than a list of the best players. Contracts and production decisions helped determine who appeared, when they appeared, and in what form.</p>
+<h3>Rookie cards that outgrew their original billing</h3>
+<p>The Sporting News Rookie Stars occupy #116–146, a block of 31 cards. Bob Allison, Johnny Callison, Ron Fairly, and Deron Johnson are among its recognizable names. But the dedicated rookie section does not contain all of the set’s important rookie cards. [1, 3]</p>
+<p>Bob Gibson is #514, in the high-number series. George Anderson appears at #338, outside the rookie block as well. That separation is one of the pleasures of the set: the official prospect feature and the cards later generations prize most do not line up neatly. [1, 18, 19]</p>
+<p>Anderson’s card uses his given name, George, rather than the “Sparky” familiar to later fans. His eventual fame as a manager gives the young Phillies player’s card a significance its first buyers could not have anticipated. Other notable rookies include Felipe Alou #102, Bill White #359, and Norm Cash #509. [1, 18, 20]</p>
+<h3>More than individual portraits</h3>
+<p>The special cards give the checklist changes of pace. Baseball Thrills runs from #461 through #470 and revisits accomplishments by established stars. These cards are historical highlights, so their subjects should not automatically be read as events from the 1959 season. [3, 21]</p>
+<p>Combination cards place players together under baseball headlines. Examples include Hank Aaron and Eddie Mathews on #212, and Roberto Clemente, Bob Skinner, and Bill Virdon on #543. They let collectors encounter a star through his teammates and club, rather than only as an isolated portrait. [1]</p>
+<p>The final 22 cards form the Sporting News All-Star group. Aaron is #561, Mays #563, and Mantle #564; Billy Pierce closes the set at #572. These give several leading players another appearance and make the last series especially attractive to star collectors. [1, 22]</p>
+<p>Immediately before that group is Roy Campanella’s #550 tribute. After the automobile accident that ended his playing career, Topps included a card recognizing his recovery and courage. It interrupts the usual business of rosters and statistics with a more personal subject, making it one of the set’s most meaningful entries. [23]</p>
+<h3>Variations and the evidence on the backs</h3>
+<p>A basic set requires one example of each numbered card. A variation collection asks a different question: which distinct versions of those cards should be included?</p>
+<p>Cards #199–286 are known with white and gray backs. Other cards differ in wording. Five familiar examples—Ralph Lumenti #316, Bob Giallombardo #321, Harry Hanebrink #322, Billy Loes #336, and Dolan Nichols #362—exist with and without transaction statements. These variations preserve Topps’ efforts to report moves after the original card text had been prepared. [5, 13]</p>
+<p>The lesson is practical as well as historical: two cards with matching fronts may not be the same version. A missing line on the back can matter more to a specialist than an obvious difference in the portrait’s color.</p>
+<p>There is no reason to attach one universal total to every “master set” without specifying its rules. A project that counts selected corrected text, one that includes every stock variation, and one that adds promotional material will have different completion requirements. The historical anchor remains the 572 numbered cards. [1, 13]</p>
+<h3>Why the last 66 cards matter</h3>
+<p>The final series, #507–572, is generally harder to assemble than the middle series. It combines desirable rookies, All-Stars, and ordinary player cards whose series membership makes them more significant to set builders. Gibson, Cash, and Harmon Killebrew #515 help make this stretch particularly memorable. [20]</p>
+<p>Late-series scarcity is associated with the seasonal production and distribution model, but exact printing quantities are not established by the references used here. A higher card number is not a published print run, and a modern grading population is not a count of everything that survives.</p>
+<p>Condition adds another layer. Musial collectors, for example, have specifically identified off-center cuts and printing flaws in the blue background of #150 as obstacles to finding an especially clean copy. A card can survive in large enough numbers to be obtainable while remaining difficult to find with the centering and print quality a particular collector wants. [17]</p>
+<h3>The Venezuelan edition</h3>
+<p>The design also appeared in a separate Venezuelan issue. Its 198-card checklist follows the first 198 numbers of the American set. SABR’s Baseball Cards Research Committee describes thinner stock and a less glossy finish, with some backs carrying a Benco printing credit identifying Venezuelan manufacture. [24]</p>
+<p>That last qualification matters: not every example carries the same obvious identifying line. A worn American card should not be classified as Venezuelan solely because its surface looks dull.</p>
+<p>The Venezuelan release belongs alongside the U.S. set’s history, while remaining a distinct collecting project. Its existence shows that these familiar portraits circulated within a baseball culture extending beyond the United States. [24]</p>
+<h3>What a completed set preserves</h3>
+<p>Mantle and Gibson may attract the first look, but the depth is in the full checklist. Team cards, lesser-known players, rookie selections, corrected biographies, and repeated appearances by stars show how Topps tried to package a major-league season for a young audience.</p>
+<p>A completed set brings those separate purchases and release groups back together. The result is a view of baseball assembled in 572 pieces: what the manufacturer chose to show, what it could secure the rights to print, and what collectors could find at the counter as the year went on.</p>
+<hr>
+<h3>Editorial notes for implementation</h3>
+<p>These notes are for preparing the History page, rather than main article copy.</p>
+<ul>
+<li><strong>572 versus 574:</strong> The recognized U.S. set has 572 numbered cards. The existing app has previously displayed 574 checklist entries. Inspect those entries before changing the app; two additional variants are one possible explanation, not a verified finding. If intentional, distinguish “572-card base set” from the collection’s expanded checklist.</li>
+<li><strong>Release dates:</strong> Do not assign exact on-sale dates to all seven series. March and May proof evidence concerns production. August–September is an approximate late-series window in specialist research, not a verified national launch schedule.</li>
+<li><strong>Nickel pack count:</strong> References conflict between five and six cards. Retain the qualification unless an original wrapper, box, or sell sheet resolves the relevant configuration. Do not silently standardize all packs to one count.</li>
+<li><strong>Retail scope:</strong> Candy stores and grocers have direct supporting evidence. Avoid naming a national chain or claiming universal availability at drugstores or newsstands without a period advertisement or other specific evidence.</li>
+<li><strong>Source quality:</strong> Some references contain incidental errors. The Covington article’s stated fourth-series range conflicts with specialist production research; use it for its inventory provenance only. Several general summaries also incorrectly call Musial #150 his first Topps card.</li>
+<li><strong>No fixed Hall of Famer count:</strong> Such a total needs a defined rule: distinct people, individual player cards, every appearance on combinations and subsets, or inclusion of managers and executives. Do not publish an unexplained total.</li>
+<li><strong>Suggested visuals:</strong> A standard player front and back; penny and nickel wrappers; a cello display; the seven-series table; Gibson #514; Musial #150 beside 1958 #476; Campanella #550; a transaction-statement comparison. Obtain suitable image permissions or use scans from the collection before publication.</li>
+</ul>
+<h3>Sources</h3>
+<p>Numbered references support the nearby text. Sources were consulted September 24, 2026. Some sites supplied searchable excerpts but blocked full-page retrieval; those are identified below.</p>
+<ol>
+<li><a href="https://www.baseball-almanac.com/baseball_cards/baseball_cards_oneset.php?s=1959top01">Baseball Almanac — 1959 Topps checklist</a>. Numbering, player names, teams, special cards, and set total.</li>
+<li><a href="https://www.thetoppsarchives.com/2026/04/topps-topics-studies-in-uncut-sheet.html">The Topps Archives — Studies in Uncut Sheet Arrays, 1958 to 1960</a>. Seven production-series ranges and sheet structure.</li>
+<li><a href="https://www.cardboardconnection.com/1959-topps-baseball-cards-2">Cardboard Connection — 1959 Topps Baseball</a>. Design, backs, subsets, and Williams context.</li>
+<li><a href="https://baseballcardpedia.com/index.php/1959_Topps">BaseballCardPedia — 1959 Topps</a>. Pack prices, counts, and display configurations. Its unqualified Musial-first claim is not adopted.</li>
+<li><a href="https://www.psacard.com/articles/articleview/9918/psa-set-registry-flip-ya-topps-1959-baseball-card-still-ranks-one-its-best-designs-six-decades-later">PSA — Flip Ya for It</a>. Retail recollection, team/checklist cards, promotions, and transaction variations.</li>
+<li><a href="https://www.thetoppsarchives.com/2024/01/a-may-september-marriage.html">The Topps Archives — A May-September Marriage</a>. Dated proof research and qualified seasonal timing.</li>
+<li><a href="https://www.thetoppsarchives.com/2010/06/route-to-66.html">The Topps Archives — Route to 66</a>. Series sizes, stock differences, and checklist-versus-production distinction.</li>
+<li><a href="https://collectrea.com/archives/2024/Summer/1521/1959-topps-advertising-counter-display">Robert Edward Auctions — 1959 advertising counter display</a>. Surviving retail display and description.</li>
+<li><a href="https://collectrea.com/archives/2021/Summer/1197/1959-topps-salesman-sample-eight-card-advertising-panel">Robert Edward Auctions — Eight-card salesman sample panel</a>. Advertising panels and merchant distribution.</li>
+<li><a href="https://www.sportscollectorsdaily.com/1950s-topps-cello-boxes-sold/">Sports Collectors Daily — Salvaged by Dad in ’64</a>. Covington inventory story; searchable excerpts available, full-page retrieval blocked. Do not use its series-range statement.</li>
+<li><a href="https://www.sportscollectorsdaily.com/vintage-pack-facts-1959-topps-baseball/">Sports Collectors Daily — Vintage Pack Facts, 1959 Topps Baseball</a>. Pack formats and five-card nickel description; searchable excerpts available, full-page retrieval blocked.</li>
+<li><a href="https://www.beckett.com/baseball/1959/topps/">Beckett — 1959 Topps</a>. Six-card nickel description and dimensions; searchable excerpts available, full-page retrieval blocked.</li>
+<li><a href="https://www.radicards.com/baseball/1959-topps-baseball-cards/">Radicards — 1959 Topps Baseball Cards</a>. Six-card nickel description, back colors, stock variations, and transaction lines.</li>
+<li><a href="https://sports.ha.com/itm/baseball-cards/unopened-packs-display-boxes/1959-topps-baseball-4th-series-cello-box-with-36-unopened-packs/a/50028-56295.s">Heritage Auctions — Fourth-series cello box with 36 unopened packs</a>. Direct description of surviving unopened product.</li>
+<li><a href="https://en.wikipedia.org/wiki/1959_Major_League_Baseball_season">1959 Major League Baseball season</a>. League size, scheduled season length, pennants, World Series, and MVPs.</li>
+<li><a href="https://www.psacard.com/cardfacts/baseball-cards/1959-fleer-ted-williams/170">PSA CardFacts — 1959 Fleer Ted Williams</a>. Separate 80-card Williams issue.</li>
+<li><a href="https://www.psacard.com/articles/articleview/6509/stan-musial-collecting-baseball-s-perfect-knight">PSA — Stan Musial, Collecting Baseball’s Perfect Knight</a>. 1958 Topps debut, 1959 regular card, and condition observations. Historical prices and population counts are not reused.</li>
+<li><a href="https://www.psacard.com/cardfacts/baseball-cards/1959-topps/george-anderson-338/26995">PSA CardFacts — George Anderson #338</a>. Rookie-card identification; searchable excerpt available, full-page retrieval failed.</li>
+<li><a href="https://www.baseball-almanac.com/players/cards.php?p=gibsobo01">Baseball Almanac — Bob Gibson cards</a>. Identifies 1959 Topps #514 as his rookie card.</li>
+<li><a href="https://www.justcollect.com/baseball/sets/1959-topps/">Just Collect — 1959 Topps</a>. Rookie context and relative difficulty of the high-number series. Historical prices and grading totals are not reused.</li>
+<li><a href="https://sportscollectorsdigest.com/cards/scd-classic-1959-topps-baseball-one-card-short">Sports Collectors Digest — 1959 Topps Baseball, One Card Short</a>. Baseball Thrills context; searchable excerpt consulted.</li>
+<li><a href="https://www.sportscollectorsdaily.com/topps-star-cards-rich-history/">Sports Collectors Daily — Topps All-Star Cards Have Rich History</a>. Sporting News association and All-Star range; searchable excerpt available, full-page retrieval blocked.</li>
+<li><a href="https://www.psacard.com/articles/articleview/5771/1959-topps-baseball-card-set-bring-pizazz">PSA — The 1959 Topps Baseball Card Set, Bring on the Pizazz</a>. Campanella tribute and recovery; searchable excerpt consulted.</li>
+<li><a href="https://sabrbaseballcards.blog/2020/02/24/venezuelan-topps-and-the-pirates-of-the-caribbean/">SABR Baseball Cards Research Committee — Venezuelan Topps and the Pirates of the Caribbean</a>. 198-card Venezuelan checklist, stock, finish, and printing-credit qualifications.</li>
+</ol>
+</article>
+</section>
+</main>
+<script>
+      const SHEET_CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRIgMDR1IzGUerOuoJg528AVkb_iKe9hWaASEEdZI9hZXMB1-dJxQAKmMdKd8E-AVBobNEvNahijjdi/pub?gid=0&single=true&output=csv";
+
+      const sortSelect = document.getElementById("sort-select");
+      const state = {view: "checklist", filter: "all", query: "", direction: 1};
+      let currentSort = "number";
+      let cardsData = [];
+      let ownedIndex = -1;
+      let numberIndex = -1;
+      let playerIndex = -1;
+      let teamIndex = -1;
+      let costIndex = -1;
+
+      // auto-detect whether the file is comma- or tab-delimited (default comma)
+      function detectDelimiter(text) {
+        let commaCount = 0;
+        let tabCount = 0;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          if (char === ",") commaCount++;
+          if (char === "\t") tabCount++;
+          if (char === "\n" || char === "\r") break; // only look at first line
+        }
+
+        return tabCount > commaCount ? "\t" : ",";
+      }
+
+      // CSV/TSV parser with optional quotes.
+      function parseSeparated(text) {
+        const delimiter = detectDelimiter(text);
+        const rows = [];
+        let current = "";
+        let row = [];
+        let insideQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"' && insideQuotes && next === '"') {
+            // escaped quote: ""
+            current += '"';
+            i++;
+          } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+          } else if (char === delimiter && !insideQuotes) {
+            row.push(current);
+            current = "";
+          } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+            if (current !== "" || row.length > 0) {
+              row.push(current);
+              rows.push(row);
+              row = [];
+              current = "";
+            }
+          } else {
+            current += char;
+          }
+        }
+
+        if (current !== "" || row.length > 0) {
+          row.push(current);
+          rows.push(row);
+        }
+
+        // drop rows that are completely empty
+        return rows.filter((r) => r.some((c) => c.trim() !== ""));
+      }
+
+      function normalizeHeader(name) {
+        return name.trim().toLowerCase();
+      }
+
+      function findColumnIndex(header, names) {
+        return header.findIndex((h) => names.includes(normalizeHeader(h)));
+      }
+
+      // View state and derived rows share the canonical cardsData collection.
+      let historyReturnState = null;
+      function setView(view, filter = "all", explicitFilter = false) {
+        const returning = state.view === "history" && historyReturnState?.view === view && !explicitFilter;
+        if (view === "history" && state.view !== "history") historyReturnState = {...state};
+        if (returning) Object.assign(state, historyReturnState);
+        else if (view !== "history") {
+          state.filter = view === "need" ? "needed" : filter;
+          state.query = "";
+        }
+        state.view = view;
+        document.getElementById("search").value = state.query;
+        document.querySelector(".table-section").hidden = view === "cost" || view === "history";
+        document.querySelector(".dashboard").hidden = view === "cost" || view === "history";
+        document.getElementById("cost-view").hidden = view !== "cost";
+        document.getElementById("history-view").hidden = view !== "history";
+        document.getElementById("view-title").textContent = {history:"1959 Topps History", cost:"Cost Calculator", checklist:"Checklist", need:"Need List"}[view];
+        document.getElementById("table-title").textContent = view === "need" ? "Your next finds" : "The full checklist";
+        document.querySelectorAll("[data-view]").forEach(el => {
+          if (el.closest("nav")) {
+            if (el.dataset.view === view) el.setAttribute("aria-current", "page");
+            else el.removeAttribute("aria-current");
+          }
+        });
+        closeMenu(); renderTableRows();
+      }
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("open");
+        document.getElementById("menu").setAttribute("aria-expanded", "false");
+        document.getElementById("scrim").hidden = true;
+      }
+      document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => setView(el.dataset.view, el.dataset.filter || "all", !!el.dataset.filter)));
+      document.querySelectorAll("[data-filter]").forEach(el => {
+        if (el.dataset.view) return;
+        el.addEventListener("click", () => {
+          state.filter = el.dataset.filter;
+          if(state.view === "need" && state.filter !== "needed") {
+            const query = state.query; setView("checklist", state.filter);
+            state.query = query; document.getElementById("search").value = query;
+          }
+          renderTableRows();
+        });
+      });
+      document.getElementById("search").addEventListener("input", e => {state.query = e.target.value; renderTableRows();});
+      document.getElementById("clear").addEventListener("click", () => {state.query=""; document.getElementById("search").value=""; renderTableRows(); document.getElementById("search").focus();});
+      sortSelect.addEventListener("change", () => {currentSort=sortSelect.value; renderTableRows();});
+      document.getElementById("direction").addEventListener("click", () => {
+        state.direction *= -1;
+        document.getElementById("direction").textContent = state.direction === 1 ? "↑ Ascending" : "↓ Descending";
+        renderTableRows();
+      });
+      document.getElementById("menu").addEventListener("click", () => {
+        const open = document.getElementById("sidebar").classList.toggle("open");
+        document.getElementById("menu").setAttribute("aria-expanded", String(open));
+        document.getElementById("scrim").hidden = !open;
+      });
+      document.getElementById("scrim").addEventListener("click", closeMenu);
+      document.addEventListener("keydown", e => {if(e.key === "Escape") {closeMenu(); document.getElementById("menu").focus();}});
+      // interpret purchased/owned logic from the cell value
+      // In your data: TRUE = purchased, FALSE or blank = need.
+      function interpretOwned(value) {
+        if (value === undefined || value === null) return false;
+        const trimmed = value.trim();
+        if (trimmed === "") return false;
+
+        const v = trimmed.toLowerCase();
+
+        // treat these as "yes / purchased"
+        if (
+          [
+            "y",
+            "yes",
+            "x",
+            "owned",
+            "have",
+            "1",
+            "purchased",
+            "true",
+            "t"
+          ].includes(v)
+        ) {
+          return true;
+        }
+
+        // treat these as "no / need"
+        if (
+          [
+            "n",
+            "no",
+            "need",
+            "want",
+            "0",
+            "not purchased",
+            "false",
+            "f"
+          ].includes(v)
+        ) {
+          return false;
+        }
+
+        // fallback: unknown treated as "not purchased" for your use case
+        return false;
+      }
+
+      function buildCardRow(card) {
+        const tr = document.createElement("tr");
+        tr.classList.add(card.purchased ? "row-owned" : "row-needed");
+
+        card.displayCells.forEach((cell) => {
+          const td = document.createElement("td");
+          const text = (cell.value || "").trim();
+
+          if (cell.originalIndex === ownedIndex) {
+            if (card.purchased) {
+              td.innerHTML =
+                '<span class="owned-pill owned-pill--yes">purchased</span>';
+            } else {
+              const queryParts = ["1959 topps"];
+              if (numberIndex !== -1 && card.number) {
+                queryParts.push(card.number.trim());
+              }
+              if (playerIndex !== -1 && card.player) {
+                queryParts.push(card.player.trim());
+              }
+              const searchQuery = encodeURIComponent(
+                queryParts.filter(Boolean).join(" ")
+              );
+              const searchUrl =
+                "https://www.ebay.com/sch/i.html?_nkw=" +
+                searchQuery +
+                "&_sop=15";
+              td.innerHTML =
+                '<a href="' +
+                searchUrl +
+                '" target="_blank" rel="noreferrer noopener">' +
+                '<span class="owned-pill ebay-action">eBay</span>' +
+                "</a>";
+            }
+          } else {
+            td.textContent = text;
+          }
+
+          tr.appendChild(td);
+        });
+
+        return tr;
+      }
+
+      function getVisibleCards() {
+        const query = state.query.trim().toLowerCase();
+        return cardsData.filter(card =>
+          (state.filter === "all" || card.purchased === (state.filter === "owned")) &&
+          (!query || card.displayCells.some(cell => String(cell.value).toLowerCase().includes(query)))
+        ).sort((a,b) => {
+          const field = currentSort === "team" ? "team" : currentSort === "player" ? "player" : "number";
+          const order = a[field].trim().localeCompare(b[field].trim(), undefined, {numeric:true,sensitivity:"base"});
+          return state.direction * (order || a.originalIndex - b.originalIndex);
+        });
+      }
+      function renderTableRows() {
+        const tbody=document.getElementById("cards-tbody"); tbody.replaceChildren();
+        const sorted=getVisibleCards();
+        const shown=sorted;
+        const fragment=document.createDocumentFragment();
+        shown.forEach(card => fragment.appendChild(buildCardRow(card))); tbody.appendChild(fragment);
+        document.getElementById("results").textContent = cardsData.length ? `${shown.length} of ${sorted.length} matching cards` : "Waiting for collection data";
+        document.getElementById("empty").hidden = !cardsData.length || sorted.length !== 0;
+        document.querySelectorAll(".filters [data-filter]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.filter === state.filter)));
+        document.getElementById("clear").disabled = !state.query;
+      }
+
+      // Keep raw-cell parsing, eligibility and all financial derivations in one pipeline.
+      // No zero-cost convention is documented in this sheet: flag zeros for review.
+      function parseCost(value) {
+        if (value == null || String(value).trim() === "") return {status:"missing", cents:null};
+        const raw = String(value).trim().replace(/^\$\s*/, "");
+        if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(raw)) return {status:"invalid", cents:null};
+        const cents = Math.round(Number(raw.replace(/,/g,"")) * 100);
+        if (!Number.isSafeInteger(cents)) return {status:"invalid", cents:null};
+        return {status:cents === 0 ? "zero" : "valid", cents};
+      }
+      function analyzeCosts(cards, index) {
+        const normalized = cards.map(card => ({card, ...parseCost(index < 0 ? null : card.originalRow[index])}));
+        const owned = normalized.filter(r => r.card.purchased);
+        const records = owned.filter(r => r.status === "valid").sort((a,b) => a.cents-b.cents || a.card.originalIndex-b.card.originalIndex);
+        const total = records.reduce((sum,r) => sum+r.cents,0);
+        const count = records.length, middle = Math.floor(count/2);
+        const descending = [...records].sort((a,b)=>b.cents-a.cents || a.card.originalIndex-b.card.originalIndex);
+        const topFive = descending.slice(0,5).reduce((sum,r)=>sum+r.cents,0);
+        const completion = cards.length ? owned.length/cards.length*100 : 0;
+        const bounds = [0,500,1000,2500,5000,10000,Infinity];
+        const labels = ["Under $5","$5–$9.99","$10–$24.99","$25–$49.99","$50–$99.99","$100+"];
+        return {records, total, owned:owned.length, count, completion,
+          average:count ? total/count : null,
+          median:count ? (count%2 ? records[middle].cents : (records[middle-1].cents+records[middle].cents)/2) : null,
+          highest:descending[0] || null, top:descending.slice(0,10), low:records.slice(0,10),
+          topFive, concentration:total ? topFive/total*100 : null,
+          perPoint:count && completion ? total/completion : null,
+          missing:owned.filter(r=>r.status!=="valid"),
+          unowned:normalized.filter(r=>!r.card.purchased && r.status==="valid"),
+          bands:labels.map((label,i)=>{const rows=records.filter(r=>r.cents>=bounds[i] && r.cents<bounds[i+1]);return {label,count:rows.length,total:rows.reduce((sum,r)=>sum+r.cents,0)};})};
+      }
+      const money = cents => cents == null || !Number.isFinite(cents) ? "—" : (cents/100).toLocaleString("en-US",{style:"currency",currency:"USD"});
+      function costElement(tag, text, className) {
+        const el=document.createElement(tag); if(text != null) el.textContent=text; if(className) el.className=className; return el;
+      }
+      function costTable(title, headers, rows) {
+        const panel=costElement("section",null,"cost-panel"); panel.append(costElement("h2",title));
+        const wrap=costElement("div",null,"table-wrapper"), table=costElement("table",null,"cost-table");
+        table.setAttribute("aria-label",title);
+        const head=costElement("thead"), hr=costElement("tr"), body=costElement("tbody");
+        headers.forEach(h=>{const th=costElement("th",h);th.scope="col";hr.append(th)});head.append(hr);
+        rows.forEach(row=>{const tr=costElement("tr");row.forEach(value=>tr.append(costElement("td",value)));body.append(tr)});
+        table.append(head,body);wrap.append(table);panel.append(wrap);
+        if(!rows.length) panel.append(costElement("p","No eligible recorded costs.","quiet"));
+        return panel;
+      }
+      function renderCostAnalysis(m) {
+        const content=document.getElementById("cost-content"); content.replaceChildren();
+        if(costIndex < 0) content.append(costElement("p","The source has no Paid column. Cost analysis is unavailable.","cost-note"));
+        const summary=costElement("div",null,"cost-summary");
+        const metrics=[
+          ["Total invested",m.count ? money(m.total) : "—", "Recorded cost of owned cards"],
+          ["Average / priced card",money(m.average),`${m.count} priced records`],
+          ["Median cost",money(m.median),"Middle acquisition cost"],
+          ["Highest purchase",money(m.highest?.cents),m.highest ? `#${m.highest.card.number} · ${m.highest.card.player}` : "No recorded costs"],
+          ["Cards with cost data",`${m.count} / ${m.owned}`,"Owned cards with eligible recorded cost"],
+          ["Cost / completion point",money(m.perPoint),`${m.completion.toFixed(1)}% complete · uses unrounded completion`]
+        ];
+        metrics.forEach(([label,value,hint])=>{const el=costElement("div",null,"cost-stat");el.append(costElement("span",label,"eyebrow"),costElement("strong",value),costElement("small",hint));summary.append(el)});
+        content.append(summary);
+        if(m.missing.length) {
+          const details=costElement("details",null,"cost-note");
+          details.append(costElement("summary",`${m.missing.length} owned card${m.missing.length===1?"":"s"} without eligible cost data — view cards`));
+          details.append(costTable("Cost data to complete",["Card #","Player / name","Cost status"],m.missing.map(r=>[r.card.number,r.card.player,{missing:"Not recorded",invalid:"Invalid cost",zero:"$0 — needs confirmation"}[r.status]])));
+          content.append(details);
+        }
+        if(m.unowned.length) content.append(costElement("p",`${m.unowned.length} cards have Paid amounts but are not marked purchased; excluded from this analysis.`,"cost-note"));
+        content.append(costElement("p","Blank and invalid costs are excluded. Zero entries require confirmation as genuine no-cost acquisitions before inclusion. Paid does not separately identify shipping or tax.","cost-note"));
+        const concentration=costElement("section",null,"cost-concentration");
+        concentration.append(costElement("h2","Spending concentration"),costElement("p",m.count ? `Top ${Math.min(5,m.count)} purchases: ${money(m.topFive)} · ${m.concentration.toFixed(1)}% of recorded spending` : "No eligible costs recorded."));content.append(concentration);
+        const grid=costElement("div",null,"cost-grid");
+        const purchaseRows=rs=>rs.map((r,i)=>[i+1,r.card.number,r.card.player,money(r.cents)]);
+        grid.append(costTable("Most Expensive Purchases",["Rank","Card #","Player / name","Paid"],purchaseRows(m.top)),costTable("Cost Bands",["Acquisition cost","Cards","Total paid"],m.bands.map(b=>[b.label,b.count,money(b.total)])),costTable("Lowest-Cost Purchases",["Rank","Card #","Player / name","Paid"],purchaseRows(m.low)));
+        content.append(grid);
+        renderSeriesAnalysis(content, analyzeSeries(cardsData, costIndex), m);
+      }
+
+      // Production-series ranges from the approved 1959-Topps-History-Brief.md.
+      // A suffix (e.g. 336A) identifies an entry within its printed card number.
+      const SERIES = Object.freeze([
+        [1,1,110],[2,111,198],[3,199,286],[4,287,374],
+        [5,375,440],[6,441,506],[7,507,572]
+      ].map(([id,start,end]) => Object.freeze({id,start,end,total:end-start+1,name:`Series ${id}`})));
+      function baseCardNumber(value) {
+        const match=String(value ?? '').trim().match(/^(\d+)(?:[a-z]+)?$/i);
+        return match ? Number(match[1]) : null;
+      }
+      function getSeriesForCardNumber(value) {
+        const number=baseCardNumber(value);
+        return SERIES.find(s=>number!==null && number>=s.start && number<=s.end) || null;
+      }
+      function analyzeSeries(cards, index) {
+        const groups=SERIES.map(series=>({series,cards:[]})), unmapped=[];
+        cards.forEach(card=>{
+          const series=getSeriesForCardNumber(card.number);
+          if(series) groups[series.id-1].cards.push(card); else unmapped.push(card);
+        });
+        const rows=groups.map(group=>({...group,...analyzeCosts(group.cards,index),entries:group.cards.length}));
+        const numbers=new Map();
+        cards.forEach(card=>{if(getSeriesForCardNumber(card.number)) {
+          const n=baseCardNumber(card.number);numbers.set(n,(numbers.get(n)||0)+1);
+        }});
+        return {rows,unmapped,unmappedCosts:analyzeCosts(unmapped,index),
+          duplicates:[...numbers].filter(([,count])=>count>1),
+          missingNumbers:SERIES.flatMap(s=>Array.from({length:s.total},(_,i)=>s.start+i)).filter(n=>!numbers.has(n))};
+      }
+      function renderSeriesAnalysis(content, analysis, overall) {
+        const section=costElement('section',null,'series-analysis');
+        section.append(costElement('h2','Cost by Series'));
+        section.append(costElement('p','Base cards are the 572 numbered cards in the historical set. Entries, owned, needed and completion use your checklist rows, matching the dashboard. Average and median use eligible priced owned entries only.','cost-note'));
+        const headers=['Series','Card range','Base cards','Entries','Owned','Needed','Complete','Priced','Recorded spend','Average / priced','Median','Spend share','Highest-cost card'];
+        const rows=analysis.rows.map(r=>[
+          r.series.name,`${r.series.start}–${r.series.end}`,r.series.total,r.entries,r.owned,r.entries-r.owned,
+          r.entries ? `${r.completion.toFixed(1)}%` : '—',r.count,money(r.total),money(r.average),money(r.median),
+          overall.total ? `${(r.total/overall.total*100).toFixed(1)}%` : '—',
+          r.highest ? `#${r.highest.card.number} · ${r.highest.card.player} · ${money(r.highest.cents)}` : '—'
+        ]);
+        // Unmapped records stay visible so future source-data problems cannot hide spending.
+        if(analysis.unmapped.length) {
+          const u=analysis.unmappedCosts;
+          rows.push(['Unmapped','—','—',analysis.unmapped.length,u.owned,analysis.unmapped.length-u.owned,`${u.completion.toFixed(1)}%`,u.count,money(u.total),money(u.average),money(u.median),overall.total ? `${(u.total/overall.total*100).toFixed(1)}%` : '—',u.highest ? `#${u.highest.card.number} · ${u.highest.card.player} · ${money(u.highest.cents)}` : '—']);
+        }
+        const panel=costTable('Series summary',headers,rows),table=panel.querySelector('table');
+        table.className='series-table';
+        const wrap=panel.querySelector('.table-wrapper');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Series summary, scroll horizontally for all columns');
+        const foot=costElement('tfoot'),tr=costElement('tr');
+        ['Collection','',SERIES.reduce((sum,s)=>sum+s.total,0),cardsData.length,overall.owned,cardsData.length-overall.owned,`${overall.completion.toFixed(1)}%`,overall.count,money(overall.total),money(overall.average),money(overall.median),overall.total?'100.0%':'—',''].forEach(value=>tr.append(costElement('td',value)));
+        foot.append(tr);table.append(foot);section.append(panel);
+        const seriesSpend=analysis.rows.reduce((sum,r)=>sum+r.total,0);
+        section.append(costElement('p',`Reconciliation: ${money(seriesSpend)} across seven series${analysis.unmapped.length ? ` + ${money(analysis.unmappedCosts.total)} unmapped` : ''} = ${money(overall.total)} overall recorded spending. Spend shares use unrounded totals; displayed percentages may differ from 100% by rounding.`,'cost-note'));
+        if(analysis.duplicates.length) section.append(costElement('p',`Repeated card numbers: ${analysis.duplicates.map(([n,count])=>`#${n} (${count} entries)`).join(', ')}. Each entry retains its own ownership and recorded cost; these counts do not imply additional numbered base cards.`,'cost-note'));
+        if(analysis.missingNumbers.length) section.append(costElement('p',`Base numbers absent from the source checklist: ${analysis.missingNumbers.join(', ')}. Completion reflects listed entries only.`,'cost-note'));
+        if(analysis.unmapped.length) section.append(costElement('p',`Entries without a recognized series: ${analysis.unmapped.map(c=>`#${c.number || '(blank)'} · ${c.player}`).join('; ')}.`,'cost-note'));
+        section.append(costElement('p','Letter suffixes are mapped by the numeric card number. No acquisition price is estimated, and $0 entries retain the existing confirmation requirement.','cost-note'));
+        const bars=costElement('div',null,'series-bars');
+        const maxSpend=Math.max(0,...analysis.rows.map(r=>r.total));
+        for(const mode of ['spend','completion']) {
+          const panel=costElement('section');panel.append(costElement('h3',mode==='spend'?'Total Recorded Spend by Series':'Completion by Series'));
+          analysis.rows.forEach(r=>{
+            const row=costElement('div',null,'series-bar-row'),label=costElement('div',null,'series-bar-label');
+            label.append(costElement('span',r.series.name),costElement('span',mode==='spend'?`${money(r.total)} · ${r.count} priced`:`${r.owned} / ${r.entries} entries · ${r.completion.toFixed(1)}%`));
+            const track=costElement('div',null,'series-track'),fill=costElement('div',null,'series-fill');
+            track.setAttribute('aria-hidden','true');
+            fill.style.width=`${mode==='spend' ? (maxSpend ? r.total/maxSpend*100 : 0) : r.completion}%`;
+            track.append(fill);row.append(label,track);panel.append(row);
+          });bars.append(panel);
+        }
+        section.append(bars);content.append(section);
+      }
+
+      async function loadChecklist() {
+        const thead = document.getElementById("cards-thead");
+        const tbody = document.getElementById("cards-tbody");
+        const errorEl = document.getElementById("error-msg");
+        const ownedBadge = document.getElementById("owned-badge");
+        const neededBadge = document.getElementById("needed-badge");
+
+        try {
+          const res = await fetch(SHEET_CSV_URL + "&t=" + Date.now());
+          if (!res.ok) {
+            throw new Error("http " + res.status);
+          }
+          const text = await res.text();
+          const rows = parseSeparated(text);
+          if (!rows.length) {
+            throw new Error("no rows found in csv/tsv");
+          }
+
+          const header = rows[0];
+          const dataRows = rows.slice(1);
+          costIndex = findColumnIndex(header, ["paid"]);
+
+          const excludedHeaders = new Set([
+            "low price",
+            "high price",
+            "low price high price",
+            "replace",
+            "special",
+            "notes",
+            "graded",
+            "grade",
+            "comp",
+            "comps",
+          ]);
+
+          // Build the visible header from useful columns only.
+          // Explicit placeholders are excluded, and fully empty columns are hidden automatically.
+          const headerTr = document.createElement("tr");
+          const displayColumnIndices = header.reduce((acc, col, idx) => {
+            const normalized = normalizeHeader(col);
+            const hasData = dataRows.some((row) => String(row[idx] || "").trim() !== "");
+            if (!excludedHeaders.has(normalized) && hasData) {
+              acc.push(idx);
+              const th = document.createElement("th");
+              th.textContent = col.trim();
+              headerTr.appendChild(th);
+            }
+            return acc;
+          }, []);
+          thead.replaceChildren(headerTr);
+
+          // find Purchased/Owned column
+          ownedIndex = findColumnIndex(header, [
+            "owned",
+            "have",
+            "status",
+            "purchased",
+          ]);
+
+          numberIndex = findColumnIndex(header, ["number", "no", "card"]);
+          playerIndex = findColumnIndex(header, ["player", "name"]);
+          teamIndex = findColumnIndex(header, ["team", "club"]);
+
+          // if we somehow don't find it but we know your file is:
+          // Number, Player, Team, Purchased, Paid
+          // then the 4th column (index 3) is Purchased
+          if (ownedIndex === -1 && header.length >= 4) {
+            ownedIndex = 3;
+          }
+
+          cardsData = [];
+          let purchasedCount = 0;
+          const total = dataRows.length;
+
+          dataRows.forEach((row, idx) => {
+            let purchasedFlag = false;
+            if (ownedIndex !== -1 && row.length > ownedIndex) {
+              purchasedFlag = interpretOwned(row[ownedIndex]);
+            }
+
+            if (purchasedFlag) {
+              purchasedCount++;
+            }
+
+            cardsData.push({
+              originalRow: row,
+              displayCells: displayColumnIndices.map((colIdx) => ({
+                value: row[colIdx] || "",
+                originalIndex: colIdx,
+              })),
+              purchased: purchasedFlag,
+              number: numberIndex !== -1 ? row[numberIndex] || "" : "",
+              player: playerIndex !== -1 ? row[playerIndex] || "" : "",
+              team: teamIndex !== -1 ? row[teamIndex] || "" : "",
+              originalIndex: idx,
+            });
+          });
+
+          const remaining = total - purchasedCount;
+          const percent = total ? (purchasedCount / total * 100) : 0;
+          document.getElementById("completion").textContent = percent.toFixed(1) + "%";
+          document.getElementById("fraction").textContent = purchasedCount + " / " + total;
+          document.getElementById("progress").value = percent;
+          document.getElementById("total").textContent = total;
+          document.getElementById("owned-count").textContent = purchasedCount;
+          document.getElementById("need-count").textContent = remaining;
+          sortSelect.querySelector('[value="team"]').disabled = teamIndex === -1;
+          sortSelect.querySelector('[value="player"]').disabled = playerIndex === -1;
+          errorEl.hidden = true; errorEl.style.display = "none";
+          document.getElementById("retry").hidden = true;
+
+          ownedBadge.textContent = "purchased: " + purchasedCount;
+          neededBadge.textContent = "needed: " + remaining;
+
+
+          renderTableRows();
+          renderCostAnalysis(analyzeCosts(cardsData, costIndex));
+        } catch (err) {
+          console.error(err);
+          errorEl.hidden = false; errorEl.style.display = "block";
+          document.getElementById("retry").hidden = false;
+          errorEl.textContent =
+            "error loading the google sheet — check the published CSV link or try again later.";
+        }
+      }
+
+      document.getElementById("raw-sheet").href = SHEET_CSV_URL.replace("&output=csv", "&output=html");
+      document.getElementById("export").href = SHEET_CSV_URL;
+      document.getElementById("retry").addEventListener("click", loadChecklist);
+      loadChecklist();
+    </script>
+</body>
+</html>
