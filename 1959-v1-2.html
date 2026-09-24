@@ -1,0 +1,645 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>1959 Topps · Setbuild v1.2</title><style>
+:root{--ink:#21382f;--muted:#626d65;--paper:#f5f4ee;--line:#dce0d6;--green:#20543c;--gold:#c89944}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button,a{touch-action:manipulation}
+button{cursor:pointer}
+a{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b37c22;outline-offset:3px}
+[hidden]{display:none!important}
+.sidebar{width:216px;position:fixed;inset:0 auto 0 0;background:#203b30;color:#eff3e9;display:flex;flex-direction:column;padding:30px 18px;z-index:5;overflow:auto}
+.brand{display:flex;align-items:center;gap:12px;margin:0 8px 38px}
+.brand-mark{border:1px solid #819784;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font:bold 24px Georgia,serif;color:#edcf88}
+.brand strong{font-size:17px;letter-spacing:-.4px}
+.brand small{display:block;font-size:10px;letter-spacing:2px;color:#b0c3b6}
+.nav-label{font-size:10px;letter-spacing:1.8px;color:#b0c3b6;padding:0 12px;margin:20px 0 9px}
+nav{display:grid;gap:5px}
+nav button,nav a{border:0;background:none;color:inherit;display:flex;align-items:center;text-align:left;gap:12px;padding:11px 12px;border-radius:5px;text-decoration:none}
+nav button[aria-current]{background:#385746;color:#fff}
+nav button:hover:not(:disabled),nav a:hover{background:#314e3f}
+nav button:disabled{cursor:default;color:#b0c3b6}
+nav .symbol{width:18px;text-align:center;font-size:17px}
+nav small{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
+.sidebar-bottom{margin-top:auto;padding-top:36px}
+.sidebar-bottom a{display:block;text-decoration:none;color:#cad7cc;padding:6px 12px;font-size:12px}
+.edition{padding:22px 12px 0;font-size:10px;color:#b0c3b6;letter-spacing:1px}
+main{margin-left:216px;padding:20px 40px 20px;max-width:1600px}
+.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px;gap:12px}
+.breadcrumb{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+h1{font-size:22px;letter-spacing:-.6px;margin:3px 0 0}
+h2{font-size:18px;letter-spacing:-.4px;margin:0}
+p{color:var(--muted)}
+.version{font-size:11px;border:1px solid var(--line);padding:5px 9px;border-radius:4px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin:14px 0 10px;gap:14px}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.collection-name{font:24px Georgia,serif;letter-spacing:-.6px;margin:1px 0}
+.quiet{font-size:12px;color:var(--muted)}
+.dashboard{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--line);border-radius:7px;background:#fff;overflow:hidden}
+.completion{padding:12px 16px}
+.metric{border:0;border-left:1px solid var(--line);background:none;text-align:left;padding:12px 16px;color:var(--ink)}
+.metric:hover{background:#f0f4ec}
+.metric strong{font-size:27px;font-weight:550;display:block;letter-spacing:-.8px;margin:2px 0 1px}
+.metric .hint{font-size:11px;color:var(--muted)}
+.progress-title{display:flex;align-items:baseline;justify-content:space-between;margin:3px 0 6px}
+.progress-title strong{font-size:27px;font-weight:550;letter-spacing:-.8px}
+.progress-title span{color:var(--muted);font-size:12px}
+progress{width:100%;height:7px;border:0;border-radius:4px;overflow:hidden;background:#e5eade;accent-color:var(--green)}
+progress::-webkit-progress-bar{background:#e5eade}
+progress::-webkit-progress-value{background:var(--green)}
+.overview{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:10px 0 0}
+.overview p{margin:0;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:4px;padding:9px 12px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{background:#eaf0e6}
+.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.primary:hover{background:#173e2c}
+.table-section{margin-top:12px}
+.table-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.search-wrap{display:flex;flex:1;min-width:230px;border:1px solid #cbd2c7;border-radius:5px;background:#fff}
+.search-wrap input{padding:10px 12px;border:0;background:none;width:100%;min-width:0;color:var(--ink)}
+.search-wrap button{border:0;background:none;color:var(--muted);padding:0 12px}
+.search-wrap button:disabled{opacity:.35;cursor:default}
+.filters{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:5px;background:#eaece4}
+.filters button{padding:6px 12px;border:0;background:none;color:#506054;border-radius:3px}
+.filters button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px #14271518;color:var(--ink)}
+.sort{display:flex;align-items:center;gap:7px}
+.sort label{font-size:11px;color:var(--muted)}
+select{padding:8px;border:1px solid var(--line);border-radius:4px;color:var(--ink);background:#fff}
+.sort .btn{font-size:12px;padding:9px}
+.table-wrapper{max-height:68vh;overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+th{position:sticky;top:0;z-index:1;background:#edf0e7;color:#52614f;font-weight:500;text-transform:uppercase;letter-spacing:.7px;font-size:10px}
+td,th{text-align:left;padding:8px 14px;border-bottom:1px solid #e8ece3;white-space:nowrap}
+td:first-child{font-variant-numeric:tabular-nums;color:#687663;width:72px}\nth:nth-child(2),td:nth-child(2){width:42%;min-width:240px}\nth:nth-child(3),td:nth-child(3){width:24%}
+tbody tr:hover{background:#f6f8f1}
+.owned-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px}
+.owned-pill--yes{color:#27583c;background:#e8f0e5}
+.owned-pill--no{color:#8c5423;background:#f7eddb}
+.row-needed td a{text-decoration:none}
+.row-needed td a:hover .owned-pill{background:#efdbb4}
+.table-footer{display:flex;justify-content:space-between;gap:15px;padding-top:12px;color:var(--muted);font-size:11px}
+.empty{padding:28px;text-align:center}
+.error{background:#fff0e8;color:#863e21;padding:14px;border:1px solid #edc8b2;margin:12px 0;border-radius:5px}
+.status{font-size:11px;color:var(--muted);margin:18px 0 0}
+.mobile-menu{display:none}
+.scrim{position:fixed;inset:58px 0 0;background:#152b2255;z-index:4;border:0;width:100%}
+.mobile-top{display:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(min-width:1500px){main{padding:24px 60px}
+}
+@media(max-width:1100px){main{padding:18px 22px}
+.toolbar{gap:9px}
+.sort{margin-left:auto}
+.overview{align-items:flex-start}
+.metric,.completion{padding:12px 14px}
+.overview .actions{flex-wrap:nowrap}
+}
+@media(max-width:760px){.mobile-top{display:flex;position:sticky;top:0;height:58px;background:var(--paper);z-index:6;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 16px}
+.mobile-menu{display:block}
+.sidebar{top:58px;transform:translateX(-100%);width:230px}
+.sidebar.open{transform:translateX(0)}
+main{margin-left:0;padding:14px 16px}
+.topbar{padding-bottom:10px}
+h1{font-size:21px}
+.heading{margin-top:12px}
+.collection-name{font-size:23px}
+.dashboard{grid-template-columns:1fr 1fr}
+.completion{grid-column:1/-1;border-bottom:1px solid var(--line)}
+.metric{padding:11px 14px}
+.metric:nth-child(2){border-left:0}
+.metric strong{font-size:25px;margin:2px 0}
+.overview{display:flex;padding-top:9px}
+.overview .actions{margin-top:0}
+.toolbar{align-items:stretch}
+.search-wrap{flex-basis:100%}
+.filters{flex:1}
+.filters button{flex:1;padding:8px}
+.sort{width:100%;margin:0}
+.sort select{flex:1}
+.table-footer{flex-direction:column;gap:5px}
+.table-wrapper{max-height:72vh}
+td,th{padding:8px 10px}
+.table-heading h2{font-size:16px}
+.heading .quiet{max-width:110px;text-align:right}
+}
+
+</style></head>
+<body>
+<div class="mobile-top">
+<strong>1959 / SETBUILD</strong>
+<button id="menu" class="btn mobile-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
+</div>
+<button class="scrim" id="scrim" aria-label="Close navigation" hidden>
+</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<span class="brand-mark">59</span>
+<div>
+<strong>Setbuild</strong>
+<small>THE CARD GOAT</small>
+</div>
+</div>
+<div class="nav-label">COLLECTION</div>
+<nav aria-label="Collection navigation">
+<button data-view="overview" aria-current="page">
+<span class="symbol" aria-hidden="true">◫</span>Overview</button>
+<button data-view="checklist">
+<span class="symbol" aria-hidden="true">☷</span>Checklist</button>
+<button data-view="need">
+<span class="symbol" aria-hidden="true">○</span>Need List</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">↗</span>Purchases <small>Planned</small>
+</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">⚑</span>Teams <small>Planned</small>
+</button>
+<button disabled>
+<span class="symbol" aria-hidden="true">☆</span>Key Cards <small>Planned</small>
+</button>
+</nav>
+<div class="nav-label">SOURCE</div>
+<nav aria-label="Data source">
+<a id="raw-sheet" target="_blank" rel="noopener noreferrer">
+<span class="symbol" aria-hidden="true">▦</span>Raw Sheet ↗</a>
+<a id="export">
+<span class="symbol" aria-hidden="true">↓</span>Export source CSV</a>
+</nav>
+<div class="sidebar-bottom">
+<a href="cards.html">← Cardboard</a>
+<a href="index.html">m49n index ↗</a>
+<a href="mlb-rosters.html">MLB rosters ↗</a>
+<div class="edition">1959 TOPPS · V1.2</div>
+</div>
+</aside>
+<main>
+<header class="topbar">
+<div>
+<div class="breadcrumb">Cardboard / Collection</div>
+<h1 id="view-title">Overview</h1>
+</div>
+<span class="version">SETBUILD v1.2</span>
+</header>
+<div class="heading">
+<div>
+<div class="eyebrow">The collection</div>
+<div class="collection-name">1959 Topps Baseball</div>
+</div>
+
+</div>
+<section class="dashboard" aria-label="Collection progress">
+<div class="completion">
+<div class="eyebrow">Set completion</div>
+<div class="progress-title">
+<strong id="completion">—</strong>
+<span>
+<span id="fraction">— / —</span> collected</span>
+</div>
+<progress id="progress" max="100" value="0" aria-label="Set completion">
+</progress>
+<div class="quiet">
+<span id="total">—</span> cards in the checklist</div>
+</div>
+<button class="metric" data-view="checklist" data-filter="owned">
+<span class="eyebrow">Owned</span>
+<strong id="owned-count">—</strong>
+<span class="hint">View collected cards ↗</span>
+</button>
+<button class="metric" data-view="need">
+<span class="eyebrow">Still needed</span>
+<strong id="need-count">—</strong>
+<span class="hint">Find the missing pieces ↗</span>
+</button>
+</section>
+<section id="overview" class="overview">
+<div class="actions">
+<button class="btn" data-view="checklist">Full checklist</button>
+<button class="btn primary" data-view="need">Explore need list →</button>
+</div>\n</section>\n<div class="status" role="status" id="status-text">Loading checklist…</div>
+<span class="sr-only" id="owned-badge">
+</span>
+<span class="sr-only" id="needed-badge">
+</span>
+<div class="error" id="error-msg" role="alert" hidden>
+</div>
+<button class="btn" id="retry" hidden>Retry loading</button>
+<section class="table-section" aria-label="Collection checklist">
+<div class="table-heading">
+<h2 id="table-title">Collection snapshot</h2>
+<span class="quiet">1959 / TOPPS</span>
+</div>
+<div class="toolbar">
+<div class="search-wrap">
+<label for="search" class="sr-only">Search collection</label>
+<input id="search" type="search" placeholder="Search card #, player, or team…" autocomplete="off">
+<button id="clear" aria-label="Clear search" disabled>×</button>
+</div>
+<div class="filters" role="group" aria-label="Ownership filter">
+<button data-filter="all" aria-pressed="true">All Cards</button>
+<button data-filter="owned" aria-pressed="false">Owned</button>
+<button data-filter="needed" aria-pressed="false">Needed</button>
+</div>
+<div class="sort">
+<label for="sort-select">Sort</label>
+<select id="sort-select">
+<option value="number">Card number</option>
+<option value="player">Player / name</option>
+<option value="team">Team</option>
+</select>
+<button id="direction" class="btn">↑ Ascending</button>
+</div>
+</div>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable checklist">
+<table id="cards-table">
+<thead id="cards-thead">
+</thead>
+<tbody id="cards-tbody">
+</tbody>
+</table>
+<div id="empty" class="empty" hidden>No matching cards. Try another search or filter.</div>
+</div>
+<div class="table-footer">
+<span id="results" role="status">Waiting for collection data</span>
+<span>Need badges open an eBay search ↗</span>
+</div>
+</section>
+</main>
+<script>
+      const SHEET_CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRIgMDR1IzGUerOuoJg528AVkb_iKe9hWaASEEdZI9hZXMB1-dJxQAKmMdKd8E-AVBobNEvNahijjdi/pub?gid=0&single=true&output=csv";
+
+      const sortSelect = document.getElementById("sort-select");
+      const state = {view: "overview", filter: "all", query: "", direction: 1};
+      let currentSort = "number";
+      let cardsData = [];
+      let ownedIndex = -1;
+      let numberIndex = -1;
+      let playerIndex = -1;
+      let teamIndex = -1;
+
+      // auto-detect whether the file is comma- or tab-delimited (default comma)
+      function detectDelimiter(text) {
+        let commaCount = 0;
+        let tabCount = 0;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          if (char === ",") commaCount++;
+          if (char === "\t") tabCount++;
+          if (char === "\n" || char === "\r") break; // only look at first line
+        }
+
+        return tabCount > commaCount ? "\t" : ",";
+      }
+
+      // CSV/TSV parser with optional quotes.
+      function parseSeparated(text) {
+        const delimiter = detectDelimiter(text);
+        const rows = [];
+        let current = "";
+        let row = [];
+        let insideQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const next = text[i + 1];
+
+          if (char === '"' && insideQuotes && next === '"') {
+            // escaped quote: ""
+            current += '"';
+            i++;
+          } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+          } else if (char === delimiter && !insideQuotes) {
+            row.push(current);
+            current = "";
+          } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+            if (current !== "" || row.length > 0) {
+              row.push(current);
+              rows.push(row);
+              row = [];
+              current = "";
+            }
+          } else {
+            current += char;
+          }
+        }
+
+        if (current !== "" || row.length > 0) {
+          row.push(current);
+          rows.push(row);
+        }
+
+        // drop rows that are completely empty
+        return rows.filter((r) => r.some((c) => c.trim() !== ""));
+      }
+
+      function normalizeHeader(name) {
+        return name.trim().toLowerCase();
+      }
+
+      function findColumnIndex(header, names) {
+        return header.findIndex((h) => names.includes(normalizeHeader(h)));
+      }
+
+      // View state and derived rows share the canonical cardsData collection.
+      function setView(view, filter = "all") {
+        state.view = view; state.filter = view === "need" ? "needed" : filter;
+        state.query = ""; document.getElementById("search").value = "";
+        document.getElementById("overview").hidden = view !== "overview";
+        document.getElementById("view-title").textContent = {overview:"Overview", checklist:"Checklist", need:"Need List"}[view];
+        document.getElementById("table-title").textContent = view === "overview" ? "Collection snapshot" : view === "need" ? "Your next finds" : "The full checklist";
+        document.querySelectorAll("[data-view]").forEach(el => {
+          if (el.closest("nav")) {
+            if (el.dataset.view === view) el.setAttribute("aria-current", "page");
+            else el.removeAttribute("aria-current");
+          }
+        });
+        closeMenu(); renderTableRows();
+      }
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("open");
+        document.getElementById("menu").setAttribute("aria-expanded", "false");
+        document.getElementById("scrim").hidden = true;
+      }
+      document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => setView(el.dataset.view, el.dataset.filter || "all")));
+      document.querySelectorAll("[data-filter]").forEach(el => {
+        if (el.dataset.view) return;
+        el.addEventListener("click", () => {
+          state.filter = el.dataset.filter;
+          if(state.view === "need" && state.filter !== "needed") {
+            const query = state.query; setView("checklist", state.filter);
+            state.query = query; document.getElementById("search").value = query;
+          }
+          renderTableRows();
+        });
+      });
+      document.getElementById("search").addEventListener("input", e => {state.query = e.target.value; renderTableRows();});
+      document.getElementById("clear").addEventListener("click", () => {state.query=""; document.getElementById("search").value=""; renderTableRows(); document.getElementById("search").focus();});
+      sortSelect.addEventListener("change", () => {currentSort=sortSelect.value; renderTableRows();});
+      document.getElementById("direction").addEventListener("click", () => {
+        state.direction *= -1;
+        document.getElementById("direction").textContent = state.direction === 1 ? "↑ Ascending" : "↓ Descending";
+        renderTableRows();
+      });
+      document.getElementById("menu").addEventListener("click", () => {
+        const open = document.getElementById("sidebar").classList.toggle("open");
+        document.getElementById("menu").setAttribute("aria-expanded", String(open));
+        document.getElementById("scrim").hidden = !open;
+      });
+      document.getElementById("scrim").addEventListener("click", closeMenu);
+      document.addEventListener("keydown", e => {if(e.key === "Escape") {closeMenu(); document.getElementById("menu").focus();}});
+      // interpret purchased/owned logic from the cell value
+      // In your data: TRUE = purchased, FALSE or blank = need.
+      function interpretOwned(value) {
+        if (value === undefined || value === null) return false;
+        const trimmed = value.trim();
+        if (trimmed === "") return false;
+
+        const v = trimmed.toLowerCase();
+
+        // treat these as "yes / purchased"
+        if (
+          [
+            "y",
+            "yes",
+            "x",
+            "owned",
+            "have",
+            "1",
+            "purchased",
+            "true",
+            "t"
+          ].includes(v)
+        ) {
+          return true;
+        }
+
+        // treat these as "no / need"
+        if (
+          [
+            "n",
+            "no",
+            "need",
+            "want",
+            "0",
+            "not purchased",
+            "false",
+            "f"
+          ].includes(v)
+        ) {
+          return false;
+        }
+
+        // fallback: unknown treated as "not purchased" for your use case
+        return false;
+      }
+
+      function buildCardRow(card) {
+        const tr = document.createElement("tr");
+        tr.classList.add(card.purchased ? "row-owned" : "row-needed");
+
+        card.displayCells.forEach((cell) => {
+          const td = document.createElement("td");
+          const text = (cell.value || "").trim();
+
+          if (cell.originalIndex === ownedIndex) {
+            if (card.purchased) {
+              td.innerHTML =
+                '<span class="owned-pill owned-pill--yes">purchased</span>';
+            } else {
+              const queryParts = ["1959 topps"];
+              if (numberIndex !== -1 && card.number) {
+                queryParts.push(card.number.trim());
+              }
+              if (playerIndex !== -1 && card.player) {
+                queryParts.push(card.player.trim());
+              }
+              const searchQuery = encodeURIComponent(
+                queryParts.filter(Boolean).join(" ")
+              );
+              const searchUrl =
+                "https://www.ebay.com/sch/i.html?_nkw=" +
+                searchQuery +
+                "&_sop=15";
+              td.innerHTML =
+                '<a href="' +
+                searchUrl +
+                '" target="_blank" rel="noreferrer noopener">' +
+                '<span class="owned-pill owned-pill--no">need</span>' +
+                "</a>";
+            }
+          } else {
+            td.textContent = text;
+          }
+
+          tr.appendChild(td);
+        });
+
+        return tr;
+      }
+
+      function getVisibleCards() {
+        const query = state.query.trim().toLowerCase();
+        return cardsData.filter(card =>
+          (state.filter === "all" || card.purchased === (state.filter === "owned")) &&
+          (!query || card.displayCells.some(cell => String(cell.value).toLowerCase().includes(query)))
+        ).sort((a,b) => {
+          const field = currentSort === "team" ? "team" : currentSort === "player" ? "player" : "number";
+          const order = a[field].trim().localeCompare(b[field].trim(), undefined, {numeric:true,sensitivity:"base"});
+          return state.direction * (order || a.originalIndex - b.originalIndex);
+        });
+      }
+      function renderTableRows() {
+        const tbody=document.getElementById("cards-tbody"); tbody.replaceChildren();
+        const sorted=getVisibleCards();
+        const snapshot=state.view === "overview" && !state.query && state.filter === "all";
+        const shown=snapshot ? sorted.slice(0,10) : sorted;
+        const fragment=document.createDocumentFragment();
+        shown.forEach(card => fragment.appendChild(buildCardRow(card))); tbody.appendChild(fragment);
+        document.getElementById("results").textContent = cardsData.length ? `${shown.length} of ${sorted.length} matching cards${snapshot ? " · Preview" : ""}` : "Waiting for collection data";
+        document.getElementById("empty").hidden = !cardsData.length || sorted.length !== 0;
+        document.querySelectorAll(".filters [data-filter]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.filter === state.filter)));
+        document.getElementById("clear").disabled = !state.query;
+      }
+      async function loadChecklist() {
+        const thead = document.getElementById("cards-thead");
+        const tbody = document.getElementById("cards-tbody");
+        const errorEl = document.getElementById("error-msg");
+        const ownedBadge = document.getElementById("owned-badge");
+        const neededBadge = document.getElementById("needed-badge");
+        const statusText = document.getElementById("status-text");
+
+        try {
+          const res = await fetch(SHEET_CSV_URL + "&t=" + Date.now());
+          if (!res.ok) {
+            throw new Error("http " + res.status);
+          }
+          const text = await res.text();
+          const rows = parseSeparated(text);
+          if (!rows.length) {
+            throw new Error("no rows found in csv/tsv");
+          }
+
+          const header = rows[0];
+          const dataRows = rows.slice(1);
+
+          const excludedHeaders = new Set([
+            "low price",
+            "high price",
+            "low price high price",
+            "replace",
+            "special",
+            "notes",
+            "graded",
+            "grade",
+            "comp",
+            "comps",
+          ]);
+
+          // Build the visible header from useful columns only.
+          // Explicit placeholders are excluded, and fully empty columns are hidden automatically.
+          const headerTr = document.createElement("tr");
+          const displayColumnIndices = header.reduce((acc, col, idx) => {
+            const normalized = normalizeHeader(col);
+            const hasData = dataRows.some((row) => String(row[idx] || "").trim() !== "");
+            if (!excludedHeaders.has(normalized) && hasData) {
+              acc.push(idx);
+              const th = document.createElement("th");
+              th.textContent = col.trim();
+              headerTr.appendChild(th);
+            }
+            return acc;
+          }, []);
+          thead.replaceChildren(headerTr);
+
+          // find Purchased/Owned column
+          ownedIndex = findColumnIndex(header, [
+            "owned",
+            "have",
+            "status",
+            "purchased",
+          ]);
+
+          numberIndex = findColumnIndex(header, ["number", "no", "card"]);
+          playerIndex = findColumnIndex(header, ["player", "name"]);
+          teamIndex = findColumnIndex(header, ["team", "club"]);
+
+          // if we somehow don't find it but we know your file is:
+          // Number, Player, Team, Purchased, Paid
+          // then the 4th column (index 3) is Purchased
+          if (ownedIndex === -1 && header.length >= 4) {
+            ownedIndex = 3;
+          }
+
+          cardsData = [];
+          let purchasedCount = 0;
+          const total = dataRows.length;
+
+          dataRows.forEach((row, idx) => {
+            let purchasedFlag = false;
+            if (ownedIndex !== -1 && row.length > ownedIndex) {
+              purchasedFlag = interpretOwned(row[ownedIndex]);
+            }
+
+            if (purchasedFlag) {
+              purchasedCount++;
+            }
+
+            cardsData.push({
+              originalRow: row,
+              displayCells: displayColumnIndices.map((colIdx) => ({
+                value: row[colIdx] || "",
+                originalIndex: colIdx,
+              })),
+              purchased: purchasedFlag,
+              number: numberIndex !== -1 ? row[numberIndex] || "" : "",
+              player: playerIndex !== -1 ? row[playerIndex] || "" : "",
+              team: teamIndex !== -1 ? row[teamIndex] || "" : "",
+              originalIndex: idx,
+            });
+          });
+
+          const remaining = total - purchasedCount;
+          const percent = total ? (purchasedCount / total * 100) : 0;
+          document.getElementById("completion").textContent = percent.toFixed(1) + "%";
+          document.getElementById("fraction").textContent = purchasedCount + " / " + total;
+          document.getElementById("progress").value = percent;
+          document.getElementById("total").textContent = total;
+          document.getElementById("owned-count").textContent = purchasedCount;
+          document.getElementById("need-count").textContent = remaining;
+          sortSelect.querySelector('[value="team"]').disabled = teamIndex === -1;
+          sortSelect.querySelector('[value="player"]').disabled = playerIndex === -1;
+          errorEl.hidden = true; errorEl.style.display = "none";
+          document.getElementById("retry").hidden = true;
+
+          ownedBadge.textContent = "purchased: " + purchasedCount;
+          neededBadge.textContent = "needed: " + remaining;
+          statusText.textContent =
+            "total cards: " +
+            total +
+            " · purchased: " +
+            purchasedCount +
+            " · remaining: " +
+            remaining;
+
+          renderTableRows();
+        } catch (err) {
+          console.error(err);
+          errorEl.hidden = false; errorEl.style.display = "block";
+          document.getElementById("retry").hidden = false;
+          errorEl.textContent =
+            "error loading the google sheet — check the published CSV link or try again later.";
+          statusText.textContent = "could not load checklist.";
+        }
+      }
+
+      document.getElementById("raw-sheet").href = SHEET_CSV_URL.replace("&output=csv", "&output=html");
+      document.getElementById("export").href = SHEET_CSV_URL;
+      document.getElementById("retry").addEventListener("click", loadChecklist);
+      loadChecklist();
+    </script>
+</body>
+</html>
