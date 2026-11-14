@@ -54,9 +54,8 @@ Expanded “systems” section with frameworks for personal projects
 
 🗂️ 3. Repository Structure
 /
-│ index.html             # Landing page
+│ index.html             # Central navigation hub
 │ journal.html           # Journal index
-│ cards.html             # Cards, lists, tools
 │ systems.html           # Notes, frameworks, templates
 │ styles.css             # Global styling for all pages
 │ README.md              # This document
@@ -133,26 +132,6 @@ Use semantic HTML
 Avoid inline styles
 
 Update the README if new page patterns are introduced
-
-🃏 6. Cards & Tools Section
-
-cards.html is a sandbox page for:
-
-card inventory tools
-
-data input forms
-
-list maker components
-
-prototypes for future projects
-
-When adding new tools:
-
-Keep each tool modular
-
-Document the purpose of each tool in cards.html comments
-
-Update this README if the tool becomes a core feature of the site
 
 🔒 7. Public vs Private Roadmap
 
