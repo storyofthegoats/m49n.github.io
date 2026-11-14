@@ -359,7 +359,6 @@
           <div class="chip-row" id="type-filters">
             <button class="chip active" data-type="all">All</button>
             <button class="chip" data-type="baseball">Baseball</button>
-            <button class="chip" data-type="pokemon">Pokémon</button>
             <button class="chip" data-type="non">Non</button>
           </div>
         </div>
@@ -575,7 +574,7 @@
                 sellerName,
               };
             })
-            .filter((row) => row.purchaseDate);
+            .filter((row) => row.purchaseDate && row.itemType !== "pokemon");
 
           applyFilters();
           loadingEl.classList.add("hidden");
@@ -660,7 +659,7 @@
             acc[t] = (acc[t] || 0) + 1;
             return acc;
           },
-          { baseball: 0, pokemon: 0, non: 0 }
+          { baseball: 0, non: 0 }
         );
 
         const currency = state.filtered[0]?.currency || "USD";
@@ -688,7 +687,6 @@
             custom: `
               <div class="badge-group">
                 <span class="badge">Baseball: ${typeCounts.baseball || 0}</span>
-                <span class="badge">Pokémon: ${typeCounts.pokemon || 0}</span>
                 <span class="badge">Non: ${typeCounts.non || 0}</span>
               </div>
             `,
