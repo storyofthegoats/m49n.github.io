@@ -149,10 +149,9 @@ td,th{padding:8px 10px}
 :root{--ink:#111;--muted:#64615a;--paper:#ebe8df;--line:#918e86;--green:#008ba6;--gold:#00a9c7}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}
 .sidebar{width:238px;background:#111;color:#ebe8df;padding:25px 20px;border-right:1px solid #111}
-.brand{align-items:flex-start;gap:10px;margin:0 4px 30px;padding-bottom:18px;border-bottom:5px solid #ebe8df}
-.brand-mark{border:0;border-radius:0;width:auto;height:auto;display:block;font:900 48px/.75 Arial,Helvetica,sans-serif;letter-spacing:-.08em;color:#ebe8df}
-.brand strong{font:700 15px/1 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.08em}
-.brand small{margin-top:6px;color:#8edced;font-size:9px;letter-spacing:.16em}
+.brand{display:block;margin:0 4px 30px;padding-bottom:18px;border-bottom:5px solid #ebe8df}
+.brand-mark{border:0;border-radius:0;width:auto;height:auto;display:block;font:900 55px/.8 Arial,Helvetica,sans-serif;letter-spacing:-.08em;color:#ebe8df;text-transform:uppercase}
+.brand small{display:block;margin-top:10px;color:#8edced;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
 .nav-label{color:#8c8982;padding:0 9px;margin-top:18px}
 nav{gap:0;border-top:1px solid #484848}
 nav button,nav a{border-radius:0;border-bottom:1px solid #333;padding:12px 9px}
@@ -163,16 +162,16 @@ nav .symbol{font-size:13px}
 .edition{color:#77736c;padding:18px 9px 0}
 main{margin-left:238px;padding:20px 42px 35px;max-width:1600px}
 .supplement-banner{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;border-top:7px solid var(--ink);border-bottom:2px solid var(--ink);padding:8px 0 9px;margin-bottom:20px}
-.supplement-masthead{font-size:clamp(2.7rem,6vw,6.3rem);font-weight:900;letter-spacing:-.075em;line-height:.78;text-transform:uppercase}
+.supplement-masthead{font-size:clamp(2.2rem,5vw,5.2rem);font-weight:900;letter-spacing:-.06em;line-height:.85;text-transform:uppercase}
 .supplement-meta{text-align:right;font-size:9px;line-height:1.55;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
-.feature-intro{display:grid;grid-template-columns:minmax(250px,.7fr) minmax(300px,1.3fr);border-bottom:2px solid var(--ink);margin-bottom:17px}
-.feature-title{padding:20px 25px 22px 0;border-right:2px solid var(--ink)}
+.feature-intro{display:grid;grid-template-columns:minmax(300px,1.35fr) minmax(190px,.65fr);border-bottom:2px solid var(--ink);margin-bottom:17px}
+.feature-title{display:flex;flex-direction:column;justify-content:flex-end;padding:28px 25px 28px 0;border-right:2px solid var(--ink)}
 .feature-kicker{font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:#008ba6}
-.feature-title h2{font:400 clamp(3.8rem,7vw,7.6rem)/.76 Georgia,"Times New Roman",serif;letter-spacing:-.065em;margin:17px 0 20px}
+.feature-title h2{font:400 clamp(3.2rem,6vw,6.5rem)/.82 Georgia,"Times New Roman",serif;letter-spacing:-.06em;margin:17px 0 20px}
 .feature-title p{font:16px/1.4 Georgia,"Times New Roman",serif;color:var(--ink);max-width:420px;margin:0}
-.feature-facts{display:grid;grid-template-columns:repeat(3,1fr);align-content:end}
+.feature-facts{display:grid;grid-template-columns:1fr;align-content:end}
 .fact{padding:20px 18px;border-left:1px solid var(--line)}
-.fact:first-child{border-left:0}.fact strong{display:block;font:400 38px/1 Georgia,"Times New Roman",serif;letter-spacing:-.04em}
+.fact strong{display:block;font:400 58px/1 Georgia,"Times New Roman",serif;letter-spacing:-.04em}
 .fact span{display:block;margin-top:8px;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
 .topbar{border-bottom:1px solid var(--ink);padding-bottom:8px}h1{font-size:14px;text-transform:uppercase;letter-spacing:.13em}
 .version{border:0;border-radius:0;padding:0;font-size:9px;font-weight:700;letter-spacing:.12em}
@@ -193,22 +192,19 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
 .series-track{border-radius:0;background:#c9c5bb}.series-fill{background:#00a9c7}
 .mobile-top{background:#111;color:#ebe8df;border-bottom:2px solid #00a9c7}
 @media(max-width:1000px){.feature-intro{grid-template-columns:1fr}.feature-title{border-right:0}.feature-facts{border-top:1px solid var(--ink)}}
-@media(max-width:760px){.sidebar{width:250px}.mobile-menu{background:#111;color:#ebe8df;border-color:#777}main{margin-left:0;padding:15px}.supplement-banner{margin-top:2px}.supplement-masthead{font-size:3rem}.feature-title{padding:18px 0}.feature-title h2{font-size:4.4rem}.feature-title p{font-size:15px}.feature-facts{grid-template-columns:1fr 1fr}.fact:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}}
+@media(max-width:760px){.sidebar{width:250px}.mobile-menu{background:#111;color:#ebe8df;border-color:#777}main{margin-left:0;padding:15px}.supplement-banner{margin-top:2px}.supplement-masthead{font-size:2.5rem}.feature-title{padding:18px 0}.feature-title h2{font-size:4.1rem}.feature-title p{font-size:15px}.feature-facts{grid-template-columns:1fr}.fact{border-left:0;border-top:1px solid var(--line)}}
 </style></head>
 <body>
 <div class="mobile-top">
-<strong>M49N / 1959</strong>
+<strong>M49N</strong>
 <button id="menu" class="btn mobile-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
 </div>
 <button class="scrim" id="scrim" aria-label="Close navigation" hidden>
 </button>
 <aside class="sidebar" id="sidebar">
 <div class="brand">
-<span class="brand-mark">59</span>
-<div>
-<strong>Setbuild</strong>
-<small>Collector's supplement</small>
-</div>
+<span class="brand-mark">M49N</span>
+<small>Ongoing, as usual.</small>
 </div>
 <div class="nav-label">COLLECTION</div>
 <nav aria-label="Collection navigation">
@@ -234,19 +230,16 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
 </aside>
 <main>
 <header class="supplement-banner">
-<div class="supplement-masthead">m49n</div>
+<div class="supplement-masthead">1959 Topps Setbuild</div>
 <div class="supplement-meta">Issue 001<br>Collector's Supplement 01<br>November 2026</div>
 </header>
 <section class="feature-intro" aria-label="1959 Topps Setbuild introduction">
 <div class="feature-title">
-<div class="feature-kicker">The collection · The long build</div>
-<h2>1959<br>Topps</h2>
+<div class="feature-kicker">The collection</div>
 <p>A working record of one complete set—what is here, what is missing, what it cost, and what the cards carry with them.</p>
 </div>
 <div class="feature-facts" aria-label="Set facts">
 <div class="fact"><strong>572</strong><span>Cards in the standard set</span></div>
-<div class="fact"><strong>7</strong><span>Production series</span></div>
-<div class="fact"><strong>1959</strong><span>The year in cardboard</span></div>
 </div>
 </section>
 <header class="topbar">
