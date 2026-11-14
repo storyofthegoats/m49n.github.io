@@ -144,10 +144,60 @@ td,th{padding:8px 10px}
 .series-bar-label{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;font-variant-numeric:tabular-nums}
 .series-track{height:7px;background:#e5eade;border-radius:4px;overflow:hidden}.series-fill{height:100%;background:var(--green)}
 @media(max-width:760px){.history-article{font-size:15px;line-height:1.75}.history-article h2{font-size:28px}.history-article h3{font-size:22px}.series-bars{grid-template-columns:1fr;gap:12px}}
+
+/* Issue 001 · Collector's Supplement */
+:root{--ink:#111;--muted:#64615a;--paper:#ebe8df;--line:#918e86;--green:#008ba6;--gold:#00a9c7}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}
+.sidebar{width:238px;background:#111;color:#ebe8df;padding:25px 20px;border-right:1px solid #111}
+.brand{align-items:flex-start;gap:10px;margin:0 4px 30px;padding-bottom:18px;border-bottom:5px solid #ebe8df}
+.brand-mark{border:0;border-radius:0;width:auto;height:auto;display:block;font:900 48px/.75 Arial,Helvetica,sans-serif;letter-spacing:-.08em;color:#ebe8df}
+.brand strong{font:700 15px/1 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.08em}
+.brand small{margin-top:6px;color:#8edced;font-size:9px;letter-spacing:.16em}
+.nav-label{color:#8c8982;padding:0 9px;margin-top:18px}
+nav{gap:0;border-top:1px solid #484848}
+nav button,nav a{border-radius:0;border-bottom:1px solid #333;padding:12px 9px}
+nav button[aria-current]{background:#00a9c7;color:#071012}
+nav button:hover:not(:disabled),nav a:hover{background:#292929}
+nav .symbol{font-size:13px}
+.sidebar-bottom a{color:#bbb7ae;border-top:1px solid #333;border-bottom:0;border-radius:0;padding:9px}
+.edition{color:#77736c;padding:18px 9px 0}
+main{margin-left:238px;padding:20px 42px 35px;max-width:1600px}
+.supplement-banner{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;border-top:7px solid var(--ink);border-bottom:2px solid var(--ink);padding:8px 0 9px;margin-bottom:20px}
+.supplement-masthead{font-size:clamp(2.7rem,6vw,6.3rem);font-weight:900;letter-spacing:-.075em;line-height:.78;text-transform:uppercase}
+.supplement-meta{text-align:right;font-size:9px;line-height:1.55;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.feature-intro{display:grid;grid-template-columns:minmax(250px,.7fr) minmax(300px,1.3fr);border-bottom:2px solid var(--ink);margin-bottom:17px}
+.feature-title{padding:20px 25px 22px 0;border-right:2px solid var(--ink)}
+.feature-kicker{font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:#008ba6}
+.feature-title h2{font:400 clamp(3.8rem,7vw,7.6rem)/.76 Georgia,"Times New Roman",serif;letter-spacing:-.065em;margin:17px 0 20px}
+.feature-title p{font:16px/1.4 Georgia,"Times New Roman",serif;color:var(--ink);max-width:420px;margin:0}
+.feature-facts{display:grid;grid-template-columns:repeat(3,1fr);align-content:end}
+.fact{padding:20px 18px;border-left:1px solid var(--line)}
+.fact:first-child{border-left:0}.fact strong{display:block;font:400 38px/1 Georgia,"Times New Roman",serif;letter-spacing:-.04em}
+.fact span{display:block;margin-top:8px;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.topbar{border-bottom:1px solid var(--ink);padding-bottom:8px}h1{font-size:14px;text-transform:uppercase;letter-spacing:.13em}
+.version{border:0;border-radius:0;padding:0;font-size:9px;font-weight:700;letter-spacing:.12em}
+.heading{margin:16px 0 11px}.collection-name{font:30px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
+.dashboard{border:1px solid var(--ink);border-radius:0;background:transparent}.completion,.metric{padding:15px 17px}.metric{border-left-color:var(--ink)}
+.metric:hover{background:#d8f2f5}.metric strong,.progress-title strong{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:33px}
+progress{height:6px;border-radius:0;background:#c9c5bb;accent-color:#00a9c7}progress::-webkit-progress-bar{background:#c9c5bb}progress::-webkit-progress-value{background:#00a9c7}
+.table-section{margin-top:22px}.table-heading{border-top:4px solid var(--ink);padding-top:9px}h2{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:400}
+.search-wrap,.filters,select,.btn,.table-wrapper,.error{border-radius:0;border-color:var(--ink)}.search-wrap,.btn,select{background:#f6f3ea}
+.filters{background:#d8d4ca;padding:2px}.filters button{border-radius:0}.filters button[aria-pressed="true"]{background:#111;color:#fff;box-shadow:none}
+.table-wrapper{background:#f6f3ea;max-height:68vh}th{background:#111;color:#ebe8df;font-weight:700;letter-spacing:.1em}
+td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New Roman",serif;font-size:14px}tbody tr:hover{background:#dff2f3}
+.owned-pill{border-radius:0}.owned-pill--yes{background:#cceff3;color:#075565}.ebay-action{background:#111;color:#fff}
+.cost-summary{border-radius:0;background:var(--ink);border-color:var(--ink)}.cost-stat{background:#f6f3ea}.cost-stat strong{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:30px}
+.cost-concentration,.history-table{border-radius:0;background:#f6f3ea;border-color:var(--ink)}
+.history-article{max-width:760px;font:17px/1.75 Georgia,"Times New Roman",serif}.history-article h2{font-size:48px;letter-spacing:-.04em;border-top:7px solid var(--ink);padding-top:15px}
+.history-article h3{font-size:29px;color:var(--ink)}.history-article p,.history-article li{color:#282725}
+.series-track{border-radius:0;background:#c9c5bb}.series-fill{background:#00a9c7}
+.mobile-top{background:#111;color:#ebe8df;border-bottom:2px solid #00a9c7}
+@media(max-width:1000px){.feature-intro{grid-template-columns:1fr}.feature-title{border-right:0}.feature-facts{border-top:1px solid var(--ink)}}
+@media(max-width:760px){.sidebar{width:250px}.mobile-menu{background:#111;color:#ebe8df;border-color:#777}main{margin-left:0;padding:15px}.supplement-banner{margin-top:2px}.supplement-masthead{font-size:3rem}.feature-title{padding:18px 0}.feature-title h2{font-size:4.4rem}.feature-title p{font-size:15px}.feature-facts{grid-template-columns:1fr 1fr}.fact:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}}
 </style></head>
 <body>
 <div class="mobile-top">
-<strong>1959 / SETBUILD</strong>
+<strong>M49N / 1959</strong>
 <button id="menu" class="btn mobile-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
 </div>
 <button class="scrim" id="scrim" aria-label="Close navigation" hidden>
@@ -157,7 +207,7 @@ td,th{padding:8px 10px}
 <span class="brand-mark">59</span>
 <div>
 <strong>Setbuild</strong>
-<small>THE CARD GOAT</small>
+<small>Collector's supplement</small>
 </div>
 </div>
 <div class="nav-label">COLLECTION</div>
@@ -168,15 +218,6 @@ td,th{padding:8px 10px}
 <span class="symbol" aria-hidden="true">○</span>Need List</button>
 <button data-view="cost"><span class="symbol" aria-hidden="true">▤</span>Cost Calculator</button>
 <button data-view="history"><span class="symbol" aria-hidden="true">◷</span>'59 History</button>
-<button disabled>
-<span class="symbol" aria-hidden="true">↗</span>Purchases <small>Planned</small>
-</button>
-<button disabled>
-<span class="symbol" aria-hidden="true">⚑</span>Teams <small>Planned</small>
-</button>
-<button disabled>
-<span class="symbol" aria-hidden="true">☆</span>Key Cards <small>Planned</small>
-</button>
 </nav>
 <div class="nav-label">SOURCE</div>
 <nav aria-label="Data source">
@@ -186,18 +227,33 @@ td,th{padding:8px 10px}
 <span class="symbol" aria-hidden="true">↓</span>Export source CSV</a>
 </nav>
 <div class="sidebar-bottom">
-<a href="index.html">← m49n index</a>
-<a href="index.html">m49n index ↗</a>
+<a href="index.html">← Issue 001 cover</a>
 <a href="mlb-rosters.html">MLB rosters ↗</a>
-<div class="edition">1959 TOPPS · V1.5</div>
+<div class="edition">ISSUE 001 · SUPPLEMENT 01</div>
 </div>
 </aside>
 <main>
+<header class="supplement-banner">
+<div class="supplement-masthead">m49n</div>
+<div class="supplement-meta">Issue 001<br>Collector's Supplement 01<br>November 2026</div>
+</header>
+<section class="feature-intro" aria-label="1959 Topps Setbuild introduction">
+<div class="feature-title">
+<div class="feature-kicker">The collection · The long build</div>
+<h2>1959<br>Topps</h2>
+<p>A working record of one complete set—what is here, what is missing, what it cost, and what the cards carry with them.</p>
+</div>
+<div class="feature-facts" aria-label="Set facts">
+<div class="fact"><strong>572</strong><span>Cards in the standard set</span></div>
+<div class="fact"><strong>7</strong><span>Production series</span></div>
+<div class="fact"><strong>1959</strong><span>The year in cardboard</span></div>
+</div>
+</section>
 <header class="topbar">
 <div>
 <h1 id="view-title">Checklist</h1>
 </div>
-<span class="version">SETBUILD v1.5</span>
+<span class="version">WORKING RECORD · V1.5</span>
 </header>
 <div class="heading">
 <div>
