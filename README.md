@@ -307,3 +307,11 @@ It is the master document that keeps the project consistent across time.
 `index.html` is the central navigation hub. The current 1959 Topps tracker is
 `1959-v1-5.html`; older tracker and version files remain in the repository as
 unlinked historical snapshots.
+
+## The Hemingway Papers
+
+`hemingway/index.html` is the fiction archive linked from Issue 001. Each entry
+has a dated article, a matching contents row, and a stable fragment link. The
+archive and articles are static HTML. `papers.js` adds search, filters, random
+selection, and a shortlist stored in the reader’s browser. The feature uses
+its own stylesheet and does not require a build step.
