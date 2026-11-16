@@ -69,3 +69,83 @@ button, select { cursor: pointer; }
   .entry { grid-template-columns: 4.25rem minmax(0, 1fr); column-gap: .55rem; row-gap: .25rem; }
   .entry .topic { grid-column: 2; }
 }
+
+.key-west {
+  --shutter: #253d33;
+  --porch: #f4ecda;
+  --key-west-muted: #dbc9a4;
+  flex: none;
+  margin-top: 24px;
+  border: 1px solid #6a7d69;
+  background: var(--shutter);
+  color: var(--porch);
+}
+.key-west-header {
+  padding: 14px 10px 13px 13px;
+  border-bottom: 1px solid #6a7d69;
+  background: repeating-linear-gradient(
+    to bottom, transparent 0 7px, #173128 7px 8px
+  ) right top / 8px 100% no-repeat;
+}
+.key-west-kicker, .key-west-subtitle {
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--key-west-muted);
+}
+.key-west h2 {
+  margin: 5px 0 4px;
+  font: 1.62rem/1.03 Georgia, 'Times New Roman', serif;
+  letter-spacing: -.04em;
+}
+.key-west-photo {
+  margin: 10px 10px 0;
+  padding: 4px 4px 0;
+  background: var(--porch);
+  color: #354437;
+}
+.key-west-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #aab69b;
+}
+.key-west-photo figcaption {
+  padding: 4px 2px;
+  font: italic .69rem/1.25 Georgia, 'Times New Roman', serif;
+}
+.key-west-notes {
+  margin: 8px 10px 4px;
+  padding: 0;
+  list-style: none;
+}
+.key-west-notes li + li { border-top: 1px solid #617567; }
+.key-west summary {
+  padding: 9px 2px;
+  cursor: pointer;
+}
+.key-west summary::marker { color: var(--key-west-muted); }
+.key-west summary:hover { text-decoration: underline; }
+.key-west-notes details[open] { padding-bottom: 10px; }
+.key-west-notes details p {
+  padding: 0 2px;
+  font: .86rem/1.45 Georgia, 'Times New Roman', serif;
+}
+.key-west-notes .key-west-photo { margin: 0 0 8px; }
+.key-west a:hover { color: #fff; }
+.key-west-museum {
+  display: block;
+  margin: 0 10px;
+  padding: 9px 2px;
+  border-top: 1px solid #617567;
+  color: var(--porch);
+  font-size: .75rem;
+  font-weight: 700;
+}
+.key-west-sources {
+  margin: 0 10px 6px;
+  color: var(--key-west-muted);
+  font-size: .72rem;
+}
+.key-west-sources p { margin: 0 2px 8px; }
