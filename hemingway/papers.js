@@ -1,4 +1,6 @@
 (() => {
+  const layout = document.querySelector('.papers-layout');
+  const guide = document.querySelector('.key-west');
   const archive = document.querySelector('#archive');
   const reader = document.querySelector('#reader');
   const cover = document.querySelector('.cover');
@@ -64,6 +66,8 @@
     const paper = papers.get(id);
     cover.hidden = archive.hidden = Boolean(paper);
     reader.hidden = !paper;
+    guide.hidden = Boolean(paper);
+    layout.classList.toggle('is-reading', Boolean(paper));
     papers.forEach(item => { item.hidden = item !== paper; });
 
     if (paper) {
@@ -81,8 +85,8 @@
     }
 
     document.title = 'The Hemingway Papers · m49n';
-    if (focus && id === 'contents') {
-      const heading = document.querySelector('#contents');
+    if (focus && (id === 'contents' || id === 'key-west-title')) {
+      const heading = document.getElementById(id);
       heading.focus({ preventScroll: true });
       heading.scrollIntoView();
     }

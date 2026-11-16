@@ -70,82 +70,81 @@ button, select { cursor: pointer; }
   .entry .topic { grid-column: 2; }
 }
 
+/* Key West editorial sidebar */
+.papers-content { min-width: 0; }
 .key-west {
-  --shutter: #253d33;
-  --porch: #f4ecda;
-  --key-west-muted: #dbc9a4;
-  flex: none;
-  margin-top: 24px;
-  border: 1px solid #6a7d69;
-  background: var(--shutter);
-  color: var(--porch);
+  --shutter: #324c3f;
+  margin-top: 3rem;
+  padding-top: 13px;
+  border-top: 5px solid var(--shutter);
+  color: var(--ink);
 }
-.key-west-header {
-  padding: 14px 10px 13px 13px;
-  border-bottom: 1px solid #6a7d69;
-  background: repeating-linear-gradient(
-    to bottom, transparent 0 7px, #173128 7px 8px
-  ) right top / 8px 100% no-repeat;
-}
-.key-west-kicker, .key-west-subtitle {
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .11em;
+.key-west-header { margin-bottom: 14px; }
+.key-west-kicker, .key-west-jump {
+  color: #324c3f;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .09em;
   text-transform: uppercase;
-  color: var(--key-west-muted);
 }
+.key-west-jump { display: inline-block; margin-top: 1.2rem; }
 .key-west h2 {
-  margin: 5px 0 4px;
-  font: 1.62rem/1.03 Georgia, 'Times New Roman', serif;
-  letter-spacing: -.04em;
+  margin-top: 8px;
+  font: 2rem/.98 Georgia, 'Times New Roman', serif;
+  letter-spacing: -.045em;
+  scroll-margin-top: 1rem;
 }
-.key-west-photo {
-  margin: 10px 10px 0;
-  padding: 4px 4px 0;
-  background: var(--porch);
-  color: #354437;
+.key-west p:not(.key-west-kicker) {
+  font: .94rem/1.48 Georgia, 'Times New Roman', serif;
 }
+.key-west-photo { margin: 0 0 10px; }
 .key-west-photo img {
   display: block;
   width: 100%;
   height: auto;
-  background: #aab69b;
+  background: #c6c8b5;
 }
 .key-west-photo figcaption {
-  padding: 4px 2px;
-  font: italic .69rem/1.25 Georgia, 'Times New Roman', serif;
+  padding-top: 5px;
+  color: var(--muted);
+  font: italic .73rem/1.3 Georgia, 'Times New Roman', serif;
 }
-.key-west-notes {
-  margin: 8px 10px 4px;
-  padding: 0;
-  list-style: none;
+.key-west h3 {
+  margin: 0 0 6px;
+  color: var(--shutter);
+  font: 700 1.02rem/1.2 Georgia, 'Times New Roman', serif;
 }
-.key-west-notes li + li { border-top: 1px solid #617567; }
-.key-west summary {
-  padding: 9px 2px;
-  cursor: pointer;
+.key-west-studio, .key-west-notes li {
+  padding-block: 12px;
+  border-top: 1px solid var(--rule);
 }
-.key-west summary::marker { color: var(--key-west-muted); }
-.key-west summary:hover { text-decoration: underline; }
-.key-west-notes details[open] { padding-bottom: 10px; }
-.key-west-notes details p {
-  padding: 0 2px;
-  font: .86rem/1.45 Georgia, 'Times New Roman', serif;
-}
-.key-west-notes .key-west-photo { margin: 0 0 8px; }
-.key-west a:hover { color: #fff; }
+.key-west-studio { margin-top: 14px; }
+.key-west-notes { list-style: none; margin: 0; padding: 0; }
 .key-west-museum {
-  display: block;
-  margin: 0 10px;
-  padding: 9px 2px;
-  border-top: 1px solid #617567;
-  color: var(--porch);
-  font-size: .75rem;
-  font-weight: 700;
+  display: inline-block;
+  margin: 4px 0 10px;
+  color: var(--shutter);
+  font-size: .76rem;
+  font-weight: 800;
 }
-.key-west-sources {
-  margin: 0 10px 6px;
-  color: var(--key-west-muted);
-  font-size: .72rem;
+.key-west .key-west-sources { color: var(--muted); }
+.key-west-sources summary { cursor: pointer; font-size: .72rem; }
+.key-west .key-west-sources p { margin: 8px 0; font-size: .76rem; }
+
+@media (min-width: 1120px) {
+  .papers-layout:not(.is-reading) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(15rem, 22vw, 20rem);
+    align-items: start;
+    column-gap: clamp(20px, 2.4vw, 40px);
+  }
+  .key-west {
+    margin-top: 0;
+    padding-left: 16px;
+    border-left: 1px solid var(--rule);
+  }
+  .key-west-jump { display: none; }
 }
-.key-west-sources p { margin: 0 2px 8px; }
+@media (max-width: 1119px) {
+  .key-west { max-width: 36rem; }
+}
