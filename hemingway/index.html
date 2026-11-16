@@ -7,18 +7,38 @@
   <title>The Hemingway Papers · m49n</title>
   <link rel="stylesheet" href="papers.css">
   <script src="papers.js" defer></script>
+  <link rel="stylesheet" href="../issue-layout.css">
+  <script src="../issue-layout.js" defer></script>
 </head>
 <body>
-  <div class="issue">
-    <header class="masthead">
-      <a class="wordmark" href="../" aria-label="m49n magazine home">m49n</a>
-      <p class="issue-data">Issue 001<br>Fiction</p>
-    </header>
-    <main>
+  <div class="issue-mobile">
+  <strong>M49N</strong>
+  <button type="button" class="issue-menu" aria-expanded="false" aria-controls="issue-sidebar">☰ Menu</button>
+</div>
+<button type="button" class="issue-scrim" aria-label="Close navigation" hidden></button>
+<aside class="issue-sidebar" id="issue-sidebar" aria-label="Issue sidebar">
+  <div class="brand">
+    <a class="brand-mark" href="../" aria-label="m49n magazine home">M49N</a>
+    <small>Ongoing, as usual.</small>
+  </div>
+  <div class="nav-label">PAPERS</div>
+  <nav aria-label="Papers navigation">
+    <a href="#contents"><span class="symbol" aria-hidden="true">☷</span>Contents</a>
+    <a href="#the-things-we-kept-dry"><span class="symbol" aria-hidden="true">▤</span>Featured story</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a href="../">← Issue 001 cover</a>
+    <div class="edition">ISSUE 001</div>
+  </div>
+</aside>
+  <main class="issue-page">
+    <header class="issue-banner">
+  <h1 class="supplement-masthead" id="issue-title">The Hemingway Papers</h1>
+  <div class="supplement-meta">Issue 001<br>Fiction<br>November 2026</div>
+</header>
       <section class="cover" aria-labelledby="issue-title">
         <div class="cover-title">
           <p class="label">An imaginary blog · 2011–2026</p>
-          <h1 id="issue-title">The Hemingway <span>Papers</span></h1>
           <p class="standfirst">A man keeps a tally, takes the long road home, and sometimes gets a good story out of the delay.</p>
           <p class="fiction-note">100 original pieces in an imagined Ernest Hemingway voice. The dates and events are fictional.</p>
         </div>
@@ -3559,11 +3579,10 @@
         </nav>
       </article>
       </section>
-    </main>
     <footer class="folio">
       <a href="../">m49n.com</a>
       <span>The Hemingway Papers · Fiction</span>
     </footer>
-  </div>
+  </main>
 </body>
 </html>

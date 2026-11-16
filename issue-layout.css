@@ -1,0 +1,182 @@
+:root {
+  --issue-ink: #111;
+  --issue-paper: #ebe8df;
+  --issue-accent: #00a9c7;
+  --issue-sidebar-width: 238px;
+}
+
+.issue-sidebar, .issue-mobile, .issue-page, .issue-banner {
+  box-sizing: border-box;
+}
+.issue-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 5;
+  width: var(--issue-sidebar-width);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 25px 20px;
+  border-right: 1px solid var(--issue-ink);
+  background: var(--issue-ink);
+  color: var(--issue-paper);
+  font: 14px/1.5 Arial, Helvetica, sans-serif;
+}
+.issue-sidebar .brand {
+  margin: 0 4px 30px;
+  padding-bottom: 18px;
+  border-bottom: 5px solid var(--issue-paper);
+}
+.issue-sidebar .brand-mark {
+  display: block;
+  color: var(--issue-paper);
+  font: 900 55px/.8 Arial, Helvetica, sans-serif;
+  letter-spacing: -.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.issue-sidebar .brand small {
+  display: block;
+  margin-top: 10px;
+  color: #8edced;
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.issue-sidebar .nav-label {
+  margin: 18px 0 9px;
+  padding: 0 9px;
+  color: #a7a39a;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+}
+.issue-sidebar nav {
+  display: grid;
+  border-top: 1px solid #484848;
+}
+.issue-sidebar nav :is(a, button) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 9px;
+  border: 0;
+  border-bottom: 1px solid #333;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.issue-sidebar nav :is(a, button):hover { background: #292929; }
+.issue-sidebar nav :is(a, button)[aria-current] {
+  background: var(--issue-accent);
+  color: #071012;
+}
+.issue-sidebar nav .symbol { width: 18px; text-align: center; font-size: 13px; }
+.issue-sidebar .sidebar-bottom { margin-top: auto; padding-top: 36px; }
+.issue-sidebar .sidebar-bottom a {
+  display: block;
+  padding: 9px;
+  color: #bbb7ae;
+  border-top: 1px solid #333;
+  font-size: 12px;
+  text-decoration: none;
+}
+.issue-sidebar .sidebar-bottom a:hover { text-decoration: underline; }
+.issue-sidebar .edition {
+  padding: 18px 9px 0;
+  color: #a7a39a;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.issue-page {
+  margin: 0 0 0 var(--issue-sidebar-width);
+  max-width: 1600px;
+  padding: 20px 42px 35px;
+}
+.issue-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 8px 0 9px;
+  border-block: 7px solid var(--issue-ink);
+  border-bottom-width: 2px;
+  color: var(--issue-ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.issue-banner .supplement-masthead {
+  margin: 0;
+  font: 900 clamp(2.2rem, 5vw, 5.2rem)/.85 Arial, Helvetica, sans-serif;
+  letter-spacing: -.06em;
+  text-transform: uppercase;
+}
+.issue-banner .supplement-meta {
+  text-align: right;
+  font-size: 9px;
+  line-height: 1.55;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.issue-mobile { display: none; }
+.issue-scrim {
+  position: fixed;
+  inset: 58px 0 0;
+  z-index: 4;
+  width: 100%;
+  border: 0;
+  background: #152b2255;
+}
+.issue-scrim[hidden] { display: none; }
+.issue-sidebar :focus-visible, .issue-menu:focus-visible {
+  outline: 3px solid var(--issue-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  html { scroll-padding-top: 62px; }
+  .issue-menu-ready .issue-mobile {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    padding: 0 16px;
+    background: var(--issue-ink);
+    color: var(--issue-paper);
+    border-bottom: 2px solid var(--issue-accent);
+    font: 14px/1.5 Arial, Helvetica, sans-serif;
+  }
+  .issue-menu {
+    border: 1px solid #777;
+    padding: 9px 12px;
+    background: var(--issue-ink);
+    color: var(--issue-paper);
+    font: inherit;
+    cursor: pointer;
+  }
+  .issue-sidebar { position: static; width: auto; }
+  .issue-menu-ready .issue-sidebar {
+    position: fixed;
+    inset: 58px auto 0 0;
+    width: min(250px, 100%);
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+  .issue-menu-ready .issue-sidebar.open { visibility: visible; transform: none; }
+  .issue-page { margin: 0; padding: 15px; }
+  .issue-banner { margin-top: 2px; gap: 12px; }
+  .issue-banner .supplement-masthead { font-size: clamp(1.65rem, 8vw, 2.5rem); }
+}
+
+@media print {
+  .issue-sidebar, .issue-mobile, .issue-menu-ready .issue-mobile, .issue-scrim { display: none !important; }
+  .issue-page { margin: 0; padding: 0; max-width: none; }
+}

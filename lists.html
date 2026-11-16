@@ -9,85 +9,18 @@
         box-sizing: border-box;
       }
 
-      body {
-        margin: 0;
-        padding: 40px 20px;
-        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
-          "Courier New", monospace;
-        background: #050505;
-        color: #e5e5e5;
-      }
-
-      main {
+      body { margin: 0; background: #ebe8df; color: #111; }
+      .list-content {
         max-width: 720px;
-        margin: 0 auto;
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
       }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      .top-link {
-        font-size: 0.8rem;
-        color: #777;
-        margin-bottom: 12px;
-        display: inline-block;
-      }
-
-      .title {
-        font-size: 1.3rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 4px;
-      }
-
-      .subtitle {
-        font-size: 0.9rem;
-        color: #888;
-        margin-bottom: 18px;
-      }
-
-      .divider {
-        border: none;
-        border-top: 1px solid #222;
-        margin: 0 0 24px 0;
-      }
-
       .section-label {
-        font-size: 0.8rem;
-        color: #777;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
         margin-bottom: 8px;
+        color: #55534f;
+        font-size: .8rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
       }
-
-      /* card lists section */
-
-      .cards-wrapper {
-        border-top: 1px solid #222;
-        margin-bottom: 28px;
-      }
-
-      .cards-row {
-        border-bottom: 1px solid #111;
-        padding: 10px 0;
-      }
-
-      .cards-name {
-        font-size: 0.95rem;
-      }
-
-      .cards-note {
-        font-size: 0.8rem;
-        color: #777;
-        margin-top: 2px;
-      }
-
       /* scratch list widget */
 
       .scratch-wrapper {
@@ -95,6 +28,7 @@
         background: radial-gradient(circle at top left, #141414 0, #050505 60%);
         border-radius: 10px;
         padding: 16px 14px;
+        color: #e5e5e5;
       }
 
       .scratch-header {
@@ -203,6 +137,7 @@
       }
 
       .scratch-label {
+        min-width: 0;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -242,33 +177,7 @@
         text-decoration: underline;
       }
 
-      .footer {
-        font-size: 0.75rem;
-        color: #666;
-        margin-top: 24px;
-      }
-
-      .back-footer {
-        display: block;
-        margin-top: 12px;
-        padding: 12px 14px;
-        background: #4af626;
-        color: #050505;
-        text-align: center;
-        font-weight: 600;
-        border-radius: 10px;
-      }
-
-      .back-footer:hover {
-        text-decoration: none;
-        opacity: 0.9;
-      }
-
       @media (max-width: 600px) {
-        body {
-          padding: 28px 16px;
-        }
-
         .scratch-input-row {
           flex-direction: column;
         }
@@ -278,24 +187,37 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="issue-layout.css">
+  <script src="issue-layout.js" defer></script>
   </head>
 
   <body>
-    <main>
-      <a class="top-link" href="index.html">← m49n</a>
-
-      <header>
-        <div class="title">this will self-destruct</div>
-        <div class="subtitle">
-          From the desk of m49n
-        </div>
-        <hr class="divider" />
-      </header>
-
-
-
+    <div class="issue-mobile">
+  <strong>M49N</strong>
+  <button type="button" class="issue-menu" aria-expanded="false" aria-controls="issue-sidebar">☰ Menu</button>
+</div>
+<button type="button" class="issue-scrim" aria-label="Close navigation" hidden></button>
+<aside class="issue-sidebar" id="issue-sidebar" aria-label="Issue sidebar">
+  <div class="brand">
+    <a class="brand-mark" href="./" aria-label="m49n magazine home">M49N</a>
+    <small>Ongoing, as usual.</small>
+  </div>
+  <div class="nav-label">LISTS</div>
+  <nav aria-label="Lists navigation">
+    <a href="#scratch"><span class="symbol" aria-hidden="true">☷</span>Scratch list</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a href="./">← Issue 001 cover</a>
+    <div class="edition">ISSUE 001</div>
+  </div>
+</aside>
+    <main class="issue-page">
+      <header class="issue-banner">
+  <h1 class="supplement-masthead">The List</h1>
+  <div class="supplement-meta">Issue 001<br>Ongoing<br>November 2026</div>
+</header>
       <!-- scratch list widget -->
-      <section>
+      <section class="list-content" id="scratch" aria-label="Scratch list">
         <div class="section-label">today / scratch</div>
         <div class="scratch-wrapper">
           <div class="scratch-header">
@@ -338,9 +260,7 @@
         </div>
       </section>
 
-      <div class="footer">m49n · lists</div>
-      <a class="back-footer" href="index.html">← back to index</a>
-    </main>
+      </main>
 
     <script>
       const STORAGE_KEY = "m49n_scratch_list_v1";

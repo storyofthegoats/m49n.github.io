@@ -17,22 +17,16 @@ h1, h2, h3, p, ol { margin: 0; }
 h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
-.issue { width: min(100%, 1380px); margin: 0 auto; padding: 22px 28px; }
-.masthead, .folio, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.masthead { border-top: 9px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 12px 0; }
-.wordmark { font-size: clamp(2.4rem, 7vw, 5.2rem); font-weight: 900; letter-spacing: -.09em; line-height: .75; text-transform: uppercase; text-decoration: none; }
-.issue-data, .label, .folio, .meta, .button { font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.issue-data { text-align: right; line-height: 1.5; }
+.folio, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.label, .folio, .meta, .button { font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .label { color: var(--label); }
 .cover { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); border-bottom: 2px solid var(--ink); }
 .cover-title { min-width: 0; padding: clamp(1.5rem, 5vw, 4.5rem) clamp(1rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4.5rem) 0; }
-.cover h1 { margin: 1rem 0 1.5rem; font-size: clamp(4rem, 8.5vw, 8.5rem); line-height: .84; letter-spacing: -.08em; }
-.cover h1 span { display: block; }
-.standfirst { font: 1.18rem/1.55 Georgia, serif; max-width: 38ch; }
+.standfirst { margin-top: 1rem; font: clamp(1.18rem, 2.3vw, 2rem)/1.35 Georgia, serif; max-width: 34ch; }
 .fiction-note { max-width: 44ch; margin-top: 1.1rem; color: var(--muted); font-size: .83rem; line-height: 1.45; }
 .lead { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 2.5rem; background: var(--cyan); padding: clamp(1.35rem, 4vw, 3.3rem); border-left: 2px solid var(--ink); }
 .lead .label { color: var(--ink); }
-.lead h2 { font-size: clamp(2.5rem, 5.5vw, 5.7rem); line-height: .88; letter-spacing: -.065em; }
+.lead h2 { font-size: clamp(2.35rem, 4vw, 4.25rem); line-height: .88; letter-spacing: -.065em; }
 .lead p:not(.label) { margin-top: 1rem; font: 1.12rem/1.42 Georgia, serif; max-width: 29ch; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .6rem .85rem; border: 1px solid var(--ink); color: var(--ink); background: transparent; text-decoration: none; line-height: 1.35; }
 .button:hover, .button[aria-pressed="true"] { color: var(--paper); background: var(--ink); }
@@ -69,10 +63,7 @@ button, select { cursor: pointer; }
 .direction { display: block; margin-bottom: .25rem; }
 .folio { border-top: 2px solid var(--ink); padding-top: .85rem; margin-top: 2.25rem; color: var(--muted); line-height: 1.45; }
 @media (max-width: 700px) {
-  .issue { padding: 14px 15px 22px; }
-  .masthead { border-top-width: 7px; }
   .cover { grid-template-columns: 1fr; }
-  .cover h1 { font-size: clamp(3.7rem, 13vw, 6rem); }
   .lead { border-left: 0; border-top: 2px solid var(--ink); gap: 1.3rem; }
   .year { grid-template-columns: 1fr; gap: .35rem; }
   .entry { grid-template-columns: 4.25rem minmax(0, 1fr); column-gap: .55rem; row-gap: .25rem; }

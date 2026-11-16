@@ -9,23 +9,7 @@ button{cursor:pointer}
 a{color:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b37c22;outline-offset:3px}
 [hidden]{display:none!important}
-.sidebar{width:216px;position:fixed;inset:0 auto 0 0;background:#203b30;color:#eff3e9;display:flex;flex-direction:column;padding:30px 18px;z-index:5;overflow:auto}
-.brand{display:flex;align-items:center;gap:12px;margin:0 8px 38px}
-.brand-mark{border:1px solid #819784;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font:bold 24px Georgia,serif;color:#edcf88}
-.brand strong{font-size:17px;letter-spacing:-.4px}
-.brand small{display:block;font-size:10px;letter-spacing:2px;color:#b0c3b6}
-.nav-label{font-size:10px;letter-spacing:1.8px;color:#b0c3b6;padding:0 12px;margin:20px 0 9px}
-nav{display:grid;gap:5px}
-nav button,nav a{border:0;background:none;color:inherit;display:flex;align-items:center;text-align:left;gap:12px;padding:11px 12px;border-radius:5px;text-decoration:none}
-nav button[aria-current]{background:#385746;color:#fff}
-nav button:hover:not(:disabled),nav a:hover{background:#314e3f}
-nav button:disabled{cursor:default;color:#b0c3b6}
-nav .symbol{width:18px;text-align:center;font-size:17px}
-nav small{margin-left:auto;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
-.sidebar-bottom{margin-top:auto;padding-top:36px}
-.sidebar-bottom a{display:block;text-decoration:none;color:#cad7cc;padding:6px 12px;font-size:12px}
-.edition{padding:22px 12px 0;font-size:10px;color:#b0c3b6;letter-spacing:1px}
-main{margin-left:216px;padding:20px 40px 20px;max-width:1600px}
+
 .topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px;gap:12px}
 h1{font-size:22px;letter-spacing:-.6px;margin:3px 0 0}
 h2{font-size:18px;letter-spacing:-.4px;margin:0}
@@ -80,22 +64,15 @@ tbody tr:hover{background:#f6f8f1}
 .table-footer{display:flex;justify-content:space-between;gap:15px;padding-top:12px;color:var(--muted);font-size:11px}
 .empty{padding:28px;text-align:center}
 .error{background:#fff0e8;color:#863e21;padding:14px;border:1px solid #edc8b2;margin:12px 0;border-radius:5px}
-.mobile-menu{display:none}
-.scrim{position:fixed;inset:58px 0 0;background:#152b2255;z-index:4;border:0;width:100%}
-.mobile-top{display:none}
+
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-@media(min-width:1500px){main{padding:24px 60px}
-}
-@media(max-width:1100px){main{padding:18px 22px}
+
+@media(max-width:1100px){
 .toolbar{gap:9px}
 .sort{margin-left:auto}
 .metric,.completion{padding:12px 14px}
 }
-@media(max-width:760px){.mobile-top{display:flex;position:sticky;top:0;height:58px;background:var(--paper);z-index:6;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 16px}
-.mobile-menu{display:block}
-.sidebar{top:58px;transform:translateX(-100%);width:230px}
-.sidebar.open{transform:translateX(0)}
-main{margin-left:0;padding:14px 16px}
+@media(max-width:760px){
 .topbar{padding-bottom:10px}
 h1{font-size:21px}
 .heading{margin-top:12px}
@@ -148,22 +125,7 @@ td,th{padding:8px 10px}
 /* Issue 001 · Collector's Supplement */
 :root{--ink:#111;--muted:#64615a;--paper:#ebe8df;--line:#918e86;--green:#008ba6;--gold:#00a9c7}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}
-.sidebar{width:238px;background:#111;color:#ebe8df;padding:25px 20px;border-right:1px solid #111}
-.brand{display:block;margin:0 4px 30px;padding-bottom:18px;border-bottom:5px solid #ebe8df}
-.brand-mark{border:0;border-radius:0;width:auto;height:auto;display:block;font:900 55px/.8 Arial,Helvetica,sans-serif;letter-spacing:-.08em;color:#ebe8df;text-transform:uppercase}
-.brand small{display:block;margin-top:10px;color:#8edced;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
-.nav-label{color:#8c8982;padding:0 9px;margin-top:18px}
-nav{gap:0;border-top:1px solid #484848}
-nav button,nav a{border-radius:0;border-bottom:1px solid #333;padding:12px 9px}
-nav button[aria-current]{background:#00a9c7;color:#071012}
-nav button:hover:not(:disabled),nav a:hover{background:#292929}
-nav .symbol{font-size:13px}
-.sidebar-bottom a{color:#bbb7ae;border-top:1px solid #333;border-bottom:0;border-radius:0;padding:9px}
-.edition{color:#77736c;padding:18px 9px 0}
-main{margin-left:238px;padding:20px 42px 35px;max-width:1600px}
-.supplement-banner{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;border-top:7px solid var(--ink);border-bottom:2px solid var(--ink);padding:8px 0 9px;margin-bottom:20px}
-.supplement-masthead{font-size:clamp(2.2rem,5vw,5.2rem);font-weight:900;letter-spacing:-.06em;line-height:.85;text-transform:uppercase}
-.supplement-meta{text-align:right;font-size:9px;line-height:1.55;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+
 .feature-intro{display:grid;grid-template-columns:minmax(300px,1.35fr) minmax(190px,.65fr);border-bottom:2px solid var(--ink);margin-bottom:17px}
 .feature-title{display:flex;flex-direction:column;justify-content:flex-end;padding:28px 25px 28px 0;border-right:2px solid var(--ink)}
 .feature-kicker{font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:#008ba6}
@@ -190,18 +152,21 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
 .history-article{max-width:760px;font:17px/1.75 Georgia,"Times New Roman",serif}.history-article h2{font-size:48px;letter-spacing:-.04em;border-top:7px solid var(--ink);padding-top:15px}
 .history-article h3{font-size:29px;color:var(--ink)}.history-article p,.history-article li{color:#282725}
 .series-track{border-radius:0;background:#c9c5bb}.series-fill{background:#00a9c7}
-.mobile-top{background:#111;color:#ebe8df;border-bottom:2px solid #00a9c7}
+
 @media(max-width:1000px){.feature-intro{grid-template-columns:1fr}.feature-title{border-right:0}.feature-facts{border-top:1px solid var(--ink)}}
-@media(max-width:760px){.sidebar{width:250px}.mobile-menu{background:#111;color:#ebe8df;border-color:#777}main{margin-left:0;padding:15px}.supplement-banner{margin-top:2px}.supplement-masthead{font-size:2.5rem}.feature-title{padding:18px 0}.feature-title h2{font-size:4.1rem}.feature-title p{font-size:15px}.feature-facts{grid-template-columns:1fr}.fact{border-left:0;border-top:1px solid var(--line)}}
-</style></head>
+@media(max-width:760px){.feature-title{padding:18px 0}.feature-title h2{font-size:4.1rem}.feature-title p{font-size:15px}.feature-facts{grid-template-columns:1fr}.fact{border-left:0;border-top:1px solid var(--line)}}
+</style>
+<link rel="stylesheet" href="issue-layout.css">
+  <script src="issue-layout.js" defer></script>
+</head>
 <body>
-<div class="mobile-top">
+<div class="issue-mobile">
 <strong>M49N</strong>
-<button id="menu" class="btn mobile-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
+<button type="button" class="issue-menu" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
 </div>
-<button class="scrim" id="scrim" aria-label="Close navigation" hidden>
+<button type="button" class="issue-scrim" aria-label="Close navigation" hidden>
 </button>
-<aside class="sidebar" id="sidebar">
+<aside class="issue-sidebar" id="sidebar" aria-label="Issue sidebar">
 <div class="brand">
 <span class="brand-mark">M49N</span>
 <small>Ongoing, as usual.</small>
@@ -227,8 +192,8 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
 <div class="edition">ISSUE 001 · SUPPLEMENT 01</div>
 </div>
 </aside>
-<main>
-<header class="supplement-banner">
+<main class="issue-page">
+<header class="issue-banner">
 <div class="supplement-masthead">1959 Topps Setbuild</div>
 <div class="supplement-meta">Issue 001<br>Collector's Supplement 01<br>November 2026</div>
 </header>
@@ -682,12 +647,7 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
             else el.removeAttribute("aria-current");
           }
         });
-        closeMenu(); renderTableRows();
-      }
-      function closeMenu() {
-        document.getElementById("sidebar").classList.remove("open");
-        document.getElementById("menu").setAttribute("aria-expanded", "false");
-        document.getElementById("scrim").hidden = true;
+        renderTableRows();
       }
       document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => setView(el.dataset.view, el.dataset.filter || "all", !!el.dataset.filter)));
       document.querySelectorAll("[data-filter]").forEach(el => {
@@ -709,13 +669,6 @@ td,th{border-bottom-color:#c9c5bb}td:nth-child(2){font-family:Georgia,"Times New
         document.getElementById("direction").textContent = state.direction === 1 ? "↑ Ascending" : "↓ Descending";
         renderTableRows();
       });
-      document.getElementById("menu").addEventListener("click", () => {
-        const open = document.getElementById("sidebar").classList.toggle("open");
-        document.getElementById("menu").setAttribute("aria-expanded", String(open));
-        document.getElementById("scrim").hidden = !open;
-      });
-      document.getElementById("scrim").addEventListener("click", closeMenu);
-      document.addEventListener("keydown", e => {if(e.key === "Escape") {closeMenu(); document.getElementById("menu").focus();}});
       // interpret purchased/owned logic from the cell value
       // In your data: TRUE = purchased, FALSE or blank = need.
       function interpretOwned(value) {
