@@ -1,0 +1,121 @@
+:root {
+  --stock: #ebe8df;
+  --text: #141311;
+  --muted: #57534c;
+  --ruby: #822e3b;
+  --issue-accent: #e6a4a9;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--stock); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+a { color: inherit; }
+a:focus-visible { outline: 3px solid var(--ruby); outline-offset: 4px; }
+.issue-cover .issue { min-height: 100svh; max-width: 1480px; margin: 0 auto; padding: 22px 28px 30px; }
+
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+  border-top: 9px solid var(--text);
+  border-bottom: 2px solid var(--text);
+  padding: 8px 0 10px;
+}
+.logo {
+  display: block;
+  width: fit-content;
+  margin-left: -.06em;
+  font-size: clamp(4.1rem, 13.5vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -.095em;
+  line-height: .73;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.issue-data, .folio {
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.issue-data { margin: 0; line-height: 1.55; text-align: right; }
+
+.cover-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  min-height: 650px;
+  border-bottom: 2px solid var(--text);
+}
+.editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 27px 28px 24px 0;
+  border-right: 2px solid var(--text);
+}
+.editorial h1, .essay h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -.065em;
+}
+.editorial h1 { font-size: clamp(4.5rem, 8.1vw, 8.8rem); line-height: .83; }
+.standfirst {
+  max-width: 34ch;
+  margin: 25px 0 0;
+  font: 1.2rem/1.45 Georgia, "Times New Roman", serif;
+}
+.contents { margin-top: auto; border-top: 2px solid var(--text); }
+.story {
+  display: grid;
+  grid-template-columns: 98px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 15px;
+  border-bottom: 1px solid #949087;
+  padding: 13px 0;
+  text-decoration: none;
+}
+.story:hover .story-title, .story:focus-visible .story-title { color: var(--ruby); }
+.story:hover .story-title, .story:focus-visible .story-title, .folio a, .essay-body a {
+  text-decoration: underline;
+  text-decoration-thickness: .06em;
+  text-underline-offset: .18em;
+}
+.department {
+  color: var(--ruby);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.story-title { font: 1.23rem/1.15 Georgia, "Times New Roman", serif; }
+.story-note { display: block; margin-top: 4px; color: var(--muted); font: .86rem/1.35 Arial, Helvetica, sans-serif; }
+.cover-art { position: relative; min-width: 0; margin: 0; background: #4b1720; }
+.cover-art img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.folio { display: flex; justify-content: space-between; gap: 12px; padding-top: 13px; line-height: 1.4; }
+
+.essay-page .issue-sidebar .brand small { color: var(--issue-accent); }
+.essay { max-width: 46rem; margin: clamp(2.5rem, 6vw, 5.5rem) auto 0; }
+.essay-header { margin-bottom: 2rem; }
+.essay-header .department { margin: 0 0 .8rem; }
+.essay h1 { max-width: 13ch; font-size: clamp(3.35rem, 7.5vw, 6.9rem); line-height: .91; }
+.essay-body { max-width: 63ch; font: clamp(1.13rem, 1.85vw, 1.32rem)/1.64 Georgia, "Times New Roman", serif; }
+.essay-body p { margin: 0 0 1em; }
+.essay-body a { color: var(--ruby); }
+.essay-footer { margin-top: 2.5rem; padding: 1rem 0; border-top: 2px solid var(--text); }
+
+@media (max-width: 850px) {
+  .issue-cover .issue { padding: 14px 15px 24px; }
+  .masthead { border-top-width: 7px; }
+  .logo { font-size: clamp(4.1rem, 22vw, 8rem); }
+  .cover-grid { grid-template-columns: 1fr; min-height: 0; }
+  .editorial { border-right: 0; padding: 25px 0 23px; }
+  .editorial h1 { font-size: clamp(4.35rem, 15vw, 8.2rem); }
+  .cover-art { min-height: min(110vw, 580px); border-top: 2px solid var(--text); }
+}
+
+@media (max-width: 420px) {
+  .story { grid-template-columns: 71px minmax(0, 1fr); gap: 10px; }
+  .issue-data, .folio { font-size: .66rem; }
+}
