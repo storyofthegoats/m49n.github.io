@@ -318,6 +318,7 @@ its own stylesheet and does not require a build step.
 
 ## Magazine issues
 
-The root cover is Issue 001, “Ongoing, as usual.” Issue 002, “Things We Keep,”
-has its own cover at `issue-002/index.html` and a cover essay that uses the
-shared magazine layout. Both covers link to each other.
+The root cover is Issue 002, “Things We Keep.” Its essays use the shared
+magazine layout. Issue 001, “Ongoing, as usual,” is archived at
+`issue-001/index.html`. Both covers link to each other. The old Issue 002
+cover route redirects to the homepage.
